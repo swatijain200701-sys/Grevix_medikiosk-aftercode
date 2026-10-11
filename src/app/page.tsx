@@ -204,11 +204,11 @@ export default function Home() {
 
             </div>
 
-            {/* Hero Right Column: Example Intake Record Preview */}
+            {/* Hero Right Column: Patient Intake Overview Preview */}
             <div className="lg:col-span-5 flex justify-center">
               <div className="w-full max-w-md rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] shadow-md p-6 space-y-4">
                 
-                {/* Header: Must say Example intake record */}
+                {/* Header: Patient intake overview */}
                 <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg bg-[var(--bg-panel)] text-[var(--btn-main)] flex items-center justify-center font-bold">
@@ -216,60 +216,53 @@ export default function Home() {
                     </div>
                     <div>
                       <span className="text-xs font-bold text-[var(--text-heading)] uppercase tracking-wider block">
-                        Example intake record
+                        Patient intake overview
                       </span>
-                      <span className="text-3xs font-mono text-[var(--text-muted)]">Sample Record #EX-782</span>
+                      <span className="text-3xs text-[var(--text-muted)]">
+                        Organised information for your consultation
+                      </span>
                     </div>
                   </div>
-                  <span className="text-3xs font-bold px-2.5 py-0.5 rounded-full bg-[var(--slate-accent)]/10 text-[var(--slate-accent)] border border-[var(--border-color)]/30">
-                    Synthetic Example
+                  <span className="text-3xs font-semibold px-2.5 py-1 rounded-full bg-[var(--bg-panel)] text-[var(--text-heading)] border border-[var(--border-color)]">
+                    History • Reports • Staff review
                   </span>
                 </div>
 
-                {/* Patient Summary Card */}
-                <div className="p-3.5 rounded-xl bg-[var(--bg-panel)]/60 border border-[var(--border-color)] space-y-2 text-xs">
-                  <div className="flex justify-between items-center text-3xs text-[var(--text-muted)]">
-                    <span className="font-bold text-[var(--text-heading)]">Patient: Ramesh Kumar, 54 Y</span>
-                    <span className="font-mono text-[var(--btn-main)]">Saved draft</span>
+                {/* Generic Information Categories Overview */}
+                <div className="p-3.5 rounded-xl bg-[var(--bg-panel)]/60 border border-[var(--border-color)] space-y-3 text-xs">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="p-2.5 rounded-lg bg-[var(--bg-card)] border border-[var(--border-color)]">
+                      <span className="text-3xs font-bold text-[var(--btn-main)] uppercase tracking-wider block">Category</span>
+                      <span className="font-semibold text-[var(--text-heading)] text-xs block mt-0.5">Symptoms</span>
+                      <span className="text-3xs text-[var(--text-muted)] block mt-0.5">Primary concern and timeline</span>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-[var(--bg-card)] border border-[var(--border-color)]">
+                      <span className="text-3xs font-bold text-[var(--btn-main)] uppercase tracking-wider block">Category</span>
+                      <span className="font-semibold text-[var(--text-heading)] text-xs block mt-0.5">Medicines</span>
+                      <span className="text-3xs text-[var(--text-muted)] block mt-0.5">Current prescriptions &amp; doses</span>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-[var(--bg-card)] border border-[var(--border-color)]">
+                      <span className="text-3xs font-bold text-[var(--btn-main)] uppercase tracking-wider block">Category</span>
+                      <span className="font-semibold text-[var(--text-heading)] text-xs block mt-0.5">Allergies</span>
+                      <span className="text-3xs text-[var(--text-muted)] block mt-0.5">Known reactions confirmed</span>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-[var(--bg-card)] border border-[var(--border-color)]">
+                      <span className="text-3xs font-bold text-[var(--btn-main)] uppercase tracking-wider block">Category</span>
+                      <span className="font-semibold text-[var(--text-heading)] text-xs block mt-0.5">Previous reports</span>
+                      <span className="text-3xs text-[var(--text-muted)] block mt-0.5">Uploaded &amp; verified text</span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="font-bold text-[var(--text-heading)] block text-xs">Main Health Concern:</span>
-                    <p className="text-[var(--text-muted)] text-xs leading-relaxed mt-0.5">
-                      Chest heaviness after walking, cough with mild fever for 4 days.
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 pt-1 text-3xs">
-                    <span className="px-2 py-0.5 rounded bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-heading)]">Hindi / Touch Input</span>
-                    <span className="px-2 py-0.5 rounded bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-heading)]">Prescription Document Added</span>
-                  </div>
-                </div>
-
-                {/* Plain-Language Badges (Slate #304652 accents, no jargon) */}
-                <div className="space-y-2 pt-1 text-xs">
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)]">
-                    <span className="flex items-center gap-2 text-[var(--text-heading)]">
-                      <ShieldCheck className="w-4 h-4 text-[var(--btn-main)]" />
-                      Encrypted local storage on this terminal
-                    </span>
-                    <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[var(--slate-accent)]/10 text-[var(--slate-accent)]">
-                      Device Secured
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)]">
-                    <span className="flex items-center gap-2 text-[var(--text-heading)]">
-                      <Activity className="w-4 h-4 text-[var(--btn-main)]" />
-                      Checks high-concern symptoms for staff attention
-                    </span>
-                    <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[var(--slate-accent)]/10 text-[var(--slate-accent)]">
-                      Clinical Prompt
-                    </span>
+                  <div className="flex items-center justify-between pt-1 border-t border-[var(--border-color)] text-3xs text-[var(--text-muted)]">
+                    <span>Input formats: Touch, Voice, Document upload</span>
+                    <span className="font-medium text-[var(--btn-main)]">English &amp; Hindi</span>
                   </div>
                 </div>
 
+                {/* Bottom line */}
                 <div className="text-center pt-1 border-t border-[var(--border-color)]">
-                  <span className="text-3xs text-[var(--text-muted)] uppercase tracking-wider font-mono">
-                    Synthetic test data — Illustrative preview only
-                  </span>
+                  <p className="text-xs font-medium text-[var(--text-muted)]">
+                    Patient-confirmed history, prepared for staff review.
+                  </p>
                 </div>
 
               </div>
