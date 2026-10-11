@@ -59,7 +59,6 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
     milestoneRefs.current.forEach((el, index) => {
       if (el) {
         const itemRect = el.getBoundingClientRect();
-        // Item is reached when its top enters the trigger zone
         if (itemRect.top <= triggerPoint + 20) {
           newActive.push(index);
         }
@@ -104,7 +103,6 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
     };
   }, [updatePositions]);
 
-  // Handle 0 or 1 milestone safely
   if (!milestones || milestones.length === 0) {
     return null;
   }
@@ -116,15 +114,15 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
     >
       <div className="relative">
         
-        {/* Background Track Line (faded clinical teal-gray) */}
+        {/* Background Track Line (#294350) */}
         <div
-          className="absolute left-4 md:left-1/2 top-3 bottom-6 w-[2px] bg-[#DCE7E4] -translate-x-1/2"
+          className="absolute left-4 md:left-1/2 top-3 bottom-6 w-[2px] bg-[#294350] -translate-x-1/2"
           aria-hidden="true"
         />
 
-        {/* Animated Progress Line (Muted teal #0F766E) */}
+        {/* Animated Progress Line (#50D6C5 Teal Accent) */}
         <div
-          className="absolute left-4 md:left-1/2 top-3 w-[2px] bg-[#0F766E] -translate-x-1/2 transition-[height] duration-150 ease-out z-0"
+          className="absolute left-4 md:left-1/2 top-3 w-[2px] bg-[#50D6C5] -translate-x-1/2 transition-[height] duration-150 ease-out z-0"
           style={{ height: `${scrollProgress * 100}%`, maxHeight: "calc(100% - 24px)" }}
           aria-hidden="true"
         />
@@ -136,8 +134,8 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
             const isEven = index % 2 === 0;
 
             const dotClasses = isReached
-              ? "border-[#0F766E] bg-white text-[#0F766E] shadow-sm scale-110"
-              : "border-[#DCE7E4] bg-[#F7FAF9] text-[#52656B] scale-100";
+              ? "border-[#50D6C5] bg-[#18303D] text-[#50D6C5] shadow-[0_0_12px_rgba(80,214,197,0.3)] scale-110"
+              : "border-[#294350] bg-[#122330] text-[#91A8B3] scale-100";
 
             return (
               <li
@@ -153,7 +151,7 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
                 {/* Clinical Step Marker Dot */}
                 <div
                   className={cn(
-                    "absolute left-4 md:left-1/2 top-1.5 w-7 h-7 rounded-full border-2 -translate-x-1/2 flex items-center justify-center font-bold text-3xs font-mono transition-all duration-300 z-20",
+                    "absolute left-4 md:left-1/2 top-1.5 w-7 h-7 rounded-full border-2 -translate-x-1/2 flex items-center justify-center font-bold text-3xs font-mono transition-all duration-200 z-20",
                     dotClasses
                   )}
                   aria-hidden="true"
@@ -161,25 +159,25 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
                   {milestone.stepNumber}
                 </div>
 
-                {/* Desktop Spacer (balances alternate sides on md screens) */}
+                {/* Desktop Spacer */}
                 <div className="hidden md:block w-1/2" aria-hidden="true" />
 
-                {/* Milestone Content Card: Always fully readable! */}
+                {/* Milestone Content Card */}
                 <div
                   className={cn(
-                    "w-full md:w-1/2 pl-12 md:pl-0 transition-all duration-500 ease-out",
+                    "w-full md:w-1/2 pl-12 md:pl-0 transition-all duration-300 ease-out",
                     isEven ? "md:pr-12 md:text-right" : "md:pl-12 md:text-left"
                   )}
                 >
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-2 rounded-md border border-[#DCE7E4] bg-white text-3xs font-mono font-semibold tracking-wider text-[#0F766E] shadow-2xs">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-2 rounded-md border border-[#294350] bg-[#18303D] text-3xs font-mono font-semibold tracking-wider text-[#50D6C5]">
                     <span>STEP {milestone.stepNumber}</span>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#17343A]">
+                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#F1F6F8]">
                     {milestone.title}
                   </h3>
 
-                  <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#334155]">
+                  <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#B6C7CF]">
                     {milestone.description}
                   </p>
                 </div>

@@ -1,6 +1,7 @@
-﻿'use client';
-import React from 'react';
-import { Check } from 'lucide-react';
+﻿"use client";
+
+import React from "react";
+import { Check } from "lucide-react";
 
 interface StepSymptomsProps {
   selectedSymptoms: string[];
@@ -8,20 +9,20 @@ interface StepSymptomsProps {
   customSymptom: string;
   setCustomSymptom: (s: string) => void;
   addCustomSymptom: () => void;
-  lang: 'en' | 'hi';
+  lang: "en" | "hi";
   t: any;
 }
 
 const COMMON_SYMPTOMS = [
-  { id: 'fever', labelEn: 'Fever', labelHi: 'बुखार' },
-  { id: 'cough', labelEn: 'Cough', labelHi: 'खांसी' },
-  { id: 'headache', labelEn: 'Headache', labelHi: 'सिरदर्द' },
-  { id: 'chest_pain', labelEn: 'Chest Pain / Pressure', labelHi: 'सीने में दर्द या भारीपन' },
-  { id: 'short_breath', labelEn: 'Shortness of Breath', labelHi: 'सांस लेने में तकलीफ' },
-  { id: 'body_ache', labelEn: 'Body Pain / Fatigue', labelHi: 'बदन दर्द / थकान' },
-  { id: 'stomach_pain', labelEn: 'Stomach Pain', labelHi: 'पेट दर्द' },
-  { id: 'vomiting', labelEn: 'Nausea / Vomiting', labelHi: 'उल्टी या मितली' },
-  { id: 'dizziness', labelEn: 'Dizziness / Fainting', labelHi: 'चक्कर आना' },
+  { id: "fever", labelEn: "Fever", labelHi: "बुखार (Fever)" },
+  { id: "cough", labelEn: "Cough", labelHi: "खांसी (Cough)" },
+  { id: "headache", labelEn: "Headache", labelHi: "सिरदर्द (Headache)" },
+  { id: "chest_pain", labelEn: "Chest Pain / Pressure", labelHi: "सीने में दर्द या भारीपन (Chest Pain)" },
+  { id: "short_breath", labelEn: "Shortness of Breath", labelHi: "सांस लेने में तकलीफ (Breathlessness)" },
+  { id: "body_ache", labelEn: "Body Pain / Fatigue", labelHi: "शरीर में दर्द व थकान (Body Pain)" },
+  { id: "stomach_pain", labelEn: "Stomach Pain", labelHi: "पेट दर्द (Stomach Pain)" },
+  { id: "vomiting", labelEn: "Nausea / Vomiting", labelHi: "उल्टी या मिचली (Nausea)" },
+  { id: "dizziness", labelEn: "Dizziness / Fainting", labelHi: "चक्कर आना (Dizziness)" },
 ];
 
 export const StepSymptoms: React.FC<StepSymptomsProps> = ({
@@ -36,12 +37,12 @@ export const StepSymptoms: React.FC<StepSymptomsProps> = ({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#0B1D3A] tracking-tight">{t.symptomsTitle}</h2>
-        <p className="text-slate-600 text-sm mt-1">{t.symptomsSubtitle}</p>
+        <h2 className="text-2xl font-bold text-[#F1F6F8] tracking-tight">{t.symptomsTitle}</h2>
+        <p className="text-[#91A8B3] text-sm mt-1">{t.symptomsSubtitle}</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        {COMMON_SYMPTOMS.map(s => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {COMMON_SYMPTOMS.map((s) => {
           const isSelected = selectedSymptoms.includes(s.labelEn);
           return (
             <button
@@ -49,14 +50,20 @@ export const StepSymptoms: React.FC<StepSymptomsProps> = ({
               type="button"
               id={`symptom-${s.id}`}
               onClick={() => toggleSymptom(s.labelEn)}
-              className={`p-3.5 rounded-xl border-2 text-left font-medium text-sm flex items-center justify-between transition ${
+              className={`p-4 rounded-xl border-2 text-left font-medium text-sm flex items-center justify-between transition min-h-[52px] ${
                 isSelected
-                  ? 'border-teal-600 bg-teal-50/80 text-teal-950 font-semibold shadow-xs'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  ? "border-[#50D6C5] bg-[#50D6C5]/15 text-[#F1F6F8] font-bold shadow-sm"
+                  : "border-[#294350] bg-[#18303D] text-[#B6C7CF] hover:border-[#50D6C5]/40"
               }`}
             >
-              <span>{lang === 'hi' ? s.labelHi : s.labelEn}</span>
-              {isSelected && <Check className="w-4 h-4 text-teal-700" />}
+              <span>{lang === "hi" ? s.labelHi : s.labelEn}</span>
+              {isSelected ? (
+                <div className="w-5 h-5 rounded-full bg-[#50D6C5] flex items-center justify-center shrink-0">
+                  <Check className="w-3.5 h-3.5 text-[#062820] stroke-[3]" />
+                </div>
+              ) : (
+                <div className="w-5 h-5 rounded-full border border-[#294350] shrink-0" />
+              )}
             </button>
           );
         })}
@@ -66,14 +73,14 @@ export const StepSymptoms: React.FC<StepSymptomsProps> = ({
         <input
           type="text"
           value={customSymptom}
-          onChange={e => setCustomSymptom(e.target.value)}
-          placeholder={lang === 'hi' ? 'अन्य कोई लक्षण जोड़ें...' : 'Add other symptoms...'}
-          className="flex-1 text-sm p-3 rounded-xl border border-slate-200 bg-white"
+          onChange={(e) => setCustomSymptom(e.target.value)}
+          placeholder={lang === "hi" ? "अन्य कोई लक्षण लिखें..." : "Add other symptoms..."}
+          className="flex-1 text-sm min-h-[48px] p-3 rounded-xl border border-[#294350] bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3] focus:border-[#50D6C5] outline-none"
         />
         <button
           type="button"
           onClick={addCustomSymptom}
-          className="px-4 py-2 bg-slate-800 text-white rounded-xl text-sm font-semibold hover:bg-slate-900 transition"
+          className="px-5 py-3 bg-[#50D6C5] text-[#062820] rounded-xl text-sm font-bold hover:bg-[#3ec4b3] transition min-h-[48px]"
         >
           Add
         </button>
@@ -81,3 +88,5 @@ export const StepSymptoms: React.FC<StepSymptomsProps> = ({
     </div>
   );
 };
+
+export default StepSymptoms;

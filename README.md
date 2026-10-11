@@ -1,86 +1,108 @@
-﻿# MediKiosk — Accessible Patient Case-Taking & Clinical Intake Platform
+﻿# MediKiosk — Accessible Clinical Outpatient Intake
 
-**Built for Grevix AfterCode 2026**  
-**Participant:** Swati Jain (Sole Participant)  
-**Project Folder:** `medikiosk-aftercode`
+> **Dark Healthcare Redesign:** Polished, visually distinctive dark healthcare interface built for outpatient department (OPD) triage, walk-up kiosk accessibility, and intermittent network resilience.
 
 ---
 
-## 1. Problem & Product Overview
+## 1. Executive Summary & Clinical Context
 
-In outpatient departments (OPDs), government health centers, and AYUSH clinics, consultations are frequently delayed because patients arrive with fragmented histories, scattered paper prescriptions, and unorganized symptom chronologies. Overburdened doctors spend significant consultation time taking down basic notes rather than conducting examinations, while elderly, rural, and low-literacy patients struggle with smartphone-only apps.
+In overburdened outpatient departments (OPDs), consultation time is severely constrained. Patients frequently arrive with unstructured paper records, anxiety, and fragmented symptoms.
 
-**MediKiosk** provides an accessible, shared physical kiosk experience:
-> *"Tell your health story before your consultation."*
-
-1. **Welcoming Landing Portal:** Two-column clinical overview with the adapted fluid hero, clear patient and staff entry points, and an animated workflow timeline.
-2. **Accessible Patient Kiosk:** Step-by-step touch and voice interface with English/Hindi support, offline persistence, document scan, and privacy protection on shared terminals.
-3. **Professional Staff Access:** Clean white/teal staff sign-in form backed by real server authentication (`/api/auth`), session cookies, and side clinical document tray.
-4. **Clinical Intake Dashboard:** Searchable case queue, real status filters, patient reference, age, timestamps, red-flag alert review, and structured printable summaries.
-
-> **Clinical Safety Boundary:** MediKiosk organizes patient-provided information for clinicians. It does not diagnose, recommend medical treatments, prescribe medicines, or replace clinical triage. Visual polish never implies clinical certification.
+**MediKiosk** provides a calm, dignified digital intake terminal in the OPD waiting area:
+- **For Patients:** Guided, step-by-step touch and voice intake in **English and Hindi** with large (48px+) touch controls, clear "Unknown" vs "None reported" options, and document capture.
+- **For Clinicians:** Structured summaries with separated red-flag triage alerts, verified OCR document excerpts, and clear provenance.
+- **For Hospital Infrastructure:** Uncompromising offline continuity that tolerates severe network cuts (>30s) and browser restarts without data loss or duplicate case creation.
 
 ---
 
-## 2. Interface Redesign & Component Adaptations
+## 2. Dark Healthcare Design System
 
-The MediKiosk interface has been redesigned using all three supplied component references, substantially adapted into a cohesive healthcare product:
+The application strictly implements a calm, high-contrast **Dark Healthcare Design System**:
 
-### 1. Adapted Liquid-Metal Hero (`src/components/ui/liquid-metal-hero.tsx`)
-- **Healthcare Adaptation:** Replaced the full-page cosmic/metallic background with a low-opacity (20%), muted teal/silver shader confined strictly within a dimensional medical-history sheet illustration panel on the right.
-- **Two-Column Responsive Composition:**
-  - **Left Column:** Product message, badge *"Patient intake for OPDs"*, headline *"Your health story, ready for your doctor."*, description *"Share your symptoms, medicines, and previous reports through a guided voice or touch experience—even when the connection drops."*, primary action *"Start patient intake"* (`/kiosk`), secondary action *"Staff sign in"* (`/login`), and capability pills (*"Voice and touch"*, *"English and Hindi"*, *"Offline intake"* with clear offline transcription disclosures).
-  - **Right Column:** Dimensional medical record visual overlay displaying patient reference `#MK-2026-OPD-782`, confirmed symptoms, AES-GCM 256 encryption status, and local red-flag detection.
-- **Safety & Performance:** Contained absolute positioning, explicit stacking (z-index), lazy dynamic loading via Next.js dynamic import, IntersectionObserver unmounting off-screen, and static CSS/SVG gradient fallback for reduced motion, non-WebGL devices, and offline mode. Never places moving textures behind text or forms.
-
-### 2. Adapted Space-Login → StaffLogin (`src/components/ui/staff-login.tsx`)
-- **Healthcare Adaptation:** Completely removed the astronaut base64 image, starfield canvas, cosmic glowing planet, parallax tilt, and decorative sparkle animations.
-- **Calm Clinical Aesthetic:** Clean white surface card with muted teal border (`#DCE7E4`), side clinical illustration of an incoming OPD document tray, heading *"Staff access"*, and supporting text *"Review patient intake and prepare for consultations."*.
-- **Real Server Authentication:** Connected form submission directly to the real server authentication endpoint `POST /api/auth`. Removed artificial delays and dummy fallbacks. On success, issues secure HttpOnly session cookies and transitions to the dashboard. Displays helpful errors without exposing server internals.
-- **Honest Healthcare Controls:** Removed social logins, dummy sign-up links, and persistent remember-me toggles to ensure shared hospital kiosks do not store persistent credentials. Native accessible controls preserve password managers, paste, and text selection.
-
-### 3. Adapted Scroll Timeline (`src/components/ui/scroll-timeline.tsx`)
-- **Healthcare Adaptation:** Positioned on the landing page under *"From arrival to consultation."*, mapping the end-to-end OPD patient intake pathway.
-- **Clinical Milestones:**
-  1. `01 — Register and consent:` *"Choose your language and tell us who is entering the information."*
-  2. `02 — Share your health history:` *"Answer guided questions using touch or supported voice input."*
-  3. `03 — Add previous documents:` *"Upload prescriptions or reports and review the extracted text."*
-  4. `04 — Continue through disconnection:` *"Your confirmed answers stay on this device and synchronise when the connection returns."*
-  5. `05 — Staff review:` *"Staff review the structured history and available AI summary before consultation."*
-- **Technical Improvements:** Semantic `<ol>` ordered list markup, text always fully readable before animation (no `opacity-30` hiding content), passive scroll listeners throttled with `requestAnimationFrame`, dynamic milestone position measurement, clean left-aligned mobile layout, reduced-motion bypass, and graceful 0/1 milestone handling.
-
----
-
-## 3. Design System Tokens
-
-The application strictly implements the following design system tokens:
-
-| Token | Hex Value | Application |
+| Token Name | Hex Value | Application & Usage |
 | :--- | :--- | :--- |
-| **Background** | `#F7FAF9` | Calm clinical page background |
-| **Surface** | `#FFFFFF` | Form cards, panels, modals |
-| **Primary Teal** | `#0F766E` | Primary action buttons, badges, brand emblems |
-| **Primary Hover** | `#115E59` | Active & hover states for primary buttons |
-| **Heading** | `#17343A` | High-contrast editorial titles and section headers |
-| **Body Text** | `#334155` | Readable body copy and form inputs |
-| **Muted Text** | `#52656B` | Secondary notes, metadata, timestamps |
-| **Border** | `#DCE7E4` | Restrained card borders, dividers, input strokes |
-| **Soft Teal** | `#E8F3EF` | Pill backgrounds, hover surfaces, active tabs |
-| **Caution** | `#92400E` on `#FEF3C7` | Dark amber text on pale amber for offline warnings |
-| **Attention** | `#991B1B` on `#FEE2E2` | Dark red text on pale red for clinical red flags |
+| **Main Background** | `#08121B` | Primary page & terminal backdrop |
+| **Section Background** | `#0C1924` | Hero section, header bar, navigation rails |
+| **Card Surface** | `#122330` | Kiosk step container, dashboard queue table, review modal |
+| **Elevated Surface** | `#18303D` | Form inputs, buttons, document tray cards, milestone markers |
+| **Borders** | `#294350` | Thin, deliberate borders across inputs, cards, and tables |
+| **Primary Text** | `#F1F6F8` | High-contrast headings, active labels, primary values |
+| **Secondary Text** | `#B6C7CF` | Comfortable body text, card descriptions, table cells |
+| **Muted Text** | `#91A8B3` | Timestamps, metadata labels, helper guidance |
+| **Primary Teal** | `#50D6C5` | Interactive brand accent, timeline progress line, active badges |
+| **Primary Button Text**| `#062820` | Deep contrast text on primary teal buttons |
+| **Focus Indicator** | `#7DD3FC` | Accessible 2px outline for keyboard navigation (`:focus-visible`) |
+| **Caution Amber** | `#FBBF24` on `#261B0E` | Amber border `#854D0E` for offline notices & unconfirmed voice |
+| **Attention Coral/Red**| `#F87171` on `#2B1417` | Red border `#991B1B` for clinical triage red flags & errors |
+
+### Accessibility & Interaction Standards
+- **Touch Target Sizing:** All interactive kiosk controls, inputs, and buttons are at least **48px tall** (`min-h-[48px]`).
+- **Devanagari / Hindi Support:** High-legibility typography rendered using `Noto Sans Devanagari` and `Mangal` fallbacks with full UTF-8 character integrity.
+- **Distinguishable States:** Selected options are differentiated by border thickness, background tint, explicit checkmark icon, and font weight—not color alone.
+- **Print Optimization:** Printable intake reports automatically render with a **pure white background and dark text** (`@media print`) so physical printing remains clear and ink-efficient.
+- **Autofill & Theme Flashes:** Input autofill overrides maintain dark palette; reduced motion preferences are respected across all animated elements.
+
+---
+
+## 3. Screen-by-Screen Interface Architecture
+
+### Landing Page Portal (`/`)
+- **Two-Column Hero:**
+  - **Left:** Small label *"Patient intake for OPDs"*, headline *"Your health story, ready for your doctor."*, concise description, and direct actions *"Start patient intake"* (`/kiosk`) and *"Staff sign in"* (`/login`).
+  - **Right:** Dimensional medical record illustration labeled *"Illustrative example"* with synthetic data, backed by a subtle, contained teal/silver liquid metal visual (`opacity-20`). The shader is lazy-loaded, suspended offscreen via `IntersectionObserver`, and bypassed under `prefers-reduced-motion`.
+- **Problem Statement:** Concise explanation of high OPD volume challenges and why structured patient history collection improves consultation efficiency.
+- **Three Capability Panels:**
+  1. *Guided intake* (bilingual, 48px controls, voice confirmation).
+  2. *Document review* (physical prescription OCR with mandatory verification).
+  3. *Offline continuity* (AES-GCM encryption, monotonic revisions, zero duplicates).
+- **Patient Journey Timeline:** Restyled in dark teal with interactive progress indicator.
+- **Final Action:** Prominent intake trigger card.
+
+### Patient Intake Kiosk (`/kiosk`)
+- **One Question Per Step:** Focused step flow with visible progress bar.
+- **Live Status Header:** Shows real operational state:
+  - *"Saved on this device"*
+  - *"Offline — you can continue"*
+  - *"Waiting to synchronise"*
+  - *"Received by the server"*
+  - *"AI summary pending"*
+  - *"Ready for staff review"*
+- **Language Switcher:** Instant English / Hindi toggle preserving active answers.
+- **Steps:**
+  1. Registration (self vs assisted entry).
+  2. Plain-language patient consent.
+  3. Chief concern (touch or voice dictation with local verification box).
+  4. Symptoms checklist (large 52px buttons with icons and Hindi labels).
+  5. Past conditions & current medicines (explicit "None reported" and "Unknown").
+  6. Allergies (explicit "None reported", "Unknown", or "Reported" details).
+  7. Document capture & OCR verification (prescriptions, discharge slips).
+  8. Final review & submission.
+- **Completion & Reset:** Displays reference ID, sync state, and a *"Finish & Prepare for Next Patient"* action that securely purges in-memory keys for patient privacy.
+
+### Staff Portal & Authentication (`/login`)
+- Clean, dark opaque form surfaces with clear labels.
+- Password visibility toggle (`Eye` / `EyeOff`).
+- Connected directly to `/api/auth` with genuine error reporting and loading spinners.
+- Removed all astronaut, space, and simulated-success content.
+
+### Clinical Dashboard & Triage Workspace (`/dashboard`)
+- Compact navigation rail with real-time network and freshness indicators.
+- **Genuine Metric Cards:** Calculated strictly from loaded database records (Total cases, Attention flagged, Pending review, Reviewed). Zero fabricated vital signs.
+- **Searchable Case Queue:** Search by patient name or reference ID; filter by Flagged, Ready, Awaiting Summary, and Reviewed.
+- **Case Detail Modal:** Complete structured intake breakdown, OCR document source verification, AI clinical synthesis, and staff triage sign-off notes.
 
 ---
 
 ## 4. Operational Status Indicators
 
-All operational states represent genuine underlying application state:
+All operational states reflect genuine underlying system state:
 
-- **“Saved on this device”** — Displayed when the local Web Crypto draft has been successfully written to IndexedDB.
-- **“Offline — you can continue”** — Displayed in amber banner when browser network connectivity drops or hospital server is unreachable.
-- **“Waiting to synchronise”** — Displayed when queued intake records exist in `pendingSyncQueue` awaiting connection.
-- **“Received by the server”** — Displayed when the server has acknowledged receipt with monotonic revision verification.
-- **“AI summary pending”** — Displayed when intake is synced but external AI credentials are unconfigured or generation is underway.
-- **“Ready for staff review”** — Displayed when structured synthesis is complete and ready for the consulting clinician.
+- **"Saved on this device"** — Active draft written to local encrypted IndexedDB.
+- **"Offline — you can continue"** — Terminal is operating offline; intake continues without obstruction.
+- **"Waiting to synchronise"** — Queued records waiting for server acknowledgment.
+- **"Received by the server"** — Server has confirmed intake receipt with monotonic revision verification.
+- **"AI summary pending"** — Case synced; AI synthesis pending external provider response or credentials.
+- **"Ready for staff review"** — Structured synthesis ready for physician consultation.
 
 ---
 
@@ -88,7 +110,7 @@ All operational states represent genuine underlying application state:
 
 All screenshots captured from the running local application with synthetic data:
 
-### Landing Page Portal (Hero & Workflow Timeline)
+### Landing Page Portal (Hero & Journey)
 ![MediKiosk Landing Portal](docs/screenshots/landing.png)
 
 ### Professional Staff Login
@@ -115,7 +137,7 @@ All screenshots captured from the running local application with synthetic data:
 | **Next-Patient Privacy** | **Browser-Tested** | **VERIFIED:** Reset wipes active `SessionKey` and draft from UI. Background encrypted queue remains intact and drains cleanly upon reconnect. |
 | **Idempotency & Zero Duplicates** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Monotonic revisions with idempotency keys. SQLite asserts `recordCount: 1` and `duplicateCount: 0`. |
 | **Data Freshness & Retention** | **Unit-Tested** | **VERIFIED:** 30-min reconfirmation window and 24-hr cache expiry policies verified in `tests/freshness.test.ts`. |
-| **Reconnect Latency** | **Browser-Tested** | **VERIFIED:** `reconnectToSyncAcknowledgmentMs: 3.01s` (target < 5s). `reconnectToStructuredIntakeReadyMs: 3.51s`. |
+| **Reconnect Latency** | **Browser-Tested** | **VERIFIED:** `reconnectToSyncAcknowledgmentMs: 3.03s` (target < 5s). `reconnectToStructuredIntakeReadyMs: 3.53s`. |
 
 ---
 
@@ -137,10 +159,21 @@ npx playwright test
 - `tests/e2e/disconnection.spec.ts` — 30+ second offline disconnection tolerance mid-intake
 - `tests/e2e/reload-recovery.spec.ts` — Genuine offline browser reload recovery & next-patient privacy wipe
 
+### Type Check & Production Build
+```bash
+npx tsc --noEmit     # 0 errors
+npm run build        # Production build successful with Turbopack
+```
+
 ---
 
-## 8. Running Locally
+## 8. Local Setup & Execution
 
+### Prerequisites
+- Node.js 18+ (tested on Node v22)
+- npm
+
+### Installation & Run
 ```bash
 cd medikiosk-aftercode
 npm install --legacy-peer-deps
@@ -150,5 +183,13 @@ npm run start
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 **Staff Login Demo Credentials:**
-- Username: `opd_staff` / Password: `clinical2026`
+- Staff: `opd_staff` / Password: `clinical2026`
 - Doctor: `dr_sharma` / Password: `opd@medikiosk`
+
+---
+
+## 9. AI Verification Status & Known Limitations
+
+- **AI Verification Status:** AI provider integration supports real external LLM keys via `AI_PROVIDER` and `AI_API_KEY` environment variables. When unconfigured, the system honestly labels the summary as *"Local Heuristic Pipeline (Fallback)"* or *"AI summary pending"*. Real AI live provider verification remains pending until external API keys are provisioned in the deployment environment.
+- **Live Deployment:** Marked as **Pending**. All local development, tests, production build, and GitHub repository publication are completed.
+- **Voice Dictation:** Uses the browser Web Speech API when online/supported. When offline, voice can be recorded and queued for deferred server transcription.

@@ -32,13 +32,13 @@ export const StepRegistration: React.FC<StepRegistrationProps> = ({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-extrabold text-[#17343A] tracking-tight">{t.nameLabel}</h2>
-        <p className="text-[#52656B] text-sm mt-1">{t.kioskSubtitle}</p>
+        <h2 className="text-2xl font-extrabold text-[#F1F6F8] tracking-tight">{t.nameLabel}</h2>
+        <p className="text-[#91A8B3] text-sm mt-1">{t.kioskSubtitle}</p>
       </div>
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="patient-name-input" className="block text-sm font-semibold text-[#17343A] mb-1.5">
+          <label htmlFor="patient-name-input" className="block text-sm font-semibold text-[#F1F6F8] mb-1.5">
             {t.nameLabel}
           </label>
           <input
@@ -47,12 +47,12 @@ export const StepRegistration: React.FC<StepRegistrationProps> = ({
             value={preferredName}
             onChange={(e) => setPreferredName(e.target.value)}
             placeholder={t.namePlaceholder}
-            className="w-full text-base sm:text-lg p-3.5 sm:p-4 rounded-xl border border-[#DCE7E4] focus:border-[#0F766E] focus:ring-2 focus:ring-[#0F766E]/10 outline-none transition bg-white text-[#17343A]"
+            className="w-full text-base sm:text-lg min-h-[48px] p-3.5 sm:p-4 rounded-xl border border-[#294350] focus:border-[#50D6C5] focus:ring-2 focus:ring-[#7DD3FC]/20 outline-none transition bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3]"
           />
         </div>
 
         <div>
-          <label htmlFor="patient-age-input" className="block text-sm font-semibold text-[#17343A] mb-1.5">
+          <label htmlFor="patient-age-input" className="block text-sm font-semibold text-[#F1F6F8] mb-1.5">
             {t.ageLabel}
           </label>
           <input
@@ -61,12 +61,12 @@ export const StepRegistration: React.FC<StepRegistrationProps> = ({
             value={age}
             onChange={(e) => setAge(e.target.value)}
             placeholder={t.agePlaceholder}
-            className="w-full text-base sm:text-lg p-3.5 sm:p-4 rounded-xl border border-[#DCE7E4] focus:border-[#0F766E] focus:ring-2 focus:ring-[#0F766E]/10 outline-none transition bg-white text-[#17343A]"
+            className="w-full text-base sm:text-lg min-h-[48px] p-3.5 sm:p-4 rounded-xl border border-[#294350] focus:border-[#50D6C5] focus:ring-2 focus:ring-[#7DD3FC]/20 outline-none transition bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3]"
           />
         </div>
 
         <div className="pt-2">
-          <label className="flex items-center gap-3 p-4 rounded-xl border border-[#DCE7E4] bg-[#F7FAF9] hover:bg-[#E8F3EF] cursor-pointer transition">
+          <label className="flex items-center gap-3 p-4 rounded-xl border border-[#294350] bg-[#18303D] hover:bg-[#203D4D] cursor-pointer transition min-h-[48px]">
             <input
               type="checkbox"
               id="assisted-entry-checkbox"
@@ -75,40 +75,40 @@ export const StepRegistration: React.FC<StepRegistrationProps> = ({
                 setIsAssisted(e.target.checked);
                 if (!e.target.checked) setEnteredBy("self");
               }}
-              className="w-5 h-5 accent-[#0F766E] rounded-md"
+              className="w-5 h-5 accent-[#50D6C5] rounded-md"
             />
             <div className="text-sm">
-              <span className="font-semibold text-[#17343A]">{t.assistedEntry}</span>
-              <p className="text-xs text-[#52656B]">
+              <span className="font-semibold text-[#F1F6F8]">{t.assistedEntry}</span>
+              <p className="text-xs text-[#91A8B3] mt-0.5">
                 Check if entered by a family member, caregiver, or hospital volunteer.
               </p>
             </div>
           </label>
 
           {isAssisted && (
-            <div className="mt-3 pl-8 space-y-2">
+            <div className="mt-3 pl-8 space-y-3">
               <div className="flex gap-4">
-                <label className="flex items-center gap-2 text-sm text-[#334155] cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-[#B6C7CF] cursor-pointer min-h-[40px]">
                   <input
                     type="radio"
                     name="enteredBy"
                     value="caregiver"
                     checked={enteredBy === "caregiver"}
                     onChange={() => setEnteredBy("caregiver")}
-                    className="accent-[#0F766E]"
+                    className="accent-[#50D6C5] w-4 h-4"
                   />
-                  Caregiver / Family
+                  <span>Caregiver / Family</span>
                 </label>
-                <label className="flex items-center gap-2 text-sm text-[#334155] cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-[#B6C7CF] cursor-pointer min-h-[40px]">
                   <input
                     type="radio"
                     name="enteredBy"
                     value="staff"
                     checked={enteredBy === "staff"}
                     onChange={() => setEnteredBy("staff")}
-                    className="accent-[#0F766E]"
+                    className="accent-[#50D6C5] w-4 h-4"
                   />
-                  Hospital Staff / Volunteer
+                  <span>Hospital Staff / Volunteer</span>
                 </label>
               </div>
               <input
@@ -116,7 +116,7 @@ export const StepRegistration: React.FC<StepRegistrationProps> = ({
                 value={caregiverName}
                 onChange={(e) => setCaregiverName(e.target.value)}
                 placeholder="Caregiver / Volunteer Name (Optional)"
-                className="w-full text-sm p-2.5 rounded-lg border border-[#DCE7E4] bg-white text-[#17343A] focus:border-[#0F766E] outline-none"
+                className="w-full text-sm min-h-[48px] p-3 rounded-xl border border-[#294350] bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3] focus:border-[#50D6C5] outline-none"
               />
             </div>
           )}

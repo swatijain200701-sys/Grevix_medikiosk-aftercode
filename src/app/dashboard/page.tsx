@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Wifi, WifiOff, RefreshCw, Search, ChevronRight, AlertTriangle, 
-  CheckCircle2, Clock, FileText, Stethoscope, ArrowUpRight, LogOut 
+  CheckCircle2, Clock, FileText, Stethoscope, ArrowUpRight, LogOut,
+  ShieldAlert, Activity, ClipboardCheck, Filter
 } from "lucide-react";
 import { CaseDetailModal } from "@/components/dashboard/CaseDetailModal";
 import { FullCaseRecord } from "@/lib/db/server-db";
@@ -95,32 +96,38 @@ export default function StaffDashboardPage() {
     return true;
   });
 
+  // Calculate actual statistics strictly from active cases
+  const totalCount = cases.length;
+  const flaggedCount = cases.filter((c) => c.redFlagCount > 0).length;
+  const pendingReviewCount = cases.filter((c) => !c.acknowledgedAt).length;
+  const reviewedCount = cases.filter((c) => !!c.acknowledgedAt).length;
+
   return (
-    <div className="min-h-screen bg-[#F7FAF9] text-[#334155] flex flex-col font-sans selection:bg-[#E8F3EF]">
+    <div className="min-h-screen bg-[#08121B] text-[#B6C7CF] flex flex-col font-sans selection:bg-[#50D6C5]/20 selection:text-[#50D6C5]">
       {/* Compact Clinical Navigation Bar */}
-      <header className="border-b border-[#DCE7E4] bg-white px-4 sm:px-6 py-3 sticky top-0 z-30 shadow-2xs">
+      <header className="border-b border-[#294350] bg-[#0C1924]/95 backdrop-blur-md px-4 sm:px-6 py-3 sticky top-0 z-30 shadow-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#0F766E] text-white flex items-center justify-center font-bold text-sm shadow-2xs">
+            <div className="w-10 h-10 rounded-xl bg-[#50D6C5] text-[#062820] flex items-center justify-center font-bold text-base shadow-sm">
               <Stethoscope className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="font-extrabold text-base leading-tight tracking-tight text-[#17343A]">
+              <h1 className="font-extrabold text-base leading-tight tracking-tight text-[#F1F6F8]">
                 MediKiosk Clinical Dashboard
               </h1>
-              <p className="text-2xs text-[#52656B] font-medium">OPD Intake & Triage Queue</p>
+              <p className="text-3xs text-[#91A8B3] font-medium">OPD Intake & Triage Queue</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
             {!isOnline ? (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#FEF3C7] border border-amber-300 text-[#92400E]">
-                <WifiOff className="w-3.5 h-3.5 text-amber-600" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#261B0E] border border-[#854D0E] text-[#FBBF24]">
+                <WifiOff className="w-3.5 h-3.5 text-[#FBBF24]" />
                 <span>Offline — Data Freshness Limited</span>
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E8F3EF] border border-[#0F766E]/20 text-[#0F766E]">
-                <Wifi className="w-3.5 h-3.5 text-[#0F766E]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#50D6C5]/15 border border-[#50D6C5]/30 text-[#50D6C5]">
+                <Wifi className="w-3.5 h-3.5 text-[#50D6C5]" />
                 <span>Live Server Connected</span>
               </span>
             )}
@@ -128,15 +135,15 @@ export default function StaffDashboardPage() {
             <button
               onClick={fetchCases}
               disabled={isLoading}
-              className="p-2 rounded-lg border border-[#DCE7E4] bg-white hover:bg-[#E8F3EF] text-[#52656B] transition shadow-2xs"
+              className="p-2 rounded-xl border border-[#294350] bg-[#18303D] hover:bg-[#203D4D] text-[#B6C7CF] transition"
               title="Refresh Queue"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin text-[#0F766E]" : ""}`} />
+              <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin text-[#50D6C5]" : ""}`} />
             </button>
 
             <Link
               href="/kiosk"
-              className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-semibold transition shadow-2xs"
+              className="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl bg-[#50D6C5] hover:bg-[#3ec4b3] text-[#062820] text-xs font-bold transition shadow-sm"
             >
               <span>Open Patient Kiosk</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -144,10 +151,10 @@ export default function StaffDashboardPage() {
 
             <Link
               href="/login"
-              className="p-2 rounded-lg border border-[#DCE7E4] bg-white hover:bg-[#FEE2E2] hover:text-[#991B1B] text-[#52656B] transition shadow-2xs"
+              className="p-2 rounded-xl border border-[#294350] bg-[#18303D] hover:bg-[#2B1417] hover:text-[#F87171] text-[#91A8B3] transition"
               title="Staff Sign Out"
             >
-              <LogOut className="w-3.5 h-3.5" />
+              <LogOut className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -158,11 +165,11 @@ export default function StaffDashboardPage() {
         
         {/* Offline & Freshness Caution Banner */}
         {!isOnline && (
-          <div className="p-4 rounded-xl bg-[#FEF3C7] border border-amber-300 text-[#92400E] text-xs flex items-start gap-2.5 shadow-2xs">
-            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-xl bg-[#261B0E] border border-[#854D0E] text-[#FBBF24] text-xs flex items-start gap-2.5 shadow-sm">
+            <AlertTriangle className="w-4 h-4 text-[#FBBF24] shrink-0 mt-0.5" />
             <div>
-              <strong className="block">Limited Data Freshness Warning:</strong>
-              <span>
+              <strong className="block text-[#FBBF24]">Limited Data Freshness Warning:</strong>
+              <span className="text-[#B6C7CF]">
                 Terminal is operating offline. You are reviewing local queue snapshots. Cases submitted from remote kiosks will appear automatically once server synchronisation is restored.
               </span>
             </div>
@@ -171,19 +178,54 @@ export default function StaffDashboardPage() {
 
         {/* Load Error State Banner */}
         {loadError && (
-          <div className="p-4 rounded-xl bg-[#FEE2E2] border border-red-300 text-[#991B1B] text-xs flex items-center justify-between shadow-2xs">
+          <div className="p-4 rounded-xl bg-[#2B1417] border border-[#991B1B] text-[#F87171] text-xs flex items-center justify-between shadow-sm">
             <span>{loadError}</span>
             <button onClick={fetchCases} className="underline font-bold text-xs">Retry Connection</button>
           </div>
         )}
 
-        {/* Search & Real Status Filter Bar */}
+        {/* Genuine Operational Metric Cards: strictly calculated from actual database records */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="p-4 rounded-2xl bg-[#122330] border border-[#294350] space-y-1">
+            <span className="text-3xs uppercase tracking-wider font-semibold text-[#91A8B3] block">Total Intake Cases</span>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-extrabold text-[#F1F6F8]">{totalCount}</span>
+              <FileText className="w-4 h-4 text-[#50D6C5]" />
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-[#122330] border border-[#294350] space-y-1">
+            <span className="text-3xs uppercase tracking-wider font-semibold text-[#F87171] block">Attention Flagged</span>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-extrabold text-[#F87171]">{flaggedCount}</span>
+              <ShieldAlert className="w-4 h-4 text-[#F87171]" />
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-[#122330] border border-[#294350] space-y-1">
+            <span className="text-3xs uppercase tracking-wider font-semibold text-[#FBBF24] block">Pending Physician Review</span>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-extrabold text-[#FBBF24]">{pendingReviewCount}</span>
+              <Clock className="w-4 h-4 text-[#FBBF24]" />
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-[#122330] border border-[#294350] space-y-1">
+            <span className="text-3xs uppercase tracking-wider font-semibold text-[#50D6C5] block">Reviewed & Triage Signed</span>
+            <div className="flex items-baseline justify-between">
+              <span className="text-2xl font-extrabold text-[#50D6C5]">{reviewedCount}</span>
+              <CheckCircle2 className="w-4 h-4 text-[#50D6C5]" />
+            </div>
+          </div>
+        </div>
+
+        {/* Search & Status Filter Bar */}
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5">
           {/* Status Filter Tabs */}
           <div className="flex flex-wrap gap-2">
             {[
-              { id: "all", label: `All Records (${cases.length})` },
-              { id: "flagged", label: `Attention Flagged (${cases.filter((c) => c.redFlagCount > 0).length})` },
+              { id: "all", label: `All Records (${totalCount})` },
+              { id: "flagged", label: `Attention Flagged (${flaggedCount})` },
               { id: "ready", label: "Ready for Review" },
               { id: "awaiting_summary", label: "Awaiting Summary" },
               { id: "reviewed", label: "Reviewed" },
@@ -191,10 +233,10 @@ export default function StaffDashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setFilter(tab.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
                   filter === tab.id
-                    ? "bg-[#17343A] text-white shadow-2xs"
-                    : "bg-white border border-[#DCE7E4] text-[#52656B] hover:bg-[#E8F3EF]"
+                    ? "bg-[#50D6C5] text-[#062820] shadow-sm font-bold"
+                    : "bg-[#18303D] border border-[#294350] text-[#B6C7CF] hover:bg-[#203D4D] hover:text-[#F1F6F8]"
                 }`}
               >
                 {tab.label}
@@ -204,37 +246,37 @@ export default function StaffDashboardPage() {
 
           {/* Search Box */}
           <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 text-[#52656B] absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-[#91A8B3] absolute left-3 top-3" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by patient name, case ID..."
-              className="w-full text-xs pl-9 pr-3.5 py-2 rounded-xl border border-[#DCE7E4] bg-white text-[#17343A] placeholder-[#52656B]/60 focus:border-[#0F766E] focus:outline-none shadow-2xs transition"
+              className="w-full text-xs pl-9 pr-3.5 py-2.5 rounded-xl border border-[#294350] bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3] focus:border-[#50D6C5] focus:outline-none transition"
             />
           </div>
         </div>
 
-        {/* Queue Table: Clear Structured Table without decorative fluff */}
-        <div className="bg-white rounded-2xl border border-[#DCE7E4] shadow-xs overflow-hidden">
+        {/* Queue Table: Clear Structured Table */}
+        <div className="bg-[#122330] rounded-2xl border border-[#294350] shadow-xl overflow-hidden">
           {isLoading && cases.length === 0 ? (
             <div className="p-12 text-center space-y-3">
-              <RefreshCw className="w-8 h-8 text-[#0F766E] animate-spin mx-auto" />
-              <p className="text-sm font-semibold text-[#17343A]">Loading patient cases...</p>
-              <p className="text-xs text-[#52656B]">Connecting to clinical database</p>
+              <RefreshCw className="w-8 h-8 text-[#50D6C5] animate-spin mx-auto" />
+              <p className="text-sm font-semibold text-[#F1F6F8]">Loading patient cases...</p>
+              <p className="text-xs text-[#91A8B3]">Connecting to clinical database</p>
             </div>
           ) : filteredCases.length === 0 ? (
             <div className="p-12 text-center space-y-3">
-              <FileText className="w-10 h-10 text-[#52656B]/40 mx-auto" />
-              <p className="text-sm font-bold text-[#17343A]">No intake records found for this filter.</p>
-              <p className="text-xs text-[#52656B]">
+              <FileText className="w-10 h-10 text-[#91A8B3]/40 mx-auto" />
+              <p className="text-sm font-bold text-[#F1F6F8]">No intake records found for this filter.</p>
+              <p className="text-xs text-[#91A8B3]">
                 New submissions from the patient kiosk will appear here automatically.
               </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-[#F7FAF9] border-b border-[#DCE7E4] text-[#52656B] uppercase font-semibold text-3xs tracking-wider">
+                <thead className="bg-[#0C1924] border-b border-[#294350] text-[#91A8B3] uppercase font-semibold text-3xs tracking-wider">
                   <tr>
                     <th className="py-3 px-4">Patient & Reference</th>
                     <th className="py-3 px-4">Age / Lang</th>
@@ -245,24 +287,24 @@ export default function StaffDashboardPage() {
                     <th className="py-3 px-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#DCE7E4]">
+                <tbody className="divide-y divide-[#294350]">
                   {filteredCases.map((c) => (
                     <tr
                       key={c.caseId}
                       onClick={() => openCaseDetail(c.caseId)}
-                      className="hover:bg-[#F7FAF9] transition cursor-pointer group"
+                      className="hover:bg-[#18303D]/60 transition cursor-pointer group"
                     >
                       {/* Patient & Reference */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-[#E8F3EF] text-[#0F766E] flex items-center justify-center font-bold text-xs shrink-0">
-                            {c.patientName.charAt(0)}
+                          <div className="w-8 h-8 rounded-lg bg-[#18303D] text-[#50D6C5] border border-[#294350] flex items-center justify-center font-bold text-xs shrink-0">
+                            {c.patientName ? c.patientName.charAt(0) : "P"}
                           </div>
                           <div>
-                            <span className="font-bold text-sm text-[#17343A] group-hover:text-[#0F766E] transition block">
+                            <span className="font-bold text-sm text-[#F1F6F8] group-hover:text-[#50D6C5] transition block">
                               {c.patientName}
                             </span>
-                            <span className="font-mono text-3xs text-[#52656B]">
+                            <span className="font-mono text-3xs text-[#91A8B3]">
                               {c.caseId} • Rev {c.revision}
                             </span>
                           </div>
@@ -270,24 +312,26 @@ export default function StaffDashboardPage() {
                       </td>
 
                       {/* Age / Lang */}
-                      <td className="py-3.5 px-4 text-[#334155]">
+                      <td className="py-3.5 px-4 text-[#B6C7CF]">
                         <span className="font-medium">{c.age} Y</span>
                       </td>
 
                       {/* Timestamps */}
-                      <td className="py-3.5 px-4 text-[#52656B] text-2xs font-mono">
-                        {new Date(c.serverReceivedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      <td className="py-3.5 px-4 text-[#91A8B3] text-2xs font-mono">
+                        {c.serverReceivedAt
+                          ? new Date(c.serverReceivedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                          : "Pending"}
                       </td>
 
-                      {/* Attention Flags (Kept Separate from AI Summary Status) */}
+                      {/* Attention Flags */}
                       <td className="py-3.5 px-4">
                         {c.redFlagCount > 0 ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#FEE2E2] border border-[#EF4444]/30 text-[#991B1B] text-2xs font-bold">
-                            <AlertTriangle className="w-3 h-3 text-[#EF4444]" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#2B1417] border border-[#991B1B] text-[#F87171] text-2xs font-bold">
+                            <AlertTriangle className="w-3 h-3 text-[#F87171]" />
                             <span>{c.redFlagCount} Flag{c.redFlagCount > 1 ? "s" : ""}</span>
                           </span>
                         ) : (
-                          <span className="text-[#52656B] text-2xs font-medium">None detected</span>
+                          <span className="text-[#91A8B3] text-2xs font-medium">None detected</span>
                         )}
                       </td>
 
@@ -296,29 +340,29 @@ export default function StaffDashboardPage() {
                         <span
                           className={`text-2xs font-semibold px-2.5 py-1 rounded-full inline-block ${
                             c.summaryStatus === "generated"
-                              ? "bg-[#E8F3EF] text-[#0F766E] border border-[#0F766E]/20"
-                              : "bg-[#F7FAF9] text-[#52656B] border border-[#DCE7E4]"
+                              ? "bg-[#50D6C5]/15 text-[#50D6C5] border border-[#50D6C5]/30"
+                              : "bg-[#18303D] text-[#91A8B3] border border-[#294350]"
                           }`}
                         >
-                          {c.summaryStatus === "generated" ? "Ready for review" : "AI summary pending"}
+                          {c.summaryStatus === "generated" ? "Ready for staff review" : "AI summary pending"}
                         </span>
                       </td>
 
                       {/* Staff Review Status */}
                       <td className="py-3.5 px-4">
                         {c.acknowledgedAt ? (
-                          <span className="inline-flex items-center gap-1 text-2xs px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                          <span className="inline-flex items-center gap-1 text-2xs px-2.5 py-0.5 rounded-md bg-emerald-950/60 text-emerald-400 border border-emerald-800 font-semibold">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                             <span>Reviewed</span>
                           </span>
                         ) : (
-                          <span className="text-2xs text-[#52656B] font-medium">Pending physician</span>
+                          <span className="text-2xs text-[#91A8B3] font-medium">Pending physician</span>
                         )}
                       </td>
 
                       {/* Action */}
                       <td className="py-3.5 px-4 text-right">
-                        <ChevronRight className="w-4 h-4 text-[#52656B] group-hover:text-[#0F766E] group-hover:translate-x-0.5 transition inline-block" />
+                        <ChevronRight className="w-4 h-4 text-[#91A8B3] group-hover:text-[#50D6C5] group-hover:translate-x-0.5 transition inline-block" />
                       </td>
                     </tr>
                   ))}

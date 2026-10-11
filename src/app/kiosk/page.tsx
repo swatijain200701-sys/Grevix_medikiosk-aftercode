@@ -269,7 +269,7 @@ export default function KioskPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7FAF9] text-[#334155] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#08121B] text-[#B6C7CF] flex flex-col font-sans selection:bg-[#50D6C5]/20 selection:text-[#50D6C5]">
       <KioskHeader
         syncStats={syncStats}
         savedLocally={savedLocally}
@@ -280,9 +280,9 @@ export default function KioskPage() {
       />
 
       {!isSubmitted && (
-        <div className="w-full bg-[#DCE7E4]/40 h-1.5">
+        <div className="w-full bg-[#18303D] h-1.5">
           <div
-            className="bg-[#0F766E] h-1.5 transition-all duration-300"
+            className="bg-[#50D6C5] h-1.5 transition-all duration-300"
             style={{ width: `${(currentStep / TOTAL_STEPS) * 100}%` }}
           />
         </div>
@@ -291,10 +291,10 @@ export default function KioskPage() {
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6 sm:py-8 flex flex-col justify-between">
         {!isSubmitted ? (
           <div className="flex-1 flex flex-col">
-            <div className="flex items-center justify-between mb-4 text-xs font-semibold uppercase tracking-wider text-[#52656B]">
-              <span>{t.step} {currentStep} {t.of} {TOTAL_STEPS}</span>
+            <div className="flex items-center justify-between mb-4 text-xs font-semibold uppercase tracking-wider text-[#91A8B3]">
+              <span className="font-mono text-[#50D6C5]">{t.step} {currentStep} {t.of} {TOTAL_STEPS}</span>
               {isAssisted && (
-                <span className="inline-flex items-center gap-1 text-[#0F766E] bg-[#E8F3EF] px-2.5 py-0.5 rounded-md font-semibold">
+                <span className="inline-flex items-center gap-1 text-[#50D6C5] bg-[#50D6C5]/15 border border-[#50D6C5]/30 px-2.5 py-0.5 rounded-md font-semibold text-2xs">
                   <UserCheck className="w-3.5 h-3.5" />
                   {t.assistedEntry}
                 </span>
@@ -304,24 +304,24 @@ export default function KioskPage() {
             {redFlags.length > 0 && (
               <div
                 id="red-flag-alert"
-                className="mb-6 p-4 rounded-2xl bg-[#FEF3C7] border-2 border-amber-400 text-[#92400E] flex items-start gap-3 shadow-2xs"
+                className="mb-6 p-4 rounded-2xl bg-[#2B1417] border border-[#991B1B] text-[#F87171] flex items-start gap-3 shadow-md"
               >
-                <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+                <AlertTriangle className="w-6 h-6 text-[#F87171] shrink-0 mt-0.5" />
                 <div className="flex-1 text-sm">
-                  <h4 className="font-bold text-[#92400E] text-base mb-1">
+                  <h4 className="font-bold text-[#F87171] text-base mb-1">
                     {lang === "hi" ? "महत्वपूर्ण सूचना / Attention" : "Important Clinical Notice"}
                   </h4>
-                  <p className="font-medium">
+                  <p className="font-medium text-[#F1F6F8]">
                     {lang === "hi" ? redFlags[0].patientMessageHi : redFlags[0].patientMessageEn}
                   </p>
-                  <p className="text-2xs text-amber-800 mt-1 italic">
+                  <p className="text-2xs text-[#B6C7CF] mt-1 italic">
                     Demonstration review flag detected locally. Please speak to the triage nurse or OPD counter.
                   </p>
                 </div>
               </div>
             )}
 
-            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#DCE7E4] shadow-xs">
+            <div className="bg-[#122330] p-6 sm:p-8 rounded-3xl border border-[#294350] shadow-xl">
               {currentStep === 1 && (
                 <StepRegistration
                   preferredName={preferredName}
@@ -455,10 +455,10 @@ export default function KioskPage() {
                 id="kiosk-back-btn"
                 onClick={handleBack}
                 disabled={currentStep === 1}
-                className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition ${
+                className={`inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition min-h-[48px] ${
                   currentStep === 1
-                    ? "opacity-40 cursor-not-allowed text-[#52656B] bg-white border border-[#DCE7E4]"
-                    : "text-[#17343A] bg-white border border-[#DCE7E4] hover:bg-[#E8F3EF] shadow-2xs"
+                    ? "opacity-40 cursor-not-allowed text-[#91A8B3] bg-[#122330] border border-[#294350]"
+                    : "text-[#F1F6F8] bg-[#18303D] border border-[#294350] hover:bg-[#203D4D]"
                 }`}
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -470,19 +470,19 @@ export default function KioskPage() {
                   type="button"
                   id="kiosk-next-btn"
                   onClick={handleNext}
-                  className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-sm bg-[#0F766E] hover:bg-[#115E59] active:bg-[#115E59] text-white shadow-sm transition"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm bg-[#50D6C5] hover:bg-[#3ec4b3] active:bg-[#36b2a2] text-[#062820] shadow-sm transition min-h-[48px]"
                 >
                   <span>{t.next}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-[#062820]" />
                 </button>
               ) : (
                 <button
                   type="button"
                   id="kiosk-submit-btn"
                   onClick={handleSubmit}
-                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-base bg-[#0F766E] hover:bg-[#115E59] active:bg-[#115E59] text-white shadow-md transition"
+                  className="inline-flex items-center gap-2 px-9 py-4 rounded-xl font-bold text-base bg-[#50D6C5] hover:bg-[#3ec4b3] active:bg-[#36b2a2] text-[#062820] shadow-md transition min-h-[48px]"
                 >
-                  <CheckCircle className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5 text-[#062820]" />
                   <span>{t.submit}</span>
                 </button>
               )}

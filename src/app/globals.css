@@ -1,58 +1,127 @@
 ﻿@import "tailwindcss";
 
 :root {
-  --background: #F7FAF9;
-  --surface: #FFFFFF;
-  --primary: #0F766E;
-  --primary-hover: #115E59;
-  --heading: #17343A;
-  --body: #334155;
-  --muted: #52656B;
-  --border: #DCE7E4;
-  --soft-teal: #E8F3EF;
-  --caution-bg: #FEF3C7;
-  --caution-text: #92400E;
-  --attention-bg: #FEE2E2;
-  --attention-text: #991B1B;
+  color-scheme: dark;
+  --background: #08121B;
+  --section-bg: #0C1924;
+  --card-surface: #122330;
+  --elevated-surface: #18303D;
+  --border: #294350;
+  --text-primary: #F1F6F8;
+  --text-secondary: #B6C7CF;
+  --text-muted: #91A8B3;
+  --teal-primary: #50D6C5;
+  --teal-btn-text: #062820;
+  --focus-ring: #7DD3FC;
+  --caution-bg: #261B0E;
+  --caution-border: #854D0E;
+  --caution-text: #FBBF24;
+  --attention-bg: #2B1417;
+  --attention-border: #991B1B;
+  --attention-text: #F87171;
 
-  /* shadcn compatible variables */
-  --card: #FFFFFF;
-  --card-foreground: #334155;
-  --popover: #FFFFFF;
-  --popover-foreground: #334155;
-  --primary-foreground: #FFFFFF;
-  --secondary: #E8F3EF;
-  --secondary-foreground: #0F766E;
-  --muted-foreground: #52656B;
-  --accent: #E8F3EF;
-  --accent-foreground: #0F766E;
+  /* Semantic UI mappings */
+  --surface: #0C1924;
+  --primary: #50D6C5;
+  --primary-foreground: #062820;
+  --primary-hover: #38BDF8;
+  --heading: #F1F6F8;
+  --body: #B6C7CF;
+  --muted: #91A8B3;
+  --card: #122330;
+  --card-foreground: #F1F6F8;
+  --popover: #18303D;
+  --popover-foreground: #F1F6F8;
+  --secondary: #18303D;
+  --secondary-foreground: #F1F6F8;
+  --muted-foreground: #91A8B3;
+  --accent: #18303D;
+  --accent-foreground: #50D6C5;
   --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --input: #DCE7E4;
-  --ring: #0F766E;
+  --destructive-foreground: #F1F6F8;
+  --input: #294350;
+  --ring: #7DD3FC;
   --radius: 0.75rem;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-section-bg: var(--section-bg);
+  --color-card-surface: var(--card-surface);
+  --color-elevated-surface: var(--elevated-surface);
   --color-surface: var(--surface);
   --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
   --color-heading: var(--heading);
   --color-body: var(--body);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --color-soft-teal: var(--soft-teal);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-muted-foreground: var(--muted-foreground);
+  --color-teal-primary: var(--teal-primary);
+  --color-teal-btn-text: var(--teal-btn-text);
+  --color-focus-ring: var(--focus-ring);
+  --color-caution-bg: var(--caution-bg);
+  --color-caution-border: var(--caution-border);
+  --color-caution-text: var(--caution-text);
+  --color-attention-bg: var(--attention-bg);
+  --color-attention-border: var(--attention-border);
+  --color-attention-text: var(--attention-text);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--body);
+  background-color: #08121B;
+  color: #B6C7CF;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", "Mangal", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid #7DD3FC !important;
+  outline-offset: 2px !important;
+}
+
+/* Dark scrollbars */
+* {
+  scrollbar-color: #294350 #08121B;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08121B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #294350;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3B5B6D;
+}
+
+/* Native input autofill overrides to maintain dark theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #F1F6F8 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #18303D inset !important;
+  box-shadow: 0 0 0px 1000px #18303D inset !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Reduced motion support */
@@ -62,5 +131,35 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Print Styles: Pure white background with dark text for clinical reports */
+@media print {
+  body {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+    color-scheme: light !important;
+  }
+  
+  header, footer, nav, button, #kiosk-back-btn, #kiosk-next-btn, #voice-dictation-btn, .no-print {
+    display: none !important;
+  }
+
+  #printable-intake-area,
+  .printable-report {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  #printable-intake-area *,
+  .printable-report * {
+    background-color: transparent !important;
+    color: #111827 !important;
+    border-color: #D1D5DB !important;
+    box-shadow: none !important;
   }
 }

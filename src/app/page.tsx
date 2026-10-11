@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
   Wifi, WifiOff, Users, FileText, CheckCircle2, 
-  Stethoscope, ShieldCheck, RefreshCw, ArrowRight 
+  Stethoscope, ShieldCheck, RefreshCw, ArrowRight,
+  ClipboardList, Camera, HardDrive, Sparkles
 } from "lucide-react";
 import LiquidMetalHero from "@/components/ui/liquid-metal-hero";
 import { ScrollTimeline, Milestone } from "@/components/ui/scroll-timeline";
@@ -15,31 +16,31 @@ const CLINICAL_WORKFLOW_MILESTONES: Milestone[] = [
     id: "step-1",
     stepNumber: "01",
     title: "Register and consent",
-    description: "Choose your language and tell us who is entering the information.",
+    description: "Choose English or Hindi and identify if entering self-guided or with caregiver assistance.",
   },
   {
     id: "step-2",
     stepNumber: "02",
     title: "Share your health history",
-    description: "Answer guided questions using touch or supported voice input.",
+    description: "Answer focused questions on symptoms, duration, medicines, and known allergies.",
   },
   {
     id: "step-3",
     stepNumber: "03",
     title: "Add previous documents",
-    description: "Upload prescriptions or reports and review the extracted text.",
+    description: "Capture prescriptions or discharge summaries with OCR text verification before filing.",
   },
   {
     id: "step-4",
     stepNumber: "04",
     title: "Continue through disconnection",
-    description: "Your confirmed answers stay on this device and synchronise when the connection returns.",
+    description: "Confirmed records save locally to encrypted device storage and resume automatically when the network recovers.",
   },
   {
     id: "step-5",
     stepNumber: "05",
-    title: "Staff review",
-    description: "Staff review the structured history and available AI summary before consultation.",
+    title: "Doctor consultation review",
+    description: "Physicians inspect structured intake, red-flag indicators, and verified summary points prior to consultation.",
   },
 ];
 
@@ -60,47 +61,45 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F7FAF9] text-[#334155] flex flex-col font-sans selection:bg-[#E8F3EF]">
-      {/* Top Clinical Header */}
-      <header className="border-b border-[#DCE7E4] bg-white/90 backdrop-blur-md px-4 sm:px-6 py-3.5 sticky top-0 z-30 shadow-2xs">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <div className="min-h-screen bg-[#08121B] text-[#B6C7CF] flex flex-col font-sans selection:bg-[#50D6C5]/20 selection:text-[#50D6C5]">
+      
+      {/* Top Header Navigation */}
+      <header className="border-b border-[#294350] bg-[#0C1924]/95 backdrop-blur-md sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0F766E] text-white flex items-center justify-center font-bold text-lg shadow-2xs">
+            <div className="w-9 h-9 rounded-xl bg-[#50D6C5] text-[#062820] flex items-center justify-center font-bold text-lg shadow-sm">
               <Stethoscope className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-extrabold text-base sm:text-lg tracking-tight text-[#17343A]">
+              <span className="font-extrabold text-base tracking-tight text-[#F1F6F8] block">
                 MediKiosk
               </span>
-              <span className="text-2xs text-[#52656B] block">
-                Accessible OPD Case-Taking & Clinical Intake
+              <span className="text-3xs text-[#91A8B3] font-medium block">
+                Outpatient Intake & Clinical Preparation
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            {!isOnline ? (
-              <span
-                id="portal-offline-badge"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#FEF3C7] border border-amber-300 text-[#92400E]"
-              >
-                <WifiOff className="w-3.5 h-3.5 text-amber-600" />
-                Offline Mode Active
-              </span>
-            ) : (
-              <span
-                id="portal-online-badge"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E8F3EF] border border-[#0F766E]/20 text-[#0F766E]"
-              >
-                <Wifi className="w-3.5 h-3.5 text-[#0F766E]" />
-                Connected
-              </span>
-            )}
+            {/* Live Connection Monitor */}
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#122330] border border-[#294350] text-[#B6C7CF]">
+              {isOnline ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#50D6C5]" />
+                  <span className="text-xs">OPD Network Connected</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="text-amber-400 text-xs">Offline Mode Active</span>
+                </>
+              )}
+            </div>
 
             <Link
               href="/login"
               id="staff-portal-link"
-              className="px-3.5 py-1.5 rounded-xl border border-[#DCE7E4] hover:bg-[#E8F3EF] hover:border-[#0F766E]/30 text-xs font-semibold text-[#17343A] transition shadow-2xs"
+              className="px-4 py-2 rounded-xl border border-[#294350] bg-[#18303D] hover:bg-[#203D4D] text-xs font-semibold text-[#F1F6F8] transition"
             >
               Staff Sign In
             </Link>
@@ -108,11 +107,11 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section: Adapted LiquidMetalHero */}
+      {/* Hero Section: Adapted LiquidMetalHero with Dark Healthcare Design */}
       <LiquidMetalHero
         badge="Patient intake for OPDs"
         title="Your health story, ready for your doctor."
-        subtitle="Share your symptoms, medicines, and previous reports through a guided voice or touch experience—even when the connection drops."
+        subtitle="Share symptoms, medicines, and previous reports through guided voice or touch intake. Continue even when the connection drops."
         primaryCtaLabel="Start patient intake"
         secondaryCtaLabel="Staff sign in"
         onPrimaryCtaClick={() => router.push("/kiosk")}
@@ -121,85 +120,87 @@ export default function Home() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
         
-        {/* Core Entry Portals */}
+        {/* Explanation of the Problem */}
+        <section className="max-w-4xl mx-auto space-y-4 text-center">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#50D6C5] block">
+            THE CLINICAL CHALLENGE
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F1F6F8] tracking-tight">
+            Consultation time is precious. Patient history shouldn’t be rushed.
+          </h2>
+          <p className="text-sm sm:text-base text-[#B6C7CF] leading-relaxed max-w-3xl mx-auto">
+            High OPD patient volumes leave clinicians with mere minutes to reconstruct timelines, decipher crumpled prescriptions, and clarify unstated symptoms. MediKiosk gives patients a calm, private touch terminal in the waiting area to systematically organize their chief complaint, current medicines, and prior documents before entering the doctor&apos;s chamber.
+          </p>
+        </section>
+
+        {/* Three Capability Panels: Guided intake, Document review, Offline continuity */}
         <section className="space-y-6">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#17343A] tracking-tight">
-              Tell your health story before your consultation.
+          <div className="text-center max-w-2xl mx-auto space-y-1.5">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#50D6C5] block">
+              CORE CAPABILITIES
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F1F6F8] tracking-tight">
+              Built for real-world hospital waiting halls.
             </h2>
-            <p className="text-sm text-[#52656B]">
-              Designed for walk-up patient accessibility, privacy on shared hospital kiosks, and rapid doctor preparation.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
-            {/* Patient Kiosk Card */}
-            <Link
-              href="/kiosk"
-              id="start-kiosk-btn"
-              className="group p-6 sm:p-8 rounded-3xl bg-white border-2 border-[#DCE7E4] hover:border-[#0F766E] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between"
-            >
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#0F766E] text-white flex items-center justify-center font-bold text-xl shadow-xs group-hover:scale-105 transition">
-                  <Users className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-[#17343A] tracking-tight group-hover:text-[#0F766E] transition">
-                    Patient Intake Kiosk
-                  </h3>
-                  <p className="text-[#52656B] text-xs sm:text-sm mt-2 leading-relaxed">
-                    Step-by-step touch and voice interface with English/Hindi support, offline persistence, document scan, and privacy protection on shared terminals.
-                  </p>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            
+            {/* Panel 1: Guided intake */}
+            <div className="p-7 rounded-2xl bg-[#122330] border border-[#294350] space-y-4 hover:border-[#50D6C5]/40 transition duration-150">
+              <div className="w-12 h-12 rounded-xl bg-[#18303D] text-[#50D6C5] flex items-center justify-center font-bold border border-[#294350]">
+                <ClipboardList className="w-6 h-6" />
               </div>
+              <h3 className="text-lg font-bold text-[#F1F6F8] tracking-tight">
+                Guided Intake
+              </h3>
+              <p className="text-xs sm:text-sm text-[#B6C7CF] leading-relaxed">
+                Step-by-step questioning with one main concern at a time. Supports dual English and Hindi, generous 48px touch targets, and optional voice dictation with mandatory patient review before saving.
+              </p>
+            </div>
 
-              <div className="pt-6 flex items-center gap-2 text-[#0F766E] font-bold text-sm">
-                <span>Start Patient Intake</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
+            {/* Panel 2: Document review */}
+            <div className="p-7 rounded-2xl bg-[#122330] border border-[#294350] space-y-4 hover:border-[#50D6C5]/40 transition duration-150">
+              <div className="w-12 h-12 rounded-xl bg-[#18303D] text-[#50D6C5] flex items-center justify-center font-bold border border-[#294350]">
+                <Camera className="w-6 h-6" />
               </div>
-            </Link>
+              <h3 className="text-lg font-bold text-[#F1F6F8] tracking-tight">
+                Document Review
+              </h3>
+              <p className="text-xs sm:text-sm text-[#B6C7CF] leading-relaxed">
+                Photograph or upload previous physical prescriptions and diagnostic lab summaries. Transparent OCR text extraction is presented to the patient for verification before inclusion into the case summary.
+              </p>
+            </div>
 
-            {/* Doctor / Staff Dashboard Card */}
-            <Link
-              href="/dashboard"
-              id="open-dashboard-btn"
-              className="group p-6 sm:p-8 rounded-3xl bg-white border-2 border-[#DCE7E4] hover:border-[#17343A] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between"
-            >
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#17343A] text-white flex items-center justify-center font-bold text-xl shadow-xs group-hover:scale-105 transition">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-[#17343A] tracking-tight transition">
-                    Clinical Intake Dashboard
-                  </h3>
-                  <p className="text-[#52656B] text-xs sm:text-sm mt-2 leading-relaxed">
-                    Real-time queue of intake cases, structured AI clinical summaries with source verification, red-flag alert review, and triage note management.
-                  </p>
-                </div>
+            {/* Panel 3: Offline continuity */}
+            <div className="p-7 rounded-2xl bg-[#122330] border border-[#294350] space-y-4 hover:border-[#50D6C5]/40 transition duration-150">
+              <div className="w-12 h-12 rounded-xl bg-[#18303D] text-[#50D6C5] flex items-center justify-center font-bold border border-[#294350]">
+                <HardDrive className="w-6 h-6" />
               </div>
+              <h3 className="text-lg font-bold text-[#F1F6F8] tracking-tight">
+                Offline Continuity
+              </h3>
+              <p className="text-xs sm:text-sm text-[#B6C7CF] leading-relaxed">
+                Guaranteed resilience during network drops. Drafts are encrypted locally with AES-GCM 256. When connectivity returns, monotonic revisions sync without data loss or duplicate case creations.
+              </p>
+            </div>
 
-              <div className="pt-6 flex items-center gap-2 text-[#17343A] font-bold text-sm">
-                <span>Open Clinical Queue</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
-              </div>
-            </Link>
           </div>
         </section>
 
-        {/* Workflow Section: Adapted ScrollTimeline */}
+        {/* Workflow Section: Adapted ScrollTimeline in Dark Teal */}
         <section className="space-y-8 pt-4">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F766E] block">
-              CLINICAL INTAKE PATHWAY
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#50D6C5] block">
+              PATIENT JOURNEY
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#17343A] tracking-tight">
-              From arrival to consultation.
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F1F6F8] tracking-tight">
+              From arrival to physician review.
             </h2>
-            <p className="text-xs sm:text-sm text-[#52656B]">
-              How patient intake flows from walk-up check-in through clinical OPD triage—operating smoothly through intermittent network interruptions.
+            <p className="text-xs sm:text-sm text-[#91A8B3]">
+              A predictable, dignified path that patients navigate with touch, voice, or caregiver assistance.
             </p>
           </div>
 
@@ -207,41 +208,37 @@ export default function Home() {
           <ScrollTimeline milestones={CLINICAL_WORKFLOW_MILESTONES} />
         </section>
 
-        {/* Architectural Resilience & Verification Statement */}
-        <section className="p-6 rounded-2xl bg-white border border-[#DCE7E4] max-w-4xl mx-auto w-full grid grid-cols-1 sm:grid-cols-3 gap-5 text-xs shadow-2xs">
-          <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-lg bg-[#E8F3EF] text-[#0F766E] flex items-center justify-center shrink-0">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="font-bold text-[#17343A] block">30s Offline Disconnection Tolerance</span>
-              <p className="text-[#52656B] mt-0.5 leading-snug">
-                Verified with browser network cuts mid-intake; zero data loss or form interruption.
+        {/* Clear Final Action to Begin Intake */}
+        <section className="max-w-4xl mx-auto w-full">
+          <div className="p-8 sm:p-12 rounded-3xl bg-[#0C1924] border border-[#294350] text-center space-y-6 relative overflow-hidden">
+            <div 
+              className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_70%_70%_at_50%_50%,rgba(80,214,197,0.2),transparent)]" 
+              aria-hidden="true" 
+            />
+            <div className="relative z-10 max-w-xl mx-auto space-y-3">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F1F6F8] tracking-tight">
+                Ready to prepare your consultation record?
+              </h2>
+              <p className="text-sm text-[#B6C7CF] leading-relaxed">
+                Takes approximately 3 minutes. Your responses are encrypted on this device and transferred directly to the attending physician&apos;s triage queue.
               </p>
             </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-lg bg-[#E8F3EF] text-[#0F766E] flex items-center justify-center shrink-0">
-              <RefreshCw className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="font-bold text-[#17343A] block">Monotonic Revisions & Idempotency</span>
-              <p className="text-[#52656B] mt-0.5 leading-snug">
-                Zero duplicate queue entries during reconnection bursts (recordCount: 1, duplicateCount: 0).
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-lg bg-[#E8F3EF] text-[#0F766E] flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="font-bold text-[#17343A] block">Dual-Layer Web Crypto Privacy</span>
-              <p className="text-[#52656B] mt-0.5 leading-snug">
-                AES-GCM 256 draft storage; clean session key reset between walk-up patients.
-              </p>
+            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/kiosk"
+                id="start-intake-final-btn"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-base bg-[#50D6C5] hover:bg-[#3ec4b3] text-[#062820] shadow-sm transition min-h-[48px]"
+              >
+                <span>Start Patient Intake</span>
+                <ArrowRight className="w-5 h-5 text-[#062820]" />
+              </Link>
+              <Link
+                href="/dashboard"
+                id="staff-dashboard-final-link"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold text-sm bg-[#18303D] hover:bg-[#203D4D] text-[#F1F6F8] border border-[#294350] transition min-h-[48px]"
+              >
+                <span>Clinical Staff Dashboard</span>
+              </Link>
             </div>
           </div>
         </section>
@@ -249,12 +246,12 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#DCE7E4] bg-white py-6 px-4 sm:px-6 text-center text-xs text-[#52656B] space-y-1">
-        <p className="font-medium text-[#17343A]">
-          MediKiosk   Built for Grevix AfterCode 2026 by Swati Jain (Sole Participant).
+      <footer className="border-t border-[#294350] bg-[#0C1924] py-8 px-4 sm:px-6 text-center text-xs text-[#91A8B3] space-y-2">
+        <p className="font-semibold text-[#F1F6F8]">
+          MediKiosk &mdash; Digital Patient Intake &amp; OPD Clinical Triage Organizer
         </p>
-        <p className="text-3xs text-[#52656B]">
-          Clinical intake organizer for OPD preparation. Prototype status   does not claim regulatory medical device certification.
+        <p className="text-3xs text-[#91A8B3] max-w-2xl mx-auto">
+          Operational software prototype developed for hospital OPD triage workflows. All demonstration data shown is synthetic. Not a certified medical diagnostic device.
         </p>
       </footer>
     </div>
