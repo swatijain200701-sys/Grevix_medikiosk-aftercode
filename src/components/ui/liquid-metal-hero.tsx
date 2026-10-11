@@ -7,10 +7,9 @@ import { motion } from "framer-motion";
 import { 
   FileText, Activity, ShieldCheck, WifiOff, CheckCircle2, 
   ArrowRight, Languages, Mic, MessageSquare, ExternalLink,
-  AlertCircle
+  AlertCircle, Check
 } from "lucide-react";
 
-// Dynamically import the LiquidMetal shader for client-only, lazy rendering
 const LazyLiquidMetal = dynamic(
   () => import("@paper-design/shaders-react").then((mod) => mod.LiquidMetal),
   { ssr: false }
@@ -29,52 +28,46 @@ interface LiquidMetalHeroProps {
 }
 
 export default function LiquidMetalHero({
-  badge = "Patient intake for OPDs",
-  title = "Your health story, ready before your consultation.",
-  subtitle = "MediKiosk helps you share symptoms, medicines, allergies, and previous reports through guided questions. Hospital staff can review the information before your consultation. Your intake progress stays saved during temporary internet interruptions.",
-  primaryCtaLabel = "Start a sample intake",
-  secondaryCtaLabel = "Explore a sample staff view",
+  badge = "Patient history. Prepared for your consultation.",
+  title = "Help your doctor understand your health history before you meet.",
+  subtitle = "Share your symptoms, medicines, allergies, and previous reports through guided questions. Review your answers before sending them for staff review.",
+  primaryCtaLabel = "Start patient intake",
+  secondaryCtaLabel = "Staff sign in",
   onPrimaryCtaClick,
   onSecondaryCtaClick,
   feedbackUrl = "https://forms.gle/UM6smWDSmxzCiAwh6",
-  features = ["Voice and touch", "English and Hindi", "Offline intake"],
+  features = ["Voice and touch", "English and Hindi", "Saved offline progress"],
 }: LiquidMetalHeroProps) {
   const [canRenderShader, setCanRenderShader] = useState(false);
   const [shaderProps, setShaderProps] = useState<any>(null);
   const illustrationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    // Check WebGL support
     const canvas = document.createElement("canvas");
     const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
     if (!gl) return;
 
-    // Load presets dynamically with dark teal / silver tones
     import("@paper-design/shaders-react").then((mod) => {
       const preset = mod.liquidMetalPresets?.[2] || {};
       setShaderProps({
         ...preset,
         params: {
           ...(preset.params || {}),
-          colorBack: "#08121B",
-          colorTint: "#50D6C5",
-          speed: 0.25,
+          colorBack: "#FAF7F0",
+          colorTint: "#356B62",
+          speed: 0.15,
         },
       });
     }).catch(() => {});
 
-    // Use IntersectionObserver to stop/unmount shader when offscreen
     let isMounted = true;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (isMounted) {
-            setCanRenderShader(entry.isIntersecting);
-          }
+          if (isMounted) setCanRenderShader(entry.isIntersecting);
         });
       },
       { threshold: 0.1 }
@@ -92,230 +85,139 @@ export default function LiquidMetalHero({
     };
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 12 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.08,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 8 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  };
-
   return (
-    <section className="relative overflow-hidden bg-[#0C1924] border-b border-[#294350] py-10 sm:py-14 lg:py-18">
-      {/* Subtle ambient gradient mesh behind hero */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(80,214,197,0.12),transparent)]"
-        aria-hidden="true"
-      />
-
+    <section className="relative overflow-hidden bg-[#EAF0EB] border-b border-[#B8C9BD] py-10 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Public Prototype Disclaimer Ribbon */}
-        <div className="mb-6 p-3 rounded-xl bg-[#122330] border border-[#294350] text-xs text-[#B6C7CF] flex flex-wrap items-center justify-between gap-2">
+        {/* Small Notice: Public testing version */}
+        <div className="mb-6 p-3 rounded-xl bg-[#D8E5DC] border border-[#B8C9BD] text-xs text-[#293D36] flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-[#50D6C5] shrink-0" />
+            <AlertCircle className="w-4 h-4 text-[#356B62] shrink-0" />
             <span>
-              <strong className="text-[#F1F6F8]">Prototype Demonstration:</strong> Please use fictional test data only. AI summaries support hospital staff review and do not provide medical diagnosis or treatment.
+              <strong>Public testing version:</strong> Please use fictional test information. AI summaries support hospital staff review and do not provide medical diagnosis or treatment.
             </span>
           </div>
-          <span className="text-3xs font-mono px-2 py-0.5 rounded bg-[#18303D] text-[#50D6C5] border border-[#294350]">
-            Hackathon Build
+          <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[#FAF7F0] text-[#356B62] border border-[#B8C9BD]">
+            Public Testing Version
           </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          
-          {/* LEFT COLUMN: Clear OPD Intake Value Proposition (lg:col-span-7) */}
-          <motion.div
-            className="lg:col-span-7 space-y-6 text-left"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Small label: Patient intake for OPDs */}
-            <motion.div variants={itemVariants}>
-              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#50D6C5]/10 text-[#50D6C5] border border-[#50D6C5]/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#50D6C5] animate-pulse" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div>
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#D8E5DC] text-[#356B62] border border-[#B8C9BD]">
                 {badge}
               </span>
-            </motion.div>
+            </div>
 
-            {/* Headline and Description */}
-            <motion.div className="space-y-4" variants={itemVariants}>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#F1F6F8] leading-tight tracking-tight">
+            <div className="space-y-4">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#293D36] leading-tight tracking-tight">
                 {title}
               </h1>
-              <p className="text-base sm:text-lg text-[#B6C7CF] leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg text-[#53665D] leading-relaxed max-w-2xl">
                 {subtitle}
               </p>
-            </motion.div>
+            </div>
 
-            {/* Three Clear Interactive Actions */}
-            <motion.div
-              className="flex flex-col sm:flex-row flex-wrap gap-3.5 pt-2"
-              variants={itemVariants}
-            >
-              {/* Button 1: Start a sample intake */}
+            <ul className="space-y-2 text-sm text-[#293D36] font-medium">
+              <li className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#356B62]" />
+                <span>Explain your concern in your own words.</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#356B62]" />
+                <span>Keep your health information organised in one intake record.</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#356B62]" />
+                <span>Help staff prepare for your consultation.</span>
+              </li>
+            </ul>
+
+            <div className="flex flex-wrap gap-3.5 pt-2">
               <Button
                 id="start-kiosk-btn"
                 onClick={onPrimaryCtaClick}
                 size="lg"
-                className="bg-[#50D6C5] hover:bg-[#3ec4b3] text-[#062820] font-bold text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-sm transition-all duration-150 flex items-center justify-center gap-2 min-h-[48px]"
+                className="bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] font-bold text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-sm min-h-[48px]"
               >
                 <span>{primaryCtaLabel}</span>
-                <ArrowRight className="w-4 h-4 text-[#062820]" />
+                <ArrowRight className="w-4 h-4 text-[#FFFDF7]" />
               </Button>
 
-              {/* Button 2: Explore a sample staff view */}
               {secondaryCtaLabel && onSecondaryCtaClick && (
                 <Button
                   id="sample-staff-btn"
                   onClick={onSecondaryCtaClick}
                   variant="outline"
                   size="lg"
-                  className="border-[#294350] bg-[#18303D] hover:bg-[#203D4D] text-[#F1F6F8] font-semibold text-sm sm:text-base px-6 py-3.5 rounded-xl transition-all duration-150 min-h-[48px]"
+                  className="border-[#B8C9BD] bg-[#FAF7F0] hover:bg-[#D8E5DC] text-[#293D36] font-bold text-sm sm:text-base px-6 py-3.5 rounded-xl min-h-[48px]"
                 >
                   {secondaryCtaLabel}
                 </Button>
               )}
+            </div>
+          </div>
 
-              {/* Button 3: Give feedback (Google Forms in new tab) */}
-              {feedbackUrl && (
-                <a
-                  id="hero-feedback-btn"
-                  href={feedbackUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-[#294350] bg-[#122330] hover:bg-[#18303D] text-[#50D6C5] font-semibold text-sm transition min-h-[48px]"
-                >
-                  <MessageSquare className="w-4 h-4 text-[#50D6C5]" />
-                  <span>Give Feedback</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#91A8B3]" />
-                </a>
-              )}
-            </motion.div>
-
-            {/* Capability Badges & Technical Honesty Notes */}
-            <motion.div className="pt-4 border-t border-[#294350] space-y-3" variants={itemVariants}>
-              <div className="flex flex-wrap gap-2.5">
-                {features.map((feature, idx) => (
-                  <div
-                    key={idx}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#122330] border border-[#294350] text-xs font-medium text-[#F1F6F8]"
-                  >
-                    {idx === 0 && <Mic className="w-3.5 h-3.5 text-[#50D6C5]" />}
-                    {idx === 1 && <Languages className="w-3.5 h-3.5 text-[#50D6C5]" />}
-                    {idx === 2 && <WifiOff className="w-3.5 h-3.5 text-[#50D6C5]" />}
-                    <span>{feature}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="text-xs text-[#91A8B3] leading-normal">
-                * Offline support operates reliably once the application shell has loaded. Voice transcription uses browser speech engines when connected or defers audio for server transcription. AI summary status is reported honestly per available provider.
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* RIGHT COLUMN: Dimensional Medical Record Illustration with Subtle Depth (lg:col-span-5) */}
-          <motion.div
+          <div
             ref={illustrationRef}
             className="lg:col-span-5 relative w-full flex justify-center"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <div className="relative w-full max-w-md rounded-2xl bg-[#122330] border border-[#294350] shadow-xl p-6 overflow-hidden">
-              
-              {/* Contained LiquidMetal Shader Layer */}
-              {canRenderShader && shaderProps ? (
-                <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden mix-blend-screen z-0">
-                  <LazyLiquidMetal
-                    {...shaderProps}
-                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-                  />
-                </div>
-              ) : (
-                <div 
-                  className="absolute inset-0 pointer-events-none opacity-40 z-0 bg-gradient-to-br from-[#18303D] via-[#122330] to-[#0C1924]"
-                  aria-hidden="true"
-                />
-              )}
-
-              {/* Dimensional Medical Record Visual Overlay */}
-              <div className="relative z-10 space-y-4 select-none">
-                {/* Clinical Header */}
-                <div className="flex items-center justify-between border-b border-[#294350] pb-3">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-[#18303D] text-[#50D6C5] flex items-center justify-center font-bold border border-[#294350]">
-                      <FileText className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#F1F6F8] uppercase tracking-wider block">
-                        Patient Intake Record
-                      </span>
-                      <span className="text-3xs font-mono text-[#91A8B3]">Case #MK-2026-OPD-782</span>
-                    </div>
-                  </div>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-3xs font-bold bg-[#50D6C5]/15 text-[#50D6C5] border border-[#50D6C5]/30">
-                    <CheckCircle2 className="w-3 h-3" /> Confirmed
-                  </span>
-                </div>
-
-                {/* Patient Summary Card */}
-                <div className="p-3.5 rounded-xl bg-[#18303D] border border-[#294350] space-y-2 text-xs">
-                  <div className="flex justify-between items-center text-3xs text-[#91A8B3]">
-                    <span className="text-[#B6C7CF] font-medium">Patient: Ramesh Kumar, 54 Y</span>
-                    <span className="font-mono text-[#50D6C5]">Rev 1 (Monotonic)</span>
+            <div className="relative w-full max-w-md rounded-2xl bg-[#FAF7F0] border border-[#B8C9BD] shadow-md p-6 space-y-4">
+              <div className="flex items-center justify-between border-b border-[#B8C9BD] pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#D8E5DC] text-[#356B62] flex items-center justify-center font-bold">
+                    <FileText className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="font-semibold text-[#F1F6F8] block text-xs">Chief Complaint:</span>
-                    <p className="text-[#B6C7CF] text-xs leading-relaxed mt-0.5">
-                      Chest heaviness after walking, cough with mild fever for 4 days.
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 pt-1 text-3xs">
-                    <span className="px-2 py-0.5 rounded bg-[#122330] border border-[#294350] text-[#B6C7CF]">Hindi / Touch Input</span>
-                    <span className="px-2 py-0.5 rounded bg-[#122330] border border-[#294350] text-[#B6C7CF]">Prescription OCR Added</span>
+                    <span className="text-xs font-bold text-[#293D36] uppercase tracking-wider block">
+                      Example intake record
+                    </span>
+                    <span className="text-3xs font-mono text-[#53665D]">Sample Record #EX-782</span>
                   </div>
                 </div>
+                <span className="text-3xs font-bold px-2.5 py-0.5 rounded-full bg-[#304652]/10 text-[#304652]">
+                  Example Preview
+                </span>
+              </div>
 
-                {/* Active Safeguard Badges */}
-                <div className="space-y-1.5 pt-1">
-                  <div className="flex items-center justify-between text-xs p-2 rounded-lg bg-[#18303D]/60 border border-[#294350]">
-                    <span className="text-[#B6C7CF] flex items-center gap-1.5 text-xs">
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#50D6C5]" />
-                      Encrypted at rest (AES-GCM 256)
-                    </span>
-                    <span className="text-[#50D6C5] font-semibold text-xs">Protected</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs p-2 rounded-lg bg-[#261B0E] border border-[#854D0E]">
-                    <span className="text-[#FBBF24] flex items-center gap-1.5 text-xs">
-                      <Activity className="w-3.5 h-3.5 text-[#FBBF24]" />
-                      Local red-flag rule check
-                    </span>
-                    <span className="text-[#FBBF24] font-semibold text-xs">Triage Flag</span>
-                  </div>
+              <div className="p-3.5 rounded-xl bg-[#D8E5DC]/60 border border-[#B8C9BD] space-y-2 text-xs">
+                <div className="flex justify-between items-center text-3xs text-[#53665D]">
+                  <span className="font-bold text-[#293D36]">Patient: Ramesh Kumar, 54 Y</span>
+                  <span className="font-mono text-[#356B62]">Saved draft</span>
                 </div>
-
-                {/* Synthetic data label */}
-                <div className="text-center pt-2 border-t border-[#294350]/60">
-                  <span className="text-3xs text-[#91A8B3] uppercase tracking-wider font-mono">
-                    Illustrative example • Synthetic patient data
-                  </span>
+                <div>
+                  <span className="font-bold text-[#293D36] block text-xs">Chief Complaint:</span>
+                  <p className="text-[#53665D] text-xs leading-relaxed mt-0.5">
+                    Chest heaviness after walking, cough with mild fever for 4 days.
+                  </p>
                 </div>
               </div>
-            </div>
-          </motion.div>
 
+              <div className="space-y-1.5 pt-1 text-xs">
+                <div className="flex items-center justify-between p-2 rounded-lg bg-[#FAF7F0] border border-[#B8C9BD]">
+                  <span className="text-[#293D36] flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#356B62]" />
+                    Encrypted on device terminal
+                  </span>
+                  <span className="text-[#304652] font-semibold text-3xs">Device Secured</span>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded-lg bg-[#FAF7F0] border border-[#B8C9BD]">
+                  <span className="text-[#293D36] flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 text-[#356B62]" />
+                    Clinical attention prompt
+                  </span>
+                  <span className="text-[#304652] font-semibold text-3xs">Staff Flag</span>
+                </div>
+              </div>
+
+              <div className="text-center pt-2 border-t border-[#B8C9BD]">
+                <span className="text-3xs text-[#53665D] uppercase tracking-wider font-mono">
+                  Illustrative example — Synthetic patient data
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Eye, EyeOff, Lock, User, Loader2, Check, 
-  ShieldAlert, Stethoscope, FileText, ArrowRight, ShieldCheck 
+  ShieldAlert, Stethoscope, ArrowRight, ShieldCheck 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export interface StaffLoginProps {
 }
 
 export function StaffLogin({
-  title = "Staff access",
+  title = "Staff sign in",
   subtitle = "Review patient intake and prepare for consultations.",
   onSuccess,
   className,
@@ -60,8 +60,8 @@ export function StaffLogin({
           router.push("/dashboard");
         }
       }, 700);
-    } catch (err) {
-      setErrorMessage("Network error connecting to the hospital authentication server.");
+    } catch {
+      setErrorMessage("Network error connecting to hospital authentication service.");
       setIsLoading(false);
     }
   };
@@ -69,68 +69,69 @@ export function StaffLogin({
   return (
     <div
       className={cn(
-        "w-full flex items-center justify-center p-2 sm:p-4",
+        "w-full max-w-4xl mx-auto rounded-3xl bg-[#FAF7F0] border border-[#B8C9BD] shadow-xl overflow-hidden text-[#293D36]",
         className
       )}
     >
-      <div className="w-full max-w-4xl bg-[#122330] rounded-3xl border border-[#294350] shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12">
+      <div className="grid grid-cols-1 md:grid-cols-12 min-h-[520px]">
         
-        {/* Left Side: Restrained Clinical Graphic & Document Tray Illustration (md:col-span-5) */}
-        <div className="hidden md:flex md:col-span-5 bg-[#0C1924] p-8 flex-col justify-between border-r border-[#294350]">
-          <div className="space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#18303D] text-[#50D6C5] flex items-center justify-center border border-[#294350] shadow-sm">
-              <Stethoscope className="w-6 h-6" />
+        {/* Left Side: Navy Brand Panel (md:col-span-5) */}
+        <div className="md:col-span-5 bg-[#0B1B25] text-[#FFFDF7] p-8 sm:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#304652]">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#4FD1C5] text-[#0B1B25] flex items-center justify-center font-bold text-lg shadow-sm">
+                <Stethoscope className="w-5 h-5 stroke-[2.5]" />
+              </div>
+              <div>
+                <span className="font-extrabold text-base tracking-tight text-[#FAF7F0] block">
+                  MediKiosk
+                </span>
+                <span className="text-3xs text-[#91A8B3] uppercase tracking-wider block font-semibold">
+                  Clinical Staff Portal
+                </span>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-[#F1F6F8] tracking-tight">
-                MediKiosk Clinical Portal
+
+            <div className="space-y-3 pt-4">
+              <h2 className="text-xl font-bold tracking-tight text-[#FAF7F0]">
+                Hospital Staff Intake Review
               </h2>
-              <p className="text-xs text-[#B6C7CF] mt-1.5 leading-relaxed">
-                Authorized healthcare practitioner gateway for outpatient departments and triage stations.
+              <p className="text-xs text-[#91A8B3] leading-relaxed">
+                Inspect submitted patient histories, review structured summaries and source excerpts, and record clinical notes before consultation.
               </p>
             </div>
-          </div>
 
-          {/* Clinical Document Tray Card */}
-          <div className="space-y-3 bg-[#18303D] p-4 rounded-2xl border border-[#294350]">
-            <div className="flex items-center justify-between text-xs font-semibold text-[#F1F6F8]">
-              <span className="flex items-center gap-1.5">
-                <FileText className="w-3.5 h-3.5 text-[#50D6C5]" />
-                Incoming OPD Queue
-              </span>
-              <span className="text-3xs px-2 py-0.5 rounded-full bg-[#50D6C5]/15 text-[#50D6C5] font-mono border border-[#50D6C5]/30">Live</span>
-            </div>
-            <div className="space-y-2 text-xs text-[#B6C7CF]">
-              <div className="p-2 rounded-lg bg-[#122330] border border-[#294350] flex justify-between">
-                <span>Structured case histories</span>
-                <span className="text-[#50D6C5] font-medium">Ready</span>
+            <div className="space-y-2.5 pt-2 text-xs text-[#B6C7CF]">
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#4FD1C5]" />
+                <span>Encrypted record transport</span>
               </div>
-              <div className="p-2 rounded-lg bg-[#122330] border border-[#294350] flex justify-between">
-                <span>Red-flag attention alerts</span>
-                <span className="text-[#FBBF24] font-medium">Filtered</span>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#4FD1C5]" />
+                <span>Authoritative source grounding</span>
               </div>
-              <div className="p-2 rounded-lg bg-[#122330] border border-[#294350] flex justify-between">
-                <span>Verified uploaded reports</span>
-                <span className="text-[#50D6C5] font-medium">OCR Parsed</span>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#4FD1C5]" />
+                <span>Audited clinical staff session</span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-3xs text-[#91A8B3]">
-            <ShieldCheck className="w-4 h-4 text-[#50D6C5] shrink-0" />
-            <span>Audited session access   DISHA clinical data boundaries.</span>
+          <div className="flex items-center gap-2 text-3xs text-[#91A8B3] pt-6">
+            <ShieldCheck className="w-4 h-4 text-[#4FD1C5] shrink-0" />
+            <span>Audited session access — strict patient data boundary.</span>
           </div>
         </div>
 
         {/* Right Side: Clean Accessible Form (md:col-span-7) */}
-        <div className="md:col-span-7 p-6 sm:p-10 flex flex-col justify-center bg-[#122330]">
+        <div className="md:col-span-7 p-6 sm:p-10 flex flex-col justify-center bg-[#FAF7F0]">
           <div className="max-w-md w-full mx-auto space-y-6">
             
             <div className="space-y-1.5">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F1F6F8] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#293D36] tracking-tight">
                 {title}
               </h1>
-              <p className="text-sm text-[#B6C7CF] leading-relaxed">
+              <p className="text-sm text-[#53665D] leading-relaxed">
                 {subtitle}
               </p>
             </div>
@@ -142,10 +143,10 @@ export function StaffLogin({
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
-                  className="p-3.5 rounded-xl bg-[#2B1417] border border-[#991B1B] text-[#F87171] text-xs flex items-start gap-2.5"
+                  className="p-3.5 rounded-xl bg-[#FEE2E2] border border-[#EF4444] text-[#991B1B] text-xs font-semibold flex items-start gap-2.5"
                   role="alert"
                 >
-                  <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-[#F87171]" />
+                  <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-[#DC2626]" />
                   <span className="leading-snug">{errorMessage}</span>
                 </motion.div>
               )}
@@ -158,12 +159,12 @@ export function StaffLogin({
               <div className="space-y-1.5">
                 <label
                   htmlFor="staff-username"
-                  className="text-xs font-semibold text-[#F1F6F8] block"
+                  className="text-xs font-bold text-[#293D36] block"
                 >
                   Staff Username or ID
                 </label>
                 <div className="relative">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#91A8B3] pointer-events-none">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#53665D] pointer-events-none">
                     <User className="w-4 h-4" />
                   </div>
                   <input
@@ -175,7 +176,7 @@ export function StaffLogin({
                     placeholder="e.g. opd_staff or dr_sharma"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full h-12 pl-10 pr-3.5 rounded-xl border border-[#294350] bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3] text-sm focus:border-[#50D6C5] focus:ring-2 focus:ring-[#7DD3FC]/20 outline-none transition"
+                    className="w-full h-12 pl-10 pr-3.5 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] text-sm focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition"
                   />
                 </div>
               </div>
@@ -184,12 +185,12 @@ export function StaffLogin({
               <div className="space-y-1.5">
                 <label
                   htmlFor="staff-password"
-                  className="text-xs font-semibold text-[#F1F6F8] block"
+                  className="text-xs font-bold text-[#293D36] block"
                 >
                   Password
                 </label>
                 <div className="relative">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#91A8B3] pointer-events-none">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#53665D] pointer-events-none">
                     <Lock className="w-4 h-4" />
                   </div>
                   <input
@@ -201,13 +202,13 @@ export function StaffLogin({
                     placeholder="••••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-12 pl-10 pr-10 rounded-xl border border-[#294350] bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3] text-sm focus:border-[#50D6C5] focus:ring-2 focus:ring-[#7DD3FC]/20 outline-none transition"
+                    className="w-full h-12 pl-10 pr-10 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] text-sm focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 text-[#91A8B3] hover:text-[#F1F6F8] transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 text-[#53665D] hover:text-[#293D36] transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -219,16 +220,13 @@ export function StaffLogin({
               </div>
 
               {/* Submit Button */}
-              <motion.button
+              <button
                 id="staff-login-submit-btn"
                 type="submit"
                 disabled={isLoading || isSuccess}
-                whileTap={{ scale: 0.98 }}
                 className={cn(
                   "w-full h-12 mt-2 rounded-xl font-bold text-sm tracking-wide transition-all duration-150 flex items-center justify-center gap-2 shadow-sm min-h-[48px]",
-                  isSuccess
-                    ? "bg-[#50D6C5] text-[#062820]"
-                    : "bg-[#50D6C5] hover:bg-[#3ec4b3] text-[#062820]"
+                  "bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] disabled:opacity-50"
                 )}
               >
                 <AnimatePresence mode="wait">
@@ -238,9 +236,9 @@ export function StaffLogin({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="flex items-center gap-2 text-[#062820]"
+                      className="flex items-center gap-2 text-[#FFFDF7]"
                     >
-                      <Loader2 className="w-4 h-4 animate-spin text-[#062820]" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                       <span>Verifying staff access...</span>
                     </motion.div>
                   ) : isSuccess ? (
@@ -248,7 +246,7 @@ export function StaffLogin({
                       key="success"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="flex items-center gap-2 text-[#062820]"
+                      className="flex items-center gap-2 text-[#FFFDF7]"
                     >
                       <Check className="w-4 h-4 stroke-[3]" />
                       <span>Access Granted</span>
@@ -259,25 +257,25 @@ export function StaffLogin({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="flex items-center gap-1.5 text-[#062820]"
+                      className="flex items-center gap-1.5 text-[#FFFDF7]"
                     >
                       <span>Sign In to Staff Portal</span>
-                      <ArrowRight className="w-4 h-4 text-[#062820]" />
+                      <ArrowRight className="w-4 h-4" />
                     </motion.span>
                   )}
                 </AnimatePresence>
-              </motion.button>
+              </button>
 
-              {/* Default test credentials hint */}
-              <div className="p-3.5 rounded-xl bg-[#18303D] border border-[#294350] text-3xs text-[#B6C7CF] space-y-1.5">
-                <span className="font-semibold text-[#F1F6F8] block">Authorized Demo Credentials:</span>
+              {/* Demo credentials hint */}
+              <div className="p-3.5 rounded-xl bg-[#D8E5DC] border border-[#B8C9BD] text-3xs text-[#293D36] space-y-1.5">
+                <span className="font-bold text-[#293D36] block">Authorized Demo Credentials:</span>
                 <div className="flex justify-between items-center">
-                  <span>Staff: <code className="bg-[#122330] px-1.5 py-0.5 rounded border border-[#294350] text-[#50D6C5]">opd_staff</code></span>
-                  <span>Pass: <code className="bg-[#122330] px-1.5 py-0.5 rounded border border-[#294350] text-[#50D6C5]">clinical2026</code></span>
+                  <span>Staff: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">opd_staff</code></span>
+                  <span>Pass: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">clinical2026</code></span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span>Doctor: <code className="bg-[#122330] px-1.5 py-0.5 rounded border border-[#294350] text-[#50D6C5]">dr_sharma</code></span>
-                  <span>Pass: <code className="bg-[#122330] px-1.5 py-0.5 rounded border border-[#294350] text-[#50D6C5]">opd@medikiosk</code></span>
+                  <span>Doctor: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">dr_sharma</code></span>
+                  <span>Pass: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">opd@medikiosk</code></span>
                 </div>
               </div>
 

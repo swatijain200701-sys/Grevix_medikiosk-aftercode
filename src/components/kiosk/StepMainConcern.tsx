@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import React from "react";
-import { Mic, MicOff, Clock } from "lucide-react";
+import { Mic, MicOff, Clock, Info } from "lucide-react";
 
 interface StepMainConcernProps {
   mainConcern: string;
@@ -35,14 +35,14 @@ export const StepMainConcern: React.FC<StepMainConcernProps> = ({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#F1F6F8] tracking-tight">{t.mainConcernTitle}</h2>
-        <p className="text-[#91A8B3] text-sm mt-1">{t.mainConcernSubtitle}</p>
+        <h2 className="text-2xl font-bold text-[#293D36] tracking-tight">{t.mainConcernTitle}</h2>
+        <p className="text-[#53665D] text-sm mt-1">{t.mainConcernSubtitle}</p>
       </div>
 
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-bold text-[#B6C7CF] uppercase tracking-wide mb-1.5">
-            Primary Concern / मुख्य समस्या
+          <label htmlFor="main-concern-input" className="block text-xs font-bold text-[#293D36] uppercase tracking-wide mb-1.5">
+            Primary Concern / मुख्य समस्या <span className="text-red-600">*</span>
           </label>
           <textarea
             id="main-concern-input"
@@ -51,50 +51,55 @@ export const StepMainConcern: React.FC<StepMainConcernProps> = ({
             onChange={(e) => setMainConcern(e.target.value)}
             placeholder={
               lang === "hi"
-                ? "उदा. मुझे 3 दिन से तेज बुखार और खांसी है..."
-                : "e.g. Severe chest tightness and shortness of breath since yesterday..."
+                ? "उदा. कल से छाती में भारीपन और साँस लेने में तकलीफ़..."
+                : "e.g. Chest tightness and shortness of breath since yesterday, feeling unwell..."
             }
-            className="w-full text-base p-4 rounded-xl border border-[#294350] focus:border-[#50D6C5] focus:ring-2 focus:ring-[#7DD3FC]/20 outline-none transition bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3]"
+            className="w-full text-base p-4 rounded-xl border border-[#B8C9BD] focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D]"
           />
         </div>
 
-        {recordingConsent && (
+        {recordingConsent ? (
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <button
               type="button"
               id="voice-dictation-btn"
               onClick={toggleVoice}
-              className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition min-h-[48px] ${
+              className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition min-h-[48px] ${
                 isListening
-                  ? "bg-[#EF4444] text-[#F1F6F8] animate-pulse"
-                  : "bg-[#18303D] text-[#50D6C5] border border-[#294350] hover:bg-[#203D4D]"
+                  ? "bg-[#991B1B] text-[#FFFDF7] animate-pulse"
+                  : "bg-[#356B62] text-[#FFFDF7] hover:bg-[#2B574F]"
               }`}
             >
               {isListening ? (
                 <>
-                  <MicOff className="w-4 h-4 text-[#F1F6F8]" />
+                  <MicOff className="w-4 h-4 text-[#FFFDF7]" />
                   <span>{t.voiceStop}</span>
                 </>
               ) : (
                 <>
-                  <Mic className="w-4 h-4 text-[#50D6C5]" />
+                  <Mic className="w-4 h-4 text-[#FFFDF7]" />
                   <span>{t.voiceButton}</span>
                 </>
               )}
             </button>
-            <span className="text-xs text-[#91A8B3]">
-              {isListening ? "Listening... Speak clearly." : "Speech is transcribed and requires your confirmation."}
+            <span className="text-xs text-[#53665D]">
+              {isListening ? "Listening... Speak clearly." : "Speech is transcribed locally and requires your review before saving."}
             </span>
+          </div>
+        ) : (
+          <div className="p-3 rounded-xl bg-[#D8E5DC] border border-[#B8C9BD] text-xs text-[#53665D] flex items-center gap-2">
+            <Info className="w-4 h-4 text-[#356B62] shrink-0" />
+            <span>Voice dictation is optional and disabled (touch typing active).</span>
           </div>
         )}
 
         {unconfirmedTranscript && (
-          <div id="unconfirmed-transcript-box" className="p-4 rounded-xl bg-[#261B0E] border border-[#854D0E] text-[#FBBF24] space-y-3">
+          <div id="unconfirmed-transcript-box" className="p-4 rounded-xl bg-[#FEF3C7] border border-[#F59E0B] text-[#92400E] space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide">
-              <Clock className="w-3.5 h-3.5 text-[#FBBF24]" />
+              <Clock className="w-3.5 h-3.5 text-[#92400E]" />
               <span>{t.voiceConfirmPrompt}</span>
             </div>
-            <p className="text-base font-semibold bg-[#18303D] p-3 rounded-lg border border-[#854D0E] text-[#F1F6F8]">
+            <p className="text-base font-semibold bg-[#FAF7F0] p-3 rounded-lg border border-[#F59E0B] text-[#293D36]">
               &ldquo;{unconfirmedTranscript}&rdquo;
             </p>
             <div className="flex gap-2">
@@ -102,14 +107,14 @@ export const StepMainConcern: React.FC<StepMainConcernProps> = ({
                 type="button"
                 id="confirm-transcript-btn"
                 onClick={confirmTranscript}
-                className="px-4 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-[#062820] text-xs font-bold rounded-lg transition min-h-[44px]"
+                className="px-4 py-2.5 bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] text-xs font-bold rounded-lg transition min-h-[44px]"
               >
                 {t.confirmTranscript}
               </button>
               <button
                 type="button"
                 onClick={discardTranscript}
-                className="px-4 py-2.5 bg-[#18303D] hover:bg-[#203D4D] text-[#B6C7CF] text-xs font-medium rounded-lg border border-[#294350] transition min-h-[44px]"
+                className="px-4 py-2.5 bg-[#FAF7F0] hover:bg-[#D8E5DC] text-[#293D36] text-xs font-semibold rounded-lg border border-[#B8C9BD] transition min-h-[44px]"
               >
                 Discard
               </button>
@@ -118,8 +123,8 @@ export const StepMainConcern: React.FC<StepMainConcernProps> = ({
         )}
 
         <div className="pt-2">
-          <label className="block text-xs font-bold text-[#B6C7CF] uppercase tracking-wide mb-1.5">
-            {t.onsetTitle}
+          <label htmlFor="onset-duration-input" className="block text-xs font-bold text-[#293D36] uppercase tracking-wide mb-1.5">
+            {t.onsetTitle} <span className="text-red-600">*</span>
           </label>
           <input
             id="onset-duration-input"
@@ -127,15 +132,15 @@ export const StepMainConcern: React.FC<StepMainConcernProps> = ({
             value={onsetDuration}
             onChange={(e) => setOnsetDuration(e.target.value)}
             placeholder={lang === "hi" ? "उदा. 3 दिन पहले / 1 सप्ताह से" : "e.g. 3 days ago, or 2 weeks gradually"}
-            className="w-full text-base min-h-[48px] p-3.5 rounded-xl border border-[#294350] focus:border-[#50D6C5] focus:ring-2 focus:ring-[#7DD3FC]/20 outline-none transition bg-[#18303D] text-[#F1F6F8] placeholder-[#91A8B3]"
+            className="w-full text-base min-h-[48px] p-3.5 rounded-xl border border-[#B8C9BD] focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D]"
           />
           <div className="flex flex-wrap gap-2 pt-2.5">
-            {["Today", "2-3 days", "1 week", "2-4 weeks", "More than 1 month"].map((d) => (
+            {["Today", "2-3 days", "1 week", "2-4 weeks", "More than 1 month", "Unknown"].map((d) => (
               <button
                 key={d}
                 type="button"
                 onClick={() => setOnsetDuration(d)}
-                className="px-3.5 py-2 rounded-lg border border-[#294350] bg-[#18303D] hover:bg-[#203D4D] hover:border-[#50D6C5]/40 text-xs font-semibold text-[#F1F6F8] transition min-h-[38px]"
+                className="px-3.5 py-2 rounded-lg border border-[#B8C9BD] bg-[#FAF7F0] hover:bg-[#D8E5DC] text-xs font-semibold text-[#293D36] transition min-h-[38px]"
               >
                 {d}
               </button>

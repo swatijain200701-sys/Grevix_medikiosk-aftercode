@@ -1,78 +1,92 @@
 ﻿@import "tailwindcss";
 
 :root {
-  color-scheme: dark;
-  --background: #08121B;
-  --section-bg: #0C1924;
-  --card-surface: #122330;
-  --elevated-surface: #18303D;
-  --border: #294350;
-  --text-primary: #F1F6F8;
-  --text-secondary: #B6C7CF;
-  --text-muted: #91A8B3;
-  --teal-primary: #50D6C5;
-  --teal-btn-text: #062820;
-  --focus-ring: #7DD3FC;
-  --caution-bg: #261B0E;
-  --caution-border: #854D0E;
-  --caution-text: #FBBF24;
-  --attention-bg: #2B1417;
-  --attention-border: #991B1B;
-  --attention-text: #F87171;
+  color-scheme: light;
+  
+  /* Primary Specified Tokens */
+  --header-bg: #0B1B25;
+  --footer-bg: #0B1B25;
+  --header-text: #FAF7F0;
+  --header-text-muted: #91A8B3;
+
+  --logo-tile: #4FD1C5;
+  --turquoise-accent: #4FD1C5;
+  --slate-accent: #304652;
+
+  --bg-main: #EAF0EB;            /* Sage Mist main page background */
+  --bg-card: #FAF7F0;            /* Warm Cream intake forms and content cards */
+  --bg-panel: #D8E5DC;           /* Soft Sage secondary panels */
+
+  --btn-main: #356B62;           /* Teal main buttons */
+  --btn-main-hover: #2B574F;
+  --btn-main-text: #FFFDF7;      /* Ivory text */
+
+  --text-heading: #293D36;       /* Headings on light surfaces */
+  --text-body: #293D36;          /* Body text on light surfaces */
+  --text-muted: #53665D;         /* Supporting text */
+
+  --border-color: #B8C9BD;       /* Restrained borders */
+
+  --error-bg: #FEE2E2;
+  --error-border: #EF4444;
+  --error-text: #991B1B;
+
+  --caution-bg: #FEF3C7;
+  --caution-border: #F59E0B;
+  --caution-text: #92400E;
+
+  --focus-ring: #356B62;
+  --radius: 0.75rem;
 
   /* Semantic UI mappings */
-  --surface: #0C1924;
-  --primary: #50D6C5;
-  --primary-foreground: #062820;
-  --primary-hover: #38BDF8;
-  --heading: #F1F6F8;
-  --body: #B6C7CF;
-  --muted: #91A8B3;
-  --card: #122330;
-  --card-foreground: #F1F6F8;
-  --popover: #18303D;
-  --popover-foreground: #F1F6F8;
-  --secondary: #18303D;
-  --secondary-foreground: #F1F6F8;
-  --muted-foreground: #91A8B3;
-  --accent: #18303D;
-  --accent-foreground: #50D6C5;
-  --destructive: #EF4444;
-  --destructive-foreground: #F1F6F8;
-  --input: #294350;
-  --ring: #7DD3FC;
-  --radius: 0.75rem;
+  --background: var(--bg-main);
+  --foreground: var(--text-body);
+  --card: var(--bg-card);
+  --card-foreground: var(--text-heading);
+  --primary: var(--btn-main);
+  --primary-foreground: var(--btn-main-text);
+  --secondary: var(--bg-panel);
+  --secondary-foreground: var(--text-heading);
+  --muted: var(--bg-panel);
+  --muted-foreground: var(--text-muted);
+  --border: var(--border-color);
+  --input: var(--border-color);
+  --ring: var(--focus-ring);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-section-bg: var(--section-bg);
-  --color-card-surface: var(--card-surface);
-  --color-elevated-surface: var(--elevated-surface);
-  --color-surface: var(--surface);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-heading: var(--heading);
-  --color-body: var(--body);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-teal-primary: var(--teal-primary);
-  --color-teal-btn-text: var(--teal-btn-text);
-  --color-focus-ring: var(--focus-ring);
+  --color-header-bg: var(--header-bg);
+  --color-footer-bg: var(--footer-bg);
+  --color-logo-tile: var(--logo-tile);
+  --color-turquoise-accent: var(--turquoise-accent);
+  --color-slate-accent: var(--slate-accent);
+
+  --color-bg-main: var(--bg-main);
+  --color-bg-card: var(--bg-card);
+  --color-bg-panel: var(--bg-panel);
+
+  --color-btn-main: var(--btn-main);
+  --color-btn-main-hover: var(--btn-main-hover);
+  --color-btn-main-text: var(--btn-main-text);
+
+  --color-text-heading: var(--text-heading);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+
+  --color-border-color: var(--border-color);
+
+  --color-error-bg: var(--error-bg);
+  --color-error-border: var(--error-border);
+  --color-error-text: var(--error-text);
+
   --color-caution-bg: var(--caution-bg);
   --color-caution-border: var(--caution-border);
   --color-caution-text: var(--caution-text);
-  --color-attention-bg: var(--attention-bg);
-  --color-attention-border: var(--attention-border);
-  --color-attention-text: var(--attention-text);
 }
 
 body {
-  background-color: #08121B;
-  color: #B6C7CF;
+  background-color: #EAF0EB;
+  color: #293D36;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", "Mangal", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -81,13 +95,13 @@ body {
 
 /* Accessible focus ring */
 :focus-visible {
-  outline: 2px solid #7DD3FC !important;
+  outline: 2px solid #356B62 !important;
   outline-offset: 2px !important;
 }
 
-/* Dark scrollbars */
+/* Custom scrollbars */
 * {
-  scrollbar-color: #294350 #08121B;
+  scrollbar-color: #B8C9BD #EAF0EB;
 }
 
 ::-webkit-scrollbar {
@@ -96,35 +110,19 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #08121B;
+  background: #EAF0EB;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #294350;
+  background: #B8C9BD;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3B5B6D;
+  background: #9BB0A1;
 }
 
-/* Native input autofill overrides to maintain dark theme */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-text-fill-color: #F1F6F8 !important;
-  -webkit-box-shadow: 0 0 0px 1000px #18303D inset !important;
-  box-shadow: 0 0 0px 1000px #18303D inset !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-/* Reduced motion support */
+/* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
@@ -134,7 +132,7 @@ select:-webkit-autofill:focus {
   }
 }
 
-/* Print Styles: Pure white background with dark text for clinical reports */
+/* Print Styles */
 @media print {
   body {
     background-color: #FFFFFF !important;

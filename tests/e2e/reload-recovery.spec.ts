@@ -14,6 +14,7 @@ test.describe('Shared-Kiosk Privacy, Encryption & Offline Reload Recovery', () =
 
     // Step 2: Consent
     await expect(page.locator('#consent-storage-checkbox')).toBeVisible();
+    await page.click('#consent-storage-checkbox');
     await page.click('#kiosk-next-btn');
 
     // Step 3: Main concern
@@ -54,6 +55,7 @@ test.describe('Shared-Kiosk Privacy, Encryption & Offline Reload Recovery', () =
     // 6. COMPLETE AND SUBMIT INTAKE WHILE STILL OFFLINE
     await page.click('#kiosk-next-btn'); // Step 4
     await page.click('#kiosk-next-btn'); // Step 5
+    await page.click('#allergy-opt-none_reported');
     await page.click('#kiosk-next-btn'); // Step 6
     await page.click('#kiosk-next-btn'); // Step 7
     await page.click('#kiosk-next-btn'); // Step 8 Review

@@ -21,6 +21,7 @@ test.describe('Real Challenge Card 1: 30-Second Network Disconnection Test', () 
 
     // Step 2: Consent
     await expect(page.locator('#consent-storage-checkbox')).toBeVisible();
+    await page.click('#consent-storage-checkbox');
     await page.click('#kiosk-next-btn');
 
     // Step 3: Main concern entered online

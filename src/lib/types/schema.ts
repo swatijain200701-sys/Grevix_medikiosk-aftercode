@@ -24,7 +24,7 @@ export const PatientRegistrationSchema = z.object({
 export type PatientRegistration = z.infer<typeof PatientRegistrationSchema>;
 
 export const AllergyInfoSchema = z.object({
-  status: z.enum(['none_reported', 'unknown', 'reported']),
+  status: z.enum(['none_reported', 'unknown', 'reported', 'unanswered']).default('unanswered'),
   details: z.array(z.string()).default([]),
 });
 export type AllergyInfo = z.infer<typeof AllergyInfoSchema>;
@@ -105,7 +105,7 @@ export const StructuredAiSummarySchema = z.object({
   reportedConditions: z.array(ConditionSummaryItemSchema).default([]),
   medicines: z.array(MedicineSummaryItemSchema).default([]),
   allergies: z.object({
-    status: z.enum(['none_reported', 'unknown', 'reported']),
+    status: z.enum(['none_reported', 'unknown', 'reported', 'unanswered']),
     items: z.array(z.string()).default([]),
     sourceId: z.string().default('allergies-field'),
   }),
@@ -199,3 +199,58 @@ export const SyncResponseSchema = z.object({
   summary: StructuredAiSummarySchema.optional(),
 });
 export type SyncResponse = z.infer<typeof SyncResponseSchema>;
+
+/**
+ * Minimal completion validation enforced on both client and server:
+ * Prevents name-only forms from becoming "completed" intakes.
+ */
+export interface IntakeValidationResult {
+  valid: boolean;
+  errors: string[];
+}
+
+export function validateIntakeCompletion(snapshot: PatientCaseSnapshot): IntakeValidationResult {
+  const errors: string[] = [];
+
+  const name = (snapshot.patient?.preferredName || '').trim();
+  if (!name || name === 'Anonymous Patient') {
+    errors.push('Patient name is required.');
+  }
+
+  const age = (snapshot.patient?.age || '').trim();
+  if (!age || age === 'Not specified') {
+    errors.push('Patient age or age range is required.');
+  }
+
+  if (!snapshot.consent?.localOfflineStorageConsent) {
+    errors.push('Local storage permission is required to submit digital intake.');
+  }
+
+  const concern = (snapshot.answers?.mainConcern || '').trim();
+  if (!concern || concern.length < 3) {
+    errors.push('Main health concern is required. Please explain what brought you to the clinic.');
+  }
+
+  const onset = (snapshot.answers?.onsetDuration || '').trim();
+  if (!onset) {
+    errors.push('Symptom onset and duration are required.');
+  }
+
+  const allergyStatus = snapshot.answers?.allergies?.status;
+  if (!allergyStatus || allergyStatus === 'unanswered') {
+    errors.push('Allergy history must be answered (select No known allergies, I have an allergy, or I do not know).');
+  }
+
+  if (allergyStatus === 'reported') {
+    const details = snapshot.answers?.allergies?.details || [];
+    const hasDetails = details.some((d) => d && d.trim().length > 0);
+    if (!hasDetails) {
+      errors.push('Please specify allergen details when allergy is reported.');
+    }
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+  };
+}

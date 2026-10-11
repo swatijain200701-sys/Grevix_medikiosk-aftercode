@@ -245,7 +245,7 @@ export class SqliteCaseRepository implements ICaseRepository {
     const summary = summaryRow ? (JSON.parse(summaryRow.summary_json) as StructuredAiSummary) : undefined;
 
     // Get staff review
-    let staffReviewRow = this.db.prepare('SELECT * FROM staff_reviews WHERE case_id = ?').get(caseId) as any;
+    const staffReviewRow = this.db.prepare('SELECT * FROM staff_reviews WHERE case_id = ?').get(caseId) as any;
     const staffReview: StaffReview = staffReviewRow
       ? {
           caseId,
@@ -292,7 +292,7 @@ export class SqliteCaseRepository implements ICaseRepository {
   }
 
   listCases(filter?: { status?: string; triage?: string }): CaseQueueItem[] {
-    let query = `
+    const query = `
       SELECT 
         c.case_id as caseId,
         c.current_revision as revision,
