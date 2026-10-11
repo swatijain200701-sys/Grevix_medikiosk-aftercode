@@ -1,26 +1,66 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F7FAF9;
+  --surface: #FFFFFF;
+  --primary: #0F766E;
+  --primary-hover: #115E59;
+  --heading: #17343A;
+  --body: #334155;
+  --muted: #52656B;
+  --border: #DCE7E4;
+  --soft-teal: #E8F3EF;
+  --caution-bg: #FEF3C7;
+  --caution-text: #92400E;
+  --attention-bg: #FEE2E2;
+  --attention-text: #991B1B;
+
+  /* shadcn compatible variables */
+  --card: #FFFFFF;
+  --card-foreground: #334155;
+  --popover: #FFFFFF;
+  --popover-foreground: #334155;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E8F3EF;
+  --secondary-foreground: #0F766E;
+  --muted-foreground: #52656B;
+  --accent: #E8F3EF;
+  --accent-foreground: #0F766E;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --input: #DCE7E4;
+  --ring: #0F766E;
+  --radius: 0.75rem;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-primary: var(--primary);
+  --color-heading: var(--heading);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-soft-teal: var(--soft-teal);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted-foreground: var(--muted-foreground);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
+  color: var(--body);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", "Mangal", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
