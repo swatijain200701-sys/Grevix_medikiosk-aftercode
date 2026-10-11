@@ -37,8 +37,8 @@ export const StepSymptoms: React.FC<StepSymptomsProps> = ({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#293D36] tracking-tight">{t.symptomsTitle}</h2>
-        <p className="text-[#53665D] text-sm mt-1">{t.symptomsSubtitle}</p>
+        <h2 className="text-2xl font-bold text-[var(--text-heading)] tracking-tight">{t.symptomsTitle}</h2>
+        <p className="text-[var(--text-muted)] text-sm mt-1">{t.symptomsSubtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -52,17 +52,17 @@ export const StepSymptoms: React.FC<StepSymptomsProps> = ({
               onClick={() => toggleSymptom(s.labelEn)}
               className={`p-4 rounded-xl border-2 text-left font-medium text-sm flex items-center justify-between transition min-h-[52px] ${
                 isSelected
-                  ? "border-[#356B62] bg-[#D8E5DC] text-[#293D36] font-bold shadow-sm"
-                  : "border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] hover:border-[#356B62]/50 hover:bg-[#D8E5DC]/30"
+                  ? "border-[#356B62] bg-[var(--bg-panel)] text-[var(--text-heading)] font-bold shadow-sm"
+                  : "border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] hover:border-[var(--btn-main)]/50 hover:bg-[var(--bg-panel)]/30"
               }`}
             >
               <span>{lang === "hi" ? s.labelHi : s.labelEn}</span>
               {isSelected ? (
-                <div className="w-5 h-5 rounded-full bg-[#356B62] flex items-center justify-center shrink-0">
-                  <Check className="w-3.5 h-3.5 text-[#FFFDF7] stroke-[3]" />
+                <div className="w-5 h-5 rounded-full bg-[var(--btn-main)] flex items-center justify-center shrink-0">
+                  <Check className="w-3.5 h-3.5 text-[var(--btn-main-text)] stroke-[3]" />
                 </div>
               ) : (
-                <div className="w-5 h-5 rounded-full border-2 border-[#B8C9BD] shrink-0" />
+                <div className="w-5 h-5 rounded-full border-2 border-[var(--border-color)] shrink-0" />
               )}
             </button>
           );
@@ -75,12 +75,12 @@ export const StepSymptoms: React.FC<StepSymptomsProps> = ({
           value={customSymptom}
           onChange={(e) => setCustomSymptom(e.target.value)}
           placeholder={lang === "hi" ? "अन्य कोई लक्षण लिखें..." : "Add other symptoms..."}
-          className="flex-1 text-sm min-h-[48px] p-3 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] focus:border-[#356B62] outline-none"
+          className="flex-1 text-sm min-h-[48px] p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] placeholder-[#53665D] focus:border-[#356B62] outline-none"
         />
         <button
           type="button"
           onClick={addCustomSymptom}
-          className="px-5 py-3 bg-[#356B62] text-[#FFFDF7] rounded-xl text-sm font-bold hover:bg-[#2B574F] transition min-h-[48px]"
+          className="px-5 py-3 bg-[var(--btn-main)] text-[var(--btn-main-text)] rounded-xl text-sm font-bold hover:bg-[var(--btn-main-hover)] transition min-h-[48px]"
         >
           Add
         </button>

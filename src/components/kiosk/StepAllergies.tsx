@@ -47,8 +47,8 @@ export const StepAllergies: React.FC<StepAllergiesProps> = ({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#293D36] tracking-tight">{t.allergiesTitle}</h2>
-        <p className="text-[#53665D] text-sm mt-1">{t.allergiesSubtitle}</p>
+        <h2 className="text-2xl font-bold text-[var(--text-heading)] tracking-tight">{t.allergiesTitle}</h2>
+        <p className="text-[var(--text-muted)] text-sm mt-1">{t.allergiesSubtitle}</p>
       </div>
 
       <div className="space-y-3">
@@ -62,28 +62,28 @@ export const StepAllergies: React.FC<StepAllergiesProps> = ({
               onClick={() => setAllergyType(a.id as any)}
               className={`w-full p-4 rounded-xl border-2 text-left transition flex items-start justify-between min-h-[56px] ${
                 isSelected
-                  ? "border-[#356B62] bg-[#D8E5DC] text-[#293D36] font-bold shadow-sm"
-                  : "border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] hover:border-[#356B62]/50"
+                  ? "border-[#356B62] bg-[var(--bg-panel)] text-[var(--text-heading)] font-bold shadow-sm"
+                  : "border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] hover:border-[var(--btn-main)]/50"
               }`}
             >
               <div>
-                <div className="font-bold text-sm text-[#293D36]">{a.label}</div>
-                <div className="text-xs text-[#53665D] mt-0.5">{a.desc}</div>
+                <div className="font-bold text-sm text-[var(--text-heading)]">{a.label}</div>
+                <div className="text-xs text-[var(--text-muted)] mt-0.5">{a.desc}</div>
               </div>
               {isSelected ? (
-                <div className="w-5 h-5 rounded-full bg-[#356B62] flex items-center justify-center shrink-0 mt-0.5">
-                  <Check className="w-3.5 h-3.5 text-[#FFFDF7] stroke-[3]" />
+                <div className="w-5 h-5 rounded-full bg-[var(--btn-main)] flex items-center justify-center shrink-0 mt-0.5">
+                  <Check className="w-3.5 h-3.5 text-[var(--btn-main-text)] stroke-[3]" />
                 </div>
               ) : (
-                <div className="w-5 h-5 rounded-full border-2 border-[#B8C9BD] shrink-0 mt-0.5" />
+                <div className="w-5 h-5 rounded-full border-2 border-[var(--border-color)] shrink-0 mt-0.5" />
               )}
             </button>
           );
         })}
 
         {allergyType === "reported" && (
-          <div className="mt-4 p-4 rounded-xl bg-[#D8E5DC]/50 border border-[#B8C9BD] space-y-2">
-            <label htmlFor="allergy-details-input" className="block text-xs font-bold text-[#293D36]">
+          <div className="mt-4 p-4 rounded-xl bg-[var(--bg-panel)]/50 border border-[var(--border-color)] space-y-2">
+            <label htmlFor="allergy-details-input" className="block text-xs font-bold text-[var(--text-heading)]">
               Allergy Details (Medication, Food, or Allergen Name):
             </label>
             <input
@@ -92,15 +92,15 @@ export const StepAllergies: React.FC<StepAllergiesProps> = ({
               value={allergyDetails}
               onChange={(e) => setAllergyDetails(e.target.value)}
               placeholder="e.g. Penicillin, Sulfa drugs, Peanuts, Iodine contrast"
-              className="w-full text-sm min-h-[48px] p-3 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none"
+              className="w-full text-sm min-h-[48px] p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] placeholder-[#53665D] focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none"
             />
           </div>
         )}
       </div>
 
-      <div className="pt-4 border-t border-[#B8C9BD] space-y-4">
+      <div className="pt-4 border-t border-[var(--border-color)] space-y-4">
         <div>
-          <label className="block text-sm font-bold text-[#293D36] mb-1.5">
+          <label className="block text-sm font-bold text-[var(--text-heading)] mb-1.5">
             Previous Medical Care (Optional):
           </label>
           <input
@@ -108,11 +108,11 @@ export const StepAllergies: React.FC<StepAllergiesProps> = ({
             value={previousCare}
             onChange={(e) => setPreviousCare(e.target.value)}
             placeholder="e.g. Visited local clinic last month, surgery 2 years ago"
-            className="w-full text-sm min-h-[48px] p-3 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] focus:border-[#356B62] outline-none"
+            className="w-full text-sm min-h-[48px] p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] placeholder-[#53665D] focus:border-[#356B62] outline-none"
           />
         </div>
         <div>
-          <label className="block text-sm font-bold text-[#293D36] mb-1.5">
+          <label className="block text-sm font-bold text-[var(--text-heading)] mb-1.5">
             Questions for Doctor (Optional):
           </label>
           <input
@@ -120,7 +120,7 @@ export const StepAllergies: React.FC<StepAllergiesProps> = ({
             value={questionsForDoctor}
             onChange={(e) => setQuestionsForDoctor(e.target.value)}
             placeholder="e.g. Should I continue my current morning tablet?"
-            className="w-full text-sm min-h-[48px] p-3 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] focus:border-[#356B62] outline-none"
+            className="w-full text-sm min-h-[48px] p-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] placeholder-[#53665D] focus:border-[#356B62] outline-none"
           />
         </div>
       </div>

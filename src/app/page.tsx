@@ -54,10 +54,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen text-[var(--text-body)] flex flex-col font-sans selection:bg-[#356B62]/20 selection:text-[#356B62]">
+    <div className="min-h-screen text-[var(--text-body)] flex flex-col font-sans selection:bg-[var(--btn-main)]/20 selection:text-[var(--btn-main)]">
       
       {/* 1. Header: Navy #0B1B25 */}
-      <header className="border-b border-[#304652] bg-[#0B1B25] text-[#FAF7F0] sticky top-0 z-40 shadow-sm">
+      <header className="border-b border-[var(--border-color)] bg-[var(--header-bg)] text-[var(--header-text)] sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           
           {/* Logo tile: turquoise #4FD1C5 */}
@@ -66,17 +66,17 @@ export default function Home() {
               <Stethoscope className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <span className="font-extrabold text-lg tracking-tight text-[#FAF7F0] block leading-tight">
+              <span className="font-extrabold text-lg tracking-tight text-[var(--header-text)] block leading-tight">
                 MediKiosk
               </span>
-              <span className="text-xs text-[#91A8B3] font-medium block">
+              <span className="text-xs text-[var(--header-text-muted)] font-medium block">
                 Patient history. Prepared for your consultation.
               </span>
             </div>
           </Link>
 
           {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-[#FAF7F0]/90">
+          <nav className="hidden lg:flex items-center gap-6 text-xs font-semibold text-[var(--header-text)]/90">
             <a href="#how-it-works" className="hover:text-[#4FD1C5] transition">How it works</a>
             <a href="#for-patients" className="hover:text-[#4FD1C5] transition">For patients</a>
             <a href="#for-staff" className="hover:text-[#4FD1C5] transition">For hospital staff</a>
@@ -87,18 +87,18 @@ export default function Home() {
               className="hover:text-[#4FD1C5] transition inline-flex items-center gap-1"
             >
               <span>Give feedback</span>
-              <ExternalLink className="w-3 h-3 text-[#91A8B3]" />
+              <ExternalLink className="w-3 h-3 text-[var(--header-text-muted)]" />
             </a>
           </nav>
 
           {/* Right Header Actions */}
           <div className="flex items-center gap-3">
             {/* Live Service Availability Probe (No static OPD connected badge) */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#122330] border border-[#304652] text-[#FAF7F0]">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#122330] border border-[var(--border-color)] text-[var(--header-text)]">
               {isOnline ? (
                 <>
                   <span className="w-2 h-2 rounded-full bg-[#4FD1C5]" />
-                  <span className="text-3xs text-[#91A8B3]">Service available</span>
+                  <span className="text-3xs text-[var(--header-text-muted)]">Service available</span>
                 </>
               ) : (
                 <>
@@ -115,7 +115,7 @@ export default function Home() {
             <Link
               href="/login"
               id="header-staff-signin-link"
-              className="px-4 py-2 rounded-xl bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] text-xs font-bold transition shadow-sm"
+              className="px-4 py-2 rounded-xl bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] text-xs font-bold transition shadow-sm"
             >
               Staff sign in
             </Link>
@@ -128,9 +128,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Small readable notice near intake entry and before collection */}
-          <div className="mb-8 p-3.5 rounded-xl bg-[#D8E5DC] border border-[#B8C9BD] text-xs text-[#293D36] flex items-center justify-between gap-3 shadow-xs max-w-4xl">
+          <div className="mb-8 p-3.5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-color)] text-xs text-[var(--text-heading)] flex items-center justify-between gap-3 shadow-xs max-w-4xl">
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-[#356B62] shrink-0" />
+              <AlertCircle className="w-4 h-4 text-[var(--btn-main)] shrink-0" />
               <span>
                 <strong>Public testing version</strong> — please use fictional information. AI summaries assist clinician review and do not provide diagnosis.
               </span>
@@ -139,7 +139,7 @@ export default function Home() {
               href={FEEDBACK_FORM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-[#356B62] hover:underline whitespace-nowrap inline-flex items-center gap-1"
+              className="text-xs font-bold text-[var(--btn-main)] hover:underline whitespace-nowrap inline-flex items-center gap-1"
             >
               <span>Feedback form</span>
               <ExternalLink className="w-3 h-3" />
@@ -152,33 +152,33 @@ export default function Home() {
             <div className="lg:col-span-7 space-y-6">
               
               <div className="space-y-4">
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62]">
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)]">
                   Outpatient Intake & Clinical Preparation
                 </span>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#293D36] leading-tight tracking-tight">
-                  Help your doctor understand your health history before you meet.
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--text-heading)] leading-tight tracking-tight">
+                  Your health history. Ready for your doctor.
                 </h1>
-                <p className="text-base sm:text-lg text-[#53665D] leading-relaxed max-w-2xl font-normal">
+                <p className="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl font-normal">
                   Share your symptoms, medicines, allergies, and previous reports through guided questions. Review your answers before sending them for staff review.
                 </p>
               </div>
 
               {/* Three short bullets */}
-              <ul className="space-y-2.5 text-sm sm:text-base text-[#293D36] font-medium pt-1">
+              <ul className="space-y-2.5 text-sm sm:text-base text-[var(--text-heading)] font-medium pt-1">
                 <li className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
                   <span>Explain your concern in your own words.</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
                   <span>Keep your health information organised in one intake record.</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                  <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
                   <span>Help staff prepare for your consultation.</span>
@@ -189,14 +189,14 @@ export default function Home() {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
                   href="#for-patients"
-                  className="px-6 py-3.5 rounded-xl bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] font-bold text-sm shadow-sm transition inline-flex items-center gap-2 min-h-[48px]"
+                  className="px-6 py-3.5 rounded-xl bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] font-bold text-sm shadow-sm transition inline-flex items-center gap-2 min-h-[48px]"
                 >
                   <span>Start patient intake</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
                 <a
                   href="#for-staff"
-                  className="px-6 py-3.5 rounded-xl bg-[#FAF7F0] border border-[#B8C9BD] hover:bg-[#D8E5DC] text-[#293D36] font-bold text-sm shadow-xs transition inline-flex items-center gap-2 min-h-[48px]"
+                  className="px-6 py-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] hover:bg-[var(--bg-panel)] text-[var(--text-heading)] font-bold text-sm shadow-xs transition inline-flex items-center gap-2 min-h-[48px]"
                 >
                   <span>Staff sign in</span>
                 </a>
@@ -206,68 +206,68 @@ export default function Home() {
 
             {/* Hero Right Column: Example Intake Record Preview */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-md rounded-2xl bg-[#FAF7F0] border border-[#B8C9BD] shadow-md p-6 space-y-4">
+              <div className="w-full max-w-md rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] shadow-md p-6 space-y-4">
                 
                 {/* Header: Must say Example intake record */}
-                <div className="flex items-center justify-between border-b border-[#B8C9BD] pb-3">
+                <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-[#D8E5DC] text-[#356B62] flex items-center justify-center font-bold">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--bg-panel)] text-[var(--btn-main)] flex items-center justify-center font-bold">
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-[#293D36] uppercase tracking-wider block">
+                      <span className="text-xs font-bold text-[var(--text-heading)] uppercase tracking-wider block">
                         Example intake record
                       </span>
-                      <span className="text-3xs font-mono text-[#53665D]">Sample Record #EX-782</span>
+                      <span className="text-3xs font-mono text-[var(--text-muted)]">Sample Record #EX-782</span>
                     </div>
                   </div>
-                  <span className="text-3xs font-bold px-2.5 py-0.5 rounded-full bg-[#304652]/10 text-[#304652] border border-[#304652]/30">
+                  <span className="text-3xs font-bold px-2.5 py-0.5 rounded-full bg-[var(--slate-accent)]/10 text-[var(--slate-accent)] border border-[var(--border-color)]/30">
                     Synthetic Example
                   </span>
                 </div>
 
                 {/* Patient Summary Card */}
-                <div className="p-3.5 rounded-xl bg-[#D8E5DC]/60 border border-[#B8C9BD] space-y-2 text-xs">
-                  <div className="flex justify-between items-center text-3xs text-[#53665D]">
-                    <span className="font-bold text-[#293D36]">Patient: Ramesh Kumar, 54 Y</span>
-                    <span className="font-mono text-[#356B62]">Saved draft</span>
+                <div className="p-3.5 rounded-xl bg-[var(--bg-panel)]/60 border border-[var(--border-color)] space-y-2 text-xs">
+                  <div className="flex justify-between items-center text-3xs text-[var(--text-muted)]">
+                    <span className="font-bold text-[var(--text-heading)]">Patient: Ramesh Kumar, 54 Y</span>
+                    <span className="font-mono text-[var(--btn-main)]">Saved draft</span>
                   </div>
                   <div>
-                    <span className="font-bold text-[#293D36] block text-xs">Main Health Concern:</span>
-                    <p className="text-[#53665D] text-xs leading-relaxed mt-0.5">
+                    <span className="font-bold text-[var(--text-heading)] block text-xs">Main Health Concern:</span>
+                    <p className="text-[var(--text-muted)] text-xs leading-relaxed mt-0.5">
                       Chest heaviness after walking, cough with mild fever for 4 days.
                     </p>
                   </div>
                   <div className="flex items-center gap-2 pt-1 text-3xs">
-                    <span className="px-2 py-0.5 rounded bg-[#FAF7F0] border border-[#B8C9BD] text-[#293D36]">Hindi / Touch Input</span>
-                    <span className="px-2 py-0.5 rounded bg-[#FAF7F0] border border-[#B8C9BD] text-[#293D36]">Prescription Document Added</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-heading)]">Hindi / Touch Input</span>
+                    <span className="px-2 py-0.5 rounded bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-heading)]">Prescription Document Added</span>
                   </div>
                 </div>
 
                 {/* Plain-Language Badges (Slate #304652 accents, no jargon) */}
                 <div className="space-y-2 pt-1 text-xs">
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF7F0] border border-[#B8C9BD]">
-                    <span className="flex items-center gap-2 text-[#293D36]">
-                      <ShieldCheck className="w-4 h-4 text-[#356B62]" />
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)]">
+                    <span className="flex items-center gap-2 text-[var(--text-heading)]">
+                      <ShieldCheck className="w-4 h-4 text-[var(--btn-main)]" />
                       Encrypted local storage on this terminal
                     </span>
-                    <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[#304652]/10 text-[#304652]">
+                    <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[var(--slate-accent)]/10 text-[var(--slate-accent)]">
                       Device Secured
                     </span>
                   </div>
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF7F0] border border-[#B8C9BD]">
-                    <span className="flex items-center gap-2 text-[#293D36]">
-                      <Activity className="w-4 h-4 text-[#356B62]" />
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)]">
+                    <span className="flex items-center gap-2 text-[var(--text-heading)]">
+                      <Activity className="w-4 h-4 text-[var(--btn-main)]" />
                       Checks high-concern symptoms for staff attention
                     </span>
-                    <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[#304652]/10 text-[#304652]">
+                    <span className="text-3xs font-semibold px-2 py-0.5 rounded bg-[var(--slate-accent)]/10 text-[var(--slate-accent)]">
                       Clinical Prompt
                     </span>
                   </div>
                 </div>
 
-                <div className="text-center pt-1 border-t border-[#B8C9BD]">
-                  <span className="text-3xs text-[#53665D] uppercase tracking-wider font-mono">
+                <div className="text-center pt-1 border-t border-[var(--border-color)]">
+                  <span className="text-3xs text-[var(--text-muted)] uppercase tracking-wider font-mono">
                     Synthetic test data — Illustrative preview only
                   </span>
                 </div>
@@ -280,14 +280,14 @@ export default function Home() {
       </section>
 
       {/* 3. Clearly Separate Patient and Staff Entry Cards near the top */}
-      <section className="py-12 sm:py-16 bg-[#EAF0EB]">
+      <section className="py-12 sm:py-16 bg-[var(--bg-main)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#293D36] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-heading)] tracking-tight">
               Choose your path
             </h2>
-            <p className="text-sm text-[#53665D]">
+            <p className="text-sm text-[var(--text-muted)]">
               Clear, separate entry points for patients preparing for their consultation and hospital staff reviewing intake.
             </p>
           </div>
@@ -297,40 +297,40 @@ export default function Home() {
             {/* CARD 1: PATIENTS & CAREGIVERS */}
             <div
               id="for-patients"
-              className="p-8 sm:p-10 rounded-3xl bg-[#FAF7F0] border-2 border-[#B8C9BD] hover:border-[#356B62]/60 shadow-md flex flex-col justify-between space-y-6 transition"
+              className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border-2 border-[var(--border-color)] hover:border-[var(--btn-main)]/60 shadow-md flex flex-col justify-between space-y-6 transition"
             >
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#356B62] bg-[#D8E5DC] px-3 py-1 rounded-full border border-[#B8C9BD]">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--btn-main)] bg-[var(--bg-panel)] px-3 py-1 rounded-full border border-[var(--border-color)]">
                     PATIENTS &amp; CAREGIVERS
                   </span>
-                  <Users className="w-6 h-6 text-[#356B62]" />
+                  <Users className="w-6 h-6 text-[var(--btn-main)]" />
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-extrabold text-[#293D36] tracking-tight">
+                  <h3 className="text-2xl font-extrabold text-[var(--text-heading)] tracking-tight">
                     Prepare for your consultation
                   </h3>
-                  <p className="text-sm text-[#53665D] leading-relaxed">
+                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                     Take your time to enter your health history calmly before meeting the physician.
                   </p>
                 </div>
 
-                <ul className="space-y-3 text-sm text-[#293D36] font-medium pt-1">
+                <ul className="space-y-3 text-sm text-[var(--text-heading)] font-medium pt-1">
                   <li className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                     <span>Answer guided health questions.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                     <span>Add previous reports if available.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                     <span>Check and confirm your information.</span>
@@ -338,16 +338,16 @@ export default function Home() {
                 </ul>
               </div>
 
-              <div className="space-y-3 pt-4 border-t border-[#B8C9BD]">
+              <div className="space-y-3 pt-4 border-t border-[var(--border-color)]">
                 <Link
                   href="/kiosk"
                   id="patient-start-intake-btn"
-                  className="w-full py-4 rounded-xl bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] font-bold text-base shadow-sm transition flex items-center justify-center gap-2 min-h-[48px]"
+                  className="w-full py-4 rounded-xl bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] font-bold text-base shadow-sm transition flex items-center justify-center gap-2 min-h-[48px]"
                 >
                   <span>Start patient intake</span>
-                  <ArrowRight className="w-4 h-4 text-[#FFFDF7]" />
+                  <ArrowRight className="w-4 h-4 text-[var(--btn-main-text)]" />
                 </Link>
-                <p className="text-xs text-[#53665D] text-center font-medium">
+                <p className="text-xs text-[var(--text-muted)] text-center font-medium">
                   A caregiver or staff member can help you.
                 </p>
               </div>
@@ -356,40 +356,40 @@ export default function Home() {
             {/* CARD 2: HOSPITAL STAFF */}
             <div
               id="for-staff"
-              className="p-8 sm:p-10 rounded-3xl bg-[#FAF7F0] border-2 border-[#B8C9BD] hover:border-[#356B62]/60 shadow-md flex flex-col justify-between space-y-6 transition"
+              className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border-2 border-[var(--border-color)] hover:border-[var(--btn-main)]/60 shadow-md flex flex-col justify-between space-y-6 transition"
             >
               <div className="space-y-5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#304652] bg-[#D8E5DC] px-3 py-1 rounded-full border border-[#B8C9BD]">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--slate-accent)] bg-[var(--bg-panel)] px-3 py-1 rounded-full border border-[var(--border-color)]">
                     HOSPITAL STAFF
                   </span>
-                  <Stethoscope className="w-6 h-6 text-[#356B62]" />
+                  <Stethoscope className="w-6 h-6 text-[var(--btn-main)]" />
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-extrabold text-[#293D36] tracking-tight">
+                  <h3 className="text-2xl font-extrabold text-[var(--text-heading)] tracking-tight">
                     Review patient intake
                   </h3>
-                  <p className="text-sm text-[#53665D] leading-relaxed">
+                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                     Clinical dashboard for physicians and OPD triage nurses to inspect incoming histories.
                   </p>
                 </div>
 
-                <ul className="space-y-3 text-sm text-[#293D36] font-medium pt-1">
+                <ul className="space-y-3 text-sm text-[var(--text-heading)] font-medium pt-1">
                   <li className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                     <span>Access submitted histories.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                     <span>Review available summaries and source information.</span>
                   </li>
                   <li className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] flex items-center justify-center shrink-0">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                     <span>Record notes and review status.</span>
@@ -397,24 +397,24 @@ export default function Home() {
                 </ul>
               </div>
 
-              <div className="space-y-3 pt-4 border-t border-[#B8C9BD]">
+              <div className="space-y-3 pt-4 border-t border-[var(--border-color)]">
                 <Link
                   href="/login"
                   id="staff-signin-card-btn"
-                  className="w-full py-4 rounded-xl bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] font-bold text-base shadow-sm transition flex items-center justify-center gap-2 min-h-[48px]"
+                  className="w-full py-4 rounded-xl bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] font-bold text-base shadow-sm transition flex items-center justify-center gap-2 min-h-[48px]"
                 >
                   <span>Staff sign in</span>
-                  <ArrowRight className="w-4 h-4 text-[#FFFDF7]" />
+                  <ArrowRight className="w-4 h-4 text-[var(--btn-main-text)]" />
                 </Link>
                 <div className="text-center">
                   <Link
                     href="/dashboard?sample=true"
                     id="sample-dashboard-secondary-link"
-                    className="text-xs font-bold text-[#356B62] hover:underline"
+                    className="text-xs font-bold text-[var(--btn-main)] hover:underline"
                   >
                     See an example
                   </Link>
-                  <span className="text-3xs text-[#53665D] block mt-0.5">
+                  <span className="text-3xs text-[var(--text-muted)] block mt-0.5">
                     (Public view with synthetic data only)
                   </span>
                 </div>
@@ -476,15 +476,15 @@ export default function Home() {
       {/* Visible Feedback Callout Strip */}
       <section className="py-10" style={{ backgroundColor: 'var(--bg-main)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#B8C9BD] flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm text-center sm:text-left">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm text-center sm:text-left">
             <div className="space-y-1">
-              <span className="text-xs font-bold text-[#356B62] uppercase tracking-wider block">
+              <span className="text-xs font-bold text-[var(--btn-main)] uppercase tracking-wider block">
                 User Testing &amp; Feedback
               </span>
-              <h3 className="text-lg font-bold text-[#293D36]">
+              <h3 className="text-lg font-bold text-[var(--text-heading)]">
                 Have feedback on language clarity or touch friction?
               </h3>
-              <p className="text-xs text-[#53665D]">
+              <p className="text-xs text-[var(--text-muted)]">
                 Share your experience directly through our Google Feedback form.
               </p>
             </div>
@@ -493,7 +493,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               id="cta-feedback-form-link"
-              className="px-6 py-3 rounded-xl bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] font-bold text-xs inline-flex items-center gap-1.5 transition whitespace-nowrap min-h-[44px]"
+              className="px-6 py-3 rounded-xl bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] font-bold text-xs inline-flex items-center gap-1.5 transition whitespace-nowrap min-h-[44px]"
             >
               <span>Give feedback</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -503,14 +503,14 @@ export default function Home() {
       </section>
 
       {/* Footer: Navy #0B1B25 */}
-      <footer className="border-t border-[#304652] bg-[#0B1B25] py-10 px-4 sm:px-6 text-center text-xs text-[#91A8B3] space-y-4">
-        <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-[#FAF7F0]">
+      <footer className="border-t border-[var(--border-color)] bg-[var(--header-bg)] py-10 px-4 sm:px-6 text-center text-xs text-[var(--header-text-muted)] space-y-4">
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-[var(--header-text)]">
           <Link href="/kiosk" className="hover:text-[#4FD1C5] transition">Patient Intake Kiosk</Link>
-          <span className="text-[#304652]">|</span>
+          <span className="text-[var(--slate-accent)]">|</span>
           <Link href="/dashboard?sample=true" className="hover:text-[#4FD1C5] transition">See an example dashboard</Link>
-          <span className="text-[#304652]">|</span>
+          <span className="text-[var(--slate-accent)]">|</span>
           <Link href="/login" className="hover:text-[#4FD1C5] transition">Staff Sign In</Link>
-          <span className="text-[#304652]">|</span>
+          <span className="text-[var(--slate-accent)]">|</span>
           <a
             href={FEEDBACK_FORM_URL}
             target="_blank"
@@ -522,10 +522,10 @@ export default function Home() {
           </a>
         </div>
         <div className="space-y-1 max-w-2xl mx-auto">
-          <p className="font-bold text-[#FAF7F0]">
+          <p className="font-bold text-[var(--header-text)]">
             MediKiosk — Patient history. Prepared for your consultation.
           </p>
-          <p className="text-3xs text-[#91A8B3] leading-relaxed">
+          <p className="text-3xs text-[var(--header-text-muted)] leading-relaxed">
             Public testing version — please use fictional information. AI summaries assist clinician review and do not provide medical diagnosis or treatment.
           </p>
         </div>

@@ -8,12 +8,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[#356B62] text-[#FFFDF7] hover:bg-[#2B574F] active:bg-[#244741] shadow-sm font-bold",
-        destructive: "bg-[#991B1B] text-[#FFFDF7] hover:bg-[#7F1D1D]",
-        outline: "border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] hover:bg-[#D8E5DC]",
-        secondary: "bg-[#D8E5DC] text-[#293D36] hover:bg-[#C9D8CE] border border-[#B8C9BD]",
-        ghost: "hover:bg-[#D8E5DC] text-[#53665D] hover:text-[#293D36]",
-        link: "text-[#356B62] underline-offset-4 hover:underline font-semibold",
+        default: "bg-[var(--btn-main)] text-[var(--btn-main-text)] hover:bg-[var(--btn-main-hover)] active:bg-[#244741] shadow-sm font-bold",
+        destructive: "bg-[#991B1B] text-[var(--btn-main-text)] hover:bg-[#7F1D1D]",
+        outline: "border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] hover:bg-[var(--bg-panel)]",
+        secondary: "bg-[var(--bg-panel)] text-[var(--text-heading)] hover:bg-[#C9D8CE] border border-[var(--border-color)]",
+        ghost: "hover:bg-[var(--bg-panel)] text-[var(--text-muted)] hover:text-[var(--text-heading)]",
+        link: "text-[var(--btn-main)] underline-offset-4 hover:underline font-semibold",
       },
       size: {
         default: "h-11 px-5 py-2.5",

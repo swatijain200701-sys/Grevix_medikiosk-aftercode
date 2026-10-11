@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 310" width="100%" height="auto" style="background:#0E1D26;border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">
+  <style>
+    .title { fill: #EDF4F2; font-size: 16px; font-weight: 700; }
+    .subtitle { fill: #B5C7C5; font-size: 11px; }
+    .label { fill: #EDF4F2; font-size: 12.5px; font-weight: 600; }
+    .val { fill: #EDF4F2; font-size: 13px; font-weight: 700; }
+    .pct { fill: #B5C7C5; font-size: 11px; }
+  </style>
+  <rect width="640" height="310" rx="12" fill="#0E1D26" stroke="#36505A" stroke-width="1"/>
+  <text x="24" y="34" class="title">Self-Reported Respondent Roles (n=16, Unverified)</text>
+  <text x="24" y="52" class="subtitle">Source: Form Export | Note: Self-reported roles do not establish formal clinical validation</text>
+
+  <!-- Row 1: Student (9) -->
+  <text x="24" y="94" class="label">Student</text>
+  <rect x="220" y="78" width="300" height="22" rx="6" fill="#1C3440"/>
+  <rect x="220" y="78" width="168.75" height="22" rx="6" fill="#59C7B6"/>
+  <text x="398" y="94" class="val">9</text>
+  <text x="414" y="94" class="pct">(56.25%)</text>
+
+  <!-- Row 2: Patient/caregiver (3) -->
+  <text x="24" y="142" class="label">Patient/caregiver</text>
+  <rect x="220" y="126" width="300" height="22" rx="6" fill="#1C3440"/>
+  <rect x="220" y="126" width="56.25" height="22" rx="6" fill="#77D8C8"/>
+  <text x="286" y="142" class="val">3</text>
+  <text x="302" y="142" class="pct">(18.75%)</text>
+
+  <!-- Row 3: Doctor/nurse/healthcare staff (2) -->
+  <text x="24" y="190" class="label">Doctor / nurse / staff</text>
+  <rect x="220" y="174" width="300" height="22" rx="6" fill="#1C3440"/>
+  <rect x="220" y="174" width="37.5" height="22" rx="6" fill="#8AC7FF"/>
+  <text x="268" y="190" class="val">2</text>
+  <text x="284" y="190" class="pct">(12.50%)</text>
+
+  <!-- Row 4: Other (Prefer not to say) (2) -->
+  <text x="24" y="238" class="label">Other (Prefer not to say)</text>
+  <rect x="220" y="222" width="300" height="22" rx="6" fill="#1C3440"/>
+  <rect x="220" y="222" width="37.5" height="22" rx="6" fill="#B5C7C5"/>
+  <text x="268" y="238" class="val">2</text>
+  <text x="284" y="238" class="pct">(12.50%)</text>
+
+  <line x1="24" y1="272" x2="616" y2="272" stroke="#36505A" stroke-width="1"/>
+  <text x="24" y="292" fill="#B5C7C5" font-size="11px">Total respondents: 16 | Roles are strictly self-reported by community participants.</text>
+</svg>

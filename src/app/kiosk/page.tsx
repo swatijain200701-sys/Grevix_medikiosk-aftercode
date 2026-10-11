@@ -370,7 +370,7 @@ export default function KioskPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#EAF0EB] text-[#293D36] flex flex-col font-sans selection:bg-[#356B62]/20 selection:text-[#356B62]">
+    <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-heading)] flex flex-col font-sans selection:bg-[var(--btn-main)]/20 selection:text-[var(--btn-main)]">
       <KioskHeader
         syncStats={syncStats}
         savedLocally={savedLocally}
@@ -381,9 +381,9 @@ export default function KioskPage() {
       />
 
       {!isSubmitted && (
-        <div className="w-full bg-[#D8E5DC] h-1.5">
+        <div className="w-full bg-[var(--bg-panel)] h-1.5">
           <div
-            className="bg-[#356B62] h-1.5 transition-all duration-300"
+            className="bg-[var(--btn-main)] h-1.5 transition-all duration-300"
             style={{ width: `${(currentStep / TOTAL_STEPS) * 100}%` }}
           />
         </div>
@@ -392,12 +392,12 @@ export default function KioskPage() {
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6 sm:py-8 flex flex-col justify-between">
         {!isSubmitted ? (
           <div className="flex-1 flex flex-col">
-            <div className="flex items-center justify-between mb-4 text-xs font-bold uppercase tracking-wider text-[#53665D]">
-              <span className="font-mono text-[#356B62]">
+            <div className="flex items-center justify-between mb-4 text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              <span className="font-mono text-[var(--btn-main)]">
                 {t.step} {currentStep} {t.of} {TOTAL_STEPS}
               </span>
               {isAssisted && (
-                <span className="inline-flex items-center gap-1 text-[#356B62] bg-[#D8E5DC] border border-[#B8C9BD] px-2.5 py-0.5 rounded-md font-bold text-2xs">
+                <span className="inline-flex items-center gap-1 text-[var(--btn-main)] bg-[var(--bg-panel)] border border-[var(--border-color)] px-2.5 py-0.5 rounded-md font-bold text-2xs">
                   <UserCheck className="w-3.5 h-3.5" />
                   {t.assistedEntry}
                 </span>
@@ -415,7 +415,7 @@ export default function KioskPage() {
                   <h4 className="font-bold text-[#991B1B] text-base mb-1">
                     {lang === "hi" ? "महत्वपूर्ण सूचना / Attention" : "Important Clinical Notice"}
                   </h4>
-                  <p className="font-bold text-[#293D36]">
+                  <p className="font-bold text-[var(--text-heading)]">
                     {lang === "hi" ? redFlags[0].patientMessageHi : redFlags[0].patientMessageEn}
                   </p>
                   <p className="text-2xs text-[#7F1D1D] mt-1 font-medium">
@@ -437,7 +437,7 @@ export default function KioskPage() {
             )}
 
             {/* Content Card (Warm Cream) */}
-            <div className="bg-[#FAF7F0] p-6 sm:p-8 rounded-3xl border border-[#B8C9BD] shadow-md text-[#293D36]">
+            <div className="bg-[var(--bg-card)] p-6 sm:p-8 rounded-3xl border border-[var(--border-color)] shadow-md text-[var(--text-heading)]">
               {currentStep === 1 && (
                 <StepRegistration
                   preferredName={preferredName}
@@ -573,8 +573,8 @@ export default function KioskPage() {
                 disabled={currentStep === 1}
                 className={`inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm transition min-h-[48px] ${
                   currentStep === 1
-                    ? "opacity-40 cursor-not-allowed text-[#53665D] bg-[#D8E5DC] border border-[#B8C9BD]"
-                    : "text-[#293D36] bg-[#FAF7F0] border border-[#B8C9BD] hover:bg-[#D8E5DC]"
+                    ? "opacity-40 cursor-not-allowed text-[var(--text-muted)] bg-[var(--bg-panel)] border border-[var(--border-color)]"
+                    : "text-[var(--text-heading)] bg-[var(--bg-card)] border border-[var(--border-color)] hover:bg-[var(--bg-panel)]"
                 }`}
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -586,19 +586,19 @@ export default function KioskPage() {
                   type="button"
                   id="kiosk-next-btn"
                   onClick={handleNext}
-                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] shadow-sm transition min-h-[48px]"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] shadow-sm transition min-h-[48px]"
                 >
                   <span>{t.next}</span>
-                  <ArrowRight className="w-4 h-4 text-[#FFFDF7]" />
+                  <ArrowRight className="w-4 h-4 text-[var(--btn-main-text)]" />
                 </button>
               ) : (
                 <button
                   type="button"
                   id="kiosk-submit-btn"
                   onClick={handleSubmit}
-                  className="inline-flex items-center gap-2 px-9 py-4 rounded-xl font-bold text-base bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] shadow-md transition min-h-[48px]"
+                  className="inline-flex items-center gap-2 px-9 py-4 rounded-xl font-bold text-base bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] shadow-md transition min-h-[48px]"
                 >
-                  <CheckCircle className="w-5 h-5 text-[#FFFDF7]" />
+                  <CheckCircle className="w-5 h-5 text-[var(--btn-main-text)]" />
                   <span>{t.submit}</span>
                 </button>
               )}

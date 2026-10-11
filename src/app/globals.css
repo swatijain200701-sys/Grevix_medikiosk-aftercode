@@ -7,40 +7,52 @@
 .light {
   color-scheme: light;
 
-  --header-bg: #0B1B25;
+  /* Shell / Layout */
+  --bg-main: #EAF0EB;            /* Sage Mist page background */
+  --header-bg: #0B1B25;          /* Navy header/footer */
   --footer-bg: #0B1B25;
   --header-text: #FAF7F0;
   --header-text-muted: #91A8B3;
 
-  --logo-tile: #4FD1C5;
-  --turquoise-accent: #4FD1C5;
-  --slate-accent: #304652;
+  /* Surfaces */
+  --bg-card: #FAF7F0;            /* Warm Cream card surface */
+  --bg-panel: #D8E5DC;           /* Soft Sage secondary panel */
+  --bg-elevated: #D8E5DC;
 
-  --bg-main: #EAF0EB;
-  --bg-card: #FAF7F0;
-  --bg-panel: #D8E5DC;
+  /* Typography */
+  --text-heading: #293D36;       /* Deep Charcoal headings */
+  --text-body: #293D36;          /* Body text */
+  --text-muted: #53665D;         /* Supporting text */
 
-  --btn-main: #356B62;
-  --btn-main-hover: #2B574F;
-  --btn-main-text: #FFFDF7;
-
-  --text-heading: #293D36;
-  --text-body: #293D36;
-  --text-muted: #53665D;
-
+  /* Borders & Dividers */
   --border-color: #B8C9BD;
 
-  --error-bg: #FEE2E2;
-  --error-border: #EF4444;
-  --error-text: #991B1B;
+  /* Buttons & Interactive */
+  --btn-main: #356B62;           /* Teal primary button */
+  --btn-main-hover: #2B574F;
+  --btn-main-text: #FFFDF7;      /* Ivory text */
 
-  --caution-bg: #FEF3C7;
-  --caution-border: #F59E0B;
-  --caution-text: #92400E;
-
+  /* Accents & Brand */
+  --logo-tile: #4FD1C5;
+  --turquoise-accent: #4FD1C5;
+  --accent: #4FD1C5;
+  --slate-accent: #304652;
   --focus-ring: #356B62;
-  --radius: 0.75rem;
 
+  /* Distinct Semantic Status Surfaces */
+  --surface-success: #D1FAE5;
+  --surface-success-border: #10B981;
+  --surface-success-text: #065F46;
+
+  --surface-pending: #FEF3C7;
+  --surface-pending-border: #F59E0B;
+  --surface-pending-text: #92400E;
+
+  --surface-error: #FEE2E2;
+  --surface-error-border: #EF4444;
+  --surface-error-text: #B91C1C;
+
+  /* Semantic UI mappings for Tailwind */
   --background: var(--bg-main);
   --foreground: var(--text-body);
   --card: var(--bg-card);
@@ -54,8 +66,9 @@
   --border: var(--border-color);
   --input: var(--border-color);
   --ring: var(--focus-ring);
+  --radius: 0.75rem;
 
-  /* Timeline light tokens */
+  /* Timeline tokens (Light) */
   --timeline-track: #B8C9BD;
   --timeline-progress: #356B62;
   --timeline-dot-active-bg: #EAF0EB;
@@ -72,45 +85,57 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DARK THEME — original navy, slate, turquoise palette
+   DARK THEME — precise user-specified dark tokens
    ═══════════════════════════════════════════════════════════════════════════ */
 .dark {
   color-scheme: dark;
 
-  --header-bg: #06111A;
-  --footer-bg: #06111A;
-  --header-text: #F1F6F8;
-  --header-text-muted: #91A8B3;
+  /* Shell / Layout */
+  --bg-main: #0B151C;            /* Page background: #0B151C */
+  --header-bg: #0E1D26;          /* Header/footer: #0E1D26 */
+  --footer-bg: #0E1D26;
+  --header-text: #EDF4F2;
+  --header-text-muted: #B5C7C5;
 
-  --logo-tile: #4FD1C5;
-  --turquoise-accent: #4FD1C5;
-  --slate-accent: #304652;
+  /* Surfaces */
+  --bg-card: #152832;            /* Card surface: #152832 */
+  --bg-panel: #1C3440;           /* Elevated surface: #1C3440 */
+  --bg-elevated: #1C3440;
 
-  --bg-main: #08121B;
-  --bg-card: #0F2231;
-  --bg-panel: #122330;
+  /* Typography */
+  --text-heading: #EDF4F2;       /* Main text/headings: #EDF4F2 */
+  --text-body: #EDF4F2;
+  --text-muted: #B5C7C5;         /* Supporting text: #B5C7C5 */
 
-  --btn-main: #4FD1C5;
-  --btn-main-hover: #3DBDB2;
-  --btn-main-text: #06111A;
+  /* Borders & Dividers */
+  --border-color: #36505A;       /* Borders: #36505A */
 
-  --text-heading: #F1F6F8;
-  --text-body: #B6C7CF;
-  --text-muted: #7A9EAD;
+  /* Buttons & Interactive */
+  --btn-main: #59C7B6;           /* Primary button: #59C7B6 */
+  --btn-main-hover: #4AB0A0;
+  --btn-main-text: #092C27;      /* Primary button text: #092C27 */
 
-  --border-color: #294350;
+  /* Accents & Brand */
+  --logo-tile: #77D8C8;          /* Accent: #77D8C8 */
+  --turquoise-accent: #77D8C8;
+  --accent: #77D8C8;
+  --slate-accent: #36505A;
+  --focus-ring: #8AC7FF;         /* Focus outline: #8AC7FF */
 
-  --error-bg: #3B1515;
-  --error-border: #EF4444;
-  --error-text: #FCA5A5;
+  /* Distinct Semantic Status Surfaces (Dark) */
+  --surface-success: #064E3B;
+  --surface-success-border: #10B981;
+  --surface-success-text: #A7F3D0;
 
-  --caution-bg: #3B2900;
-  --caution-border: #F59E0B;
-  --caution-text: #FCD34D;
+  --surface-pending: #451A03;
+  --surface-pending-border: #F59E0B;
+  --surface-pending-text: #FDE68A;
 
-  --focus-ring: #4FD1C5;
-  --radius: 0.75rem;
+  --surface-error: #450A0A;
+  --surface-error-border: #EF4444;
+  --surface-error-text: #FECACA;
 
+  /* Semantic UI mappings for Tailwind */
   --background: var(--bg-main);
   --foreground: var(--text-body);
   --card: var(--bg-card);
@@ -124,32 +149,36 @@
   --border: var(--border-color);
   --input: var(--border-color);
   --ring: var(--focus-ring);
+  --radius: 0.75rem;
 
-  /* Timeline dark tokens */
-  --timeline-track: #294350;
-  --timeline-progress: #4FD1C5;
-  --timeline-dot-active-bg: #18303D;
-  --timeline-dot-active-border: #4FD1C5;
-  --timeline-dot-active-text: #4FD1C5;
-  --timeline-dot-bg: #122330;
-  --timeline-dot-border: #294350;
-  --timeline-dot-text: #91A8B3;
-  --timeline-badge-bg: #18303D;
-  --timeline-badge-border: #294350;
-  --timeline-badge-text: #4FD1C5;
-  --timeline-title: #F1F6F8;
-  --timeline-desc: #B6C7CF;
+  /* Timeline tokens (Dark) */
+  --timeline-track: #36505A;
+  --timeline-progress: #59C7B6;
+  --timeline-dot-active-bg: #1C3440;
+  --timeline-dot-active-border: #59C7B6;
+  --timeline-dot-active-text: #59C7B6;
+  --timeline-dot-bg: #152832;
+  --timeline-dot-border: #36505A;
+  --timeline-dot-text: #B5C7C5;
+  --timeline-badge-bg: #1C3440;
+  --timeline-badge-border: #36505A;
+  --timeline-badge-text: #59C7B6;
+  --timeline-title: #EDF4F2;
+  --timeline-desc: #B5C7C5;
 }
 
 @theme inline {
   --color-header-bg: var(--header-bg);
   --color-footer-bg: var(--footer-bg);
+  --color-header-text: var(--header-text);
+  --color-header-text-muted: var(--header-text-muted);
   --color-logo-tile: var(--logo-tile);
   --color-turquoise-accent: var(--turquoise-accent);
   --color-slate-accent: var(--slate-accent);
   --color-bg-main: var(--bg-main);
   --color-bg-card: var(--bg-card);
   --color-bg-panel: var(--bg-panel);
+  --color-bg-elevated: var(--bg-elevated);
   --color-btn-main: var(--btn-main);
   --color-btn-main-hover: var(--btn-main-hover);
   --color-btn-main-text: var(--btn-main-text);
@@ -157,12 +186,8 @@
   --color-text-body: var(--text-body);
   --color-text-muted: var(--text-muted);
   --color-border-color: var(--border-color);
-  --color-error-bg: var(--error-bg);
-  --color-error-border: var(--error-border);
-  --color-error-text: var(--error-text);
-  --color-caution-bg: var(--caution-bg);
-  --color-caution-border: var(--caution-border);
-  --color-caution-text: var(--caution-text);
+  --color-accent: var(--accent);
+  --color-focus-ring: var(--focus-ring);
 }
 
 /* ── Base Body ──────────────────────────────────────────────────────────── */

@@ -40,9 +40,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Fresh visit defaults to 'light' regardless of system preference
     const stored = (localStorage.getItem(THEME_STORAGE_KEY) as ThemeOption) || "light";
     setThemeState(stored);
-    const resolved = stored === "system" ? getSystemPreference() : stored;
+    const resolved = stored === "system" ? getSystemPreference() : stored === "dark" ? "dark" : "light";
     setResolvedTheme(resolved);
     applyTheme(resolved);
     setMounted(true);
@@ -63,7 +64,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setTheme = useCallback((t: ThemeOption) => {
     localStorage.setItem(THEME_STORAGE_KEY, t);
     setThemeState(t);
-    const resolved = t === "system" ? getSystemPreference() : t;
+    const resolved = t === "system" ? getSystemPreference() : t === "dark" ? "dark" : "light";
     setResolvedTheme(resolved);
     applyTheme(resolved);
   }, []);

@@ -69,34 +69,34 @@ export function StaffLogin({
   return (
     <div
       className={cn(
-        "w-full max-w-4xl mx-auto rounded-3xl bg-[#FAF7F0] border border-[#B8C9BD] shadow-xl overflow-hidden text-[#293D36]",
+        "w-full max-w-4xl mx-auto rounded-3xl bg-[var(--bg-card)] border border-[var(--border-color)] shadow-xl overflow-hidden text-[var(--text-heading)]",
         className
       )}
     >
       <div className="grid grid-cols-1 md:grid-cols-12 min-h-[520px]">
         
         {/* Left Side: Navy Brand Panel (md:col-span-5) */}
-        <div className="md:col-span-5 bg-[#0B1B25] text-[#FFFDF7] p-8 sm:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#304652]">
+        <div className="md:col-span-5 bg-[var(--header-bg)] text-[var(--btn-main-text)] p-8 sm:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[var(--border-color)]">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-[#4FD1C5] text-[#0B1B25] flex items-center justify-center font-bold text-lg shadow-sm">
                 <Stethoscope className="w-5 h-5 stroke-[2.5]" />
               </div>
               <div>
-                <span className="font-extrabold text-base tracking-tight text-[#FAF7F0] block">
+                <span className="font-extrabold text-base tracking-tight text-[var(--header-text)] block">
                   MediKiosk
                 </span>
-                <span className="text-3xs text-[#91A8B3] uppercase tracking-wider block font-semibold">
+                <span className="text-3xs text-[var(--header-text-muted)] uppercase tracking-wider block font-semibold">
                   Clinical Staff Portal
                 </span>
               </div>
             </div>
 
             <div className="space-y-3 pt-4">
-              <h2 className="text-xl font-bold tracking-tight text-[#FAF7F0]">
+              <h2 className="text-xl font-bold tracking-tight text-[var(--header-text)]">
                 Hospital Staff Intake Review
               </h2>
-              <p className="text-xs text-[#91A8B3] leading-relaxed">
+              <p className="text-xs text-[var(--header-text-muted)] leading-relaxed">
                 Inspect submitted patient histories, review structured summaries and source excerpts, and record clinical notes before consultation.
               </p>
             </div>
@@ -117,21 +117,21 @@ export function StaffLogin({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-3xs text-[#91A8B3] pt-6">
+          <div className="flex items-center gap-2 text-3xs text-[var(--header-text-muted)] pt-6">
             <ShieldCheck className="w-4 h-4 text-[#4FD1C5] shrink-0" />
             <span>Audited session access — strict patient data boundary.</span>
           </div>
         </div>
 
         {/* Right Side: Clean Accessible Form (md:col-span-7) */}
-        <div className="md:col-span-7 p-6 sm:p-10 flex flex-col justify-center bg-[#FAF7F0]">
+        <div className="md:col-span-7 p-6 sm:p-10 flex flex-col justify-center bg-[var(--bg-card)]">
           <div className="max-w-md w-full mx-auto space-y-6">
             
             <div className="space-y-1.5">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#293D36] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-heading)] tracking-tight">
                 {title}
               </h1>
-              <p className="text-sm text-[#53665D] leading-relaxed">
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                 {subtitle}
               </p>
             </div>
@@ -159,12 +159,12 @@ export function StaffLogin({
               <div className="space-y-1.5">
                 <label
                   htmlFor="staff-username"
-                  className="text-xs font-bold text-[#293D36] block"
+                  className="text-xs font-bold text-[var(--text-heading)] block"
                 >
                   Staff Username or ID
                 </label>
                 <div className="relative">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#53665D] pointer-events-none">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none">
                     <User className="w-4 h-4" />
                   </div>
                   <input
@@ -176,7 +176,7 @@ export function StaffLogin({
                     placeholder="e.g. opd_staff or dr_sharma"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full h-12 pl-10 pr-3.5 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] text-sm focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition"
+                    className="w-full h-12 pl-10 pr-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] placeholder-[#53665D] text-sm focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition"
                   />
                 </div>
               </div>
@@ -185,12 +185,12 @@ export function StaffLogin({
               <div className="space-y-1.5">
                 <label
                   htmlFor="staff-password"
-                  className="text-xs font-bold text-[#293D36] block"
+                  className="text-xs font-bold text-[var(--text-heading)] block"
                 >
                   Password
                 </label>
                 <div className="relative">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#53665D] pointer-events-none">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none">
                     <Lock className="w-4 h-4" />
                   </div>
                   <input
@@ -202,13 +202,13 @@ export function StaffLogin({
                     placeholder="••••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-12 pl-10 pr-10 rounded-xl border border-[#B8C9BD] bg-[#FAF7F0] text-[#293D36] placeholder-[#53665D] text-sm focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition"
+                    className="w-full h-12 pl-10 pr-10 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-heading)] placeholder-[#53665D] text-sm focus:border-[#356B62] focus:ring-2 focus:ring-[#356B62]/20 outline-none transition"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 text-[#53665D] hover:text-[#293D36] transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -226,7 +226,7 @@ export function StaffLogin({
                 disabled={isLoading || isSuccess}
                 className={cn(
                   "w-full h-12 mt-2 rounded-xl font-bold text-sm tracking-wide transition-all duration-150 flex items-center justify-center gap-2 shadow-sm min-h-[48px]",
-                  "bg-[#356B62] hover:bg-[#2B574F] text-[#FFFDF7] disabled:opacity-50"
+                  "bg-[var(--btn-main)] hover:bg-[var(--btn-main-hover)] text-[var(--btn-main-text)] disabled:opacity-50"
                 )}
               >
                 <AnimatePresence mode="wait">
@@ -236,7 +236,7 @@ export function StaffLogin({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="flex items-center gap-2 text-[#FFFDF7]"
+                      className="flex items-center gap-2 text-[var(--btn-main-text)]"
                     >
                       <Loader2 className="w-4 h-4 animate-spin" />
                       <span>Verifying staff access...</span>
@@ -246,7 +246,7 @@ export function StaffLogin({
                       key="success"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="flex items-center gap-2 text-[#FFFDF7]"
+                      className="flex items-center gap-2 text-[var(--btn-main-text)]"
                     >
                       <Check className="w-4 h-4 stroke-[3]" />
                       <span>Access Granted</span>
@@ -257,7 +257,7 @@ export function StaffLogin({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="flex items-center gap-1.5 text-[#FFFDF7]"
+                      className="flex items-center gap-1.5 text-[var(--btn-main-text)]"
                     >
                       <span>Sign In to Staff Portal</span>
                       <ArrowRight className="w-4 h-4" />
@@ -267,15 +267,15 @@ export function StaffLogin({
               </button>
 
               {/* Demo credentials hint */}
-              <div className="p-3.5 rounded-xl bg-[#D8E5DC] border border-[#B8C9BD] text-3xs text-[#293D36] space-y-1.5">
-                <span className="font-bold text-[#293D36] block">Authorized Demo Credentials:</span>
+              <div className="p-3.5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-color)] text-3xs text-[var(--text-heading)] space-y-1.5">
+                <span className="font-bold text-[var(--text-heading)] block">Authorized Demo Credentials:</span>
                 <div className="flex justify-between items-center">
-                  <span>Staff: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">opd_staff</code></span>
-                  <span>Pass: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">clinical2026</code></span>
+                  <span>Staff: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">opd_staff</code></span>
+                  <span>Pass: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">clinical2026</code></span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span>Doctor: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">dr_sharma</code></span>
-                  <span>Pass: <code className="bg-[#FAF7F0] px-1.5 py-0.5 rounded border border-[#B8C9BD] text-[#356B62] font-bold">opd@medikiosk</code></span>
+                  <span>Doctor: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">dr_sharma</code></span>
+                  <span>Pass: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">opd@medikiosk</code></span>
                 </div>
               </div>
 

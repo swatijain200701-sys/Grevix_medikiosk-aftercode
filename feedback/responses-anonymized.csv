@@ -1,0 +1,17 @@
+Response_ID,Timestamp,Self_Reported_Role,Purpose_Clarity,Improvement_Suggestion,Anonymous_Sharing_Permission
+R01,2026/10/11 6:47:32 pm GMT+5:30,Student,Somewhat clear,"Actually currently, I haven’t seen a initiative like this so that’s why I am getting a slightly different in my understanding level. But it’s been great such a useful initiative in the industry",Yes
+R02,2026/10/11 7:45:04 pm GMT+5:30,Student,Very clear,Nothing..everything is well from my perspective.,Yes
+R03,2026/10/11 7:45:08 pm GMT+5:30,Student,Somewhat clear,"Background, and dark theme",Yes
+R04,2026/10/11 7:59:00 pm GMT+5:30,Student,Very clear,Just the dark theme,Yes
+R05,2026/10/11 8:44:10 pm GMT+5:30,Other (Prefer not to say),Very clear,"The offline queue worked. I submitted with no network and it synced on reconnect, no duplicate. I'd fix this first: the red notice says chest pain or shortness of breath, but only chest pain triggers it (red-flags.ts). Picking ""Shortness of Breath"" alone, or typing ""short of breath and feel faint"", showed nothing. All 3 consent boxes are pre-ticked and unticking storage doesn't block Next. Allergies default to ""No known allergies"". And an intake with only a name can be submitted. The badge says ""Received by the server"" from step 1, and the success screen shows before the server replies. I'd show ""saved on this device"" until it confirms. From reading the code, staff access isn't really protected, so the live queue is readable by anyone, which I'd lock down before real data goes in. I'm also in GREVIX AfterCode, with BackedCV (a CV vs job posting checker), and I'd value your honest take: [external promotional link redacted]",Yes
+R06,2026/10/11 9:11:43 pm GMT+5:30,Student,Very clear,Nothing just perfect,Yes
+R07,2026/10/11 9:22:10 pm GMT+5:30,Student,Somewhat clear,Clearer explanation of the website,Yes
+R08,2026/10/11 9:22:34 pm GMT+5:30,Student,Very clear,"Colour pallet ,",Yes
+R09,2026/10/11 10:03:32 pm GMT+5:30,Patient/caregiver,Very clear,can work on the colours of the website,Yes
+R10,2026/10/11 10:05:17 pm GMT+5:30,Doctor/nurse/healthcare staff,Very clear,nothing very good website,Yes
+R11,2026/10/11 10:06:49 pm GMT+5:30,Student,Very clear,very good website for students,Yes
+R12,2026/10/11 10:08:04 pm GMT+5:30,Student,Very clear,"very helpful website,good for every patient",Yes
+R13,2026/10/11 10:08:47 pm GMT+5:30,Patient/caregiver,Very clear,very good website,Yes
+R14,2026/10/11 10:11:23 pm GMT+5:30,Doctor/nurse/healthcare staff,Very clear,"very good website,helpful for others",Yes
+R15,2026/10/11 10:14:00 pm GMT+5:30,Patient/caregiver,Very clear,"nothing confused me,very good website",Yes
+R16,2026/10/11 11:37:39 pm GMT+5:30,Other (Prefer not to say),Very clear,Make it more precise,Yes
