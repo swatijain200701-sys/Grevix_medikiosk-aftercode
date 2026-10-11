@@ -237,7 +237,7 @@ export default function KioskPage() {
           patientConfirmedText: ocr.extractedText,
           confidence: ocr.confidence,
           notes: ocr.notes,
-          hasHandwritingOrAmbiguity: ocr.hasHandwritingOrAmbiguity,
+          hasHandwritingOrAmbiguity: ocr.hasUncertainExtraction,
         },
       ]);
     } catch (err: any) {

@@ -1,4 +1,4 @@
-﻿import { getPendingQueue, markQueueItemInFlight, markQueueItemSynced, markQueueItemFailed } from '@/lib/db/client-db';
+﻿import { getPendingQueue, getDecryptedQueuePayload, markQueueItemInFlight, markQueueItemSynced, markQueueItemFailed } from '@/lib/db/client-db';
 import { SyncPayload, SyncResponse, SyncResponseSchema } from '@/lib/types/schema';
 
 export type SyncState = 'idle' | 'checking' | 'syncing' | 'synced' | 'offline' | 'error';
@@ -103,16 +103,12 @@ class SyncManager {
         const wasReachable = this.stats.isServerReachable;
         const reachable = await this.checkServerReachability();
         if (!wasReachable && reachable) {
-          // Transitioned from unreachable to reachable
           this.triggerSync('healthcheck_restored');
         }
       }
     }, 10000);
   }
 
-  /**
-   * Main synchronization trigger with concurrency lock & backoff
-   */
   public async triggerSync(triggerReason: string = 'manual'): Promise<{ syncedCount: number; errors: number }> {
     if (this.isDraining) {
       return { syncedCount: 0, errors: 0 };
@@ -145,7 +141,8 @@ class SyncManager {
     for (const item of pending) {
       try {
         await markQueueItemInFlight(item.idempotencyKey);
-        const payload: SyncPayload = JSON.parse(item.payloadJson);
+        // Decrypt payload from encrypted rest state
+        const payload: SyncPayload = await getDecryptedQueuePayload(item);
 
         const res = await fetch('/api/sync', {
           method: 'POST',
@@ -163,20 +160,16 @@ class SyncManager {
         await markQueueItemSynced(item.idempotencyKey);
         syncedCount++;
 
-        // Measure reconnect latency if applicable
         if (this.reconnectStartTime) {
           this.stats.reconnectLatencyMs = Date.now() - this.reconnectStartTime;
         }
 
-        // Reset backoff on success
         this.backoffDelayMs = 2000;
         this.stats.lastSuccessfulSyncAt = new Date().toISOString();
       } catch (err: any) {
         errors++;
         this.stats.lastError = err.message;
         await markQueueItemFailed(item.idempotencyKey, err.message);
-
-        // Exponential backoff
         this.backoffDelayMs = Math.min(this.backoffDelayMs * 2, this.maxBackoffDelayMs);
       }
     }

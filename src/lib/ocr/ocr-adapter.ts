@@ -3,7 +3,7 @@
 export interface OcrResult {
   extractedText: string;
   confidence: 'high' | 'medium' | 'uncertain';
-  hasHandwritingOrAmbiguity: boolean;
+  hasUncertainExtraction: boolean;
   notes: string;
   engine: string;
 }
@@ -12,8 +12,9 @@ export interface OcrResult {
  * Concrete Client OCR Adapter
  * Uses Tesseract.js (WebAssembly client-side engine).
  *
- * HONEST CLINICAL BOUNDARY:
- * - General OCR engines do NOT reliably recognize doctor cursive handwriting or complex clinical sig codes.
+ * HONEST CLINICAL BOUNDARY & AUDIT RULE:
+ * - General OCR engines do NOT reliably recognize clinical cursive handwriting or complex sig codes.
+ * - Low OCR confidence reflects poor text recognition clarity, NOT proof of handwriting detection.
  * - OCR extraction is treated as an initial unverified draft only.
  * - Patient or caregiver review is mandatory before inclusion in confirmed intake history.
  */
@@ -43,7 +44,6 @@ export async function processDocumentImage(file: File): Promise<OcrResult> {
     const text = ret.data.text.trim();
     const tesseractConfidence = ret.data.confidence;
 
-    // Check if confidence is high, medium, or uncertain
     let confidence: 'high' | 'medium' | 'uncertain' = 'medium';
     if (tesseractConfidence > 75) {
       confidence = 'high';
@@ -51,23 +51,22 @@ export async function processDocumentImage(file: File): Promise<OcrResult> {
       confidence = 'uncertain';
     }
 
-    const hasHandwriting = confidence === 'uncertain' || text.includes('?') || tesseractConfidence < 60;
+    const hasUncertainExtraction = confidence === 'uncertain' || tesseractConfidence < 65;
 
     return {
       extractedText: text || `[Document ${file.name}]: Text unclear. Please enter medications manually.`,
       confidence,
-      hasHandwritingOrAmbiguity: hasHandwriting,
-      notes: hasHandwriting
-        ? 'Low confidence or potential handwriting detected. Please verify medicine names carefully.'
+      hasUncertainExtraction,
+      notes: hasUncertainExtraction
+        ? `Low extraction confidence (~${Math.round(tesseractConfidence)}%). Text may be unclear or stylized. Please verify medicine names carefully.`
         : `Tesseract OCR extracted text with ~${Math.round(tesseractConfidence)}% confidence. Review before confirming.`,
       engine: 'Tesseract.js (Client WebAssembly)',
     };
   } catch (err: any) {
-    // Offline or WebAssembly fallback
     return {
-      extractedText: `[Document ${file.name}]: Document captured. Please verify your medications.`,
+      extractedText: `[Document ${file.name}]: Document captured. Please verify your medications manually.`,
       confidence: 'uncertain',
-      hasHandwritingOrAmbiguity: true,
+      hasUncertainExtraction: true,
       notes: `OCR processing note: ${err.message || 'Client OCR unavailable offline'}. Please enter prescription details manually.`,
       engine: 'Fallback Manual Review',
     };

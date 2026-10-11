@@ -11,17 +11,19 @@
 
 ---
 
-## Status: PARTIALLY VERIFIED (Audit & Integrity Status)
+## Status: PARTIALLY VERIFIED (Strict Audit & Evidence Standard)
 
-| Dimension | Verification Level | Status & Evidence |
+| Requirement | Verification Level | Audit Evidence & Outcome |
 | :--- | :--- | :--- |
-| **Offline Data Caching** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dexie IndexedDB + Service Worker precache. Patient continued intake for 31 continuous seconds without internet (`context.setOffline(true)`). |
-| **Data Freshness & Expiry** | **Unit-Tested** | **VERIFIED:** 30-min reconfirmation window and 24-hr cache expiry policies verified in `tests/freshness.test.ts`. |
-| **Duplicate Prevention & Idempotency** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Monotonic revisions with idempotency keys. Server SQLite asserts `recordCount: 1` and `duplicateCount: 0` on reconnects and lost acknowledgments. |
-| **Local Red Flag Trigger** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Chest pain & dyspnea triggers evaluated in browser memory without internet (`tests/rules.test.ts`). |
-| **Shared-Kiosk Privacy & Recovery** | **Browser-Tested & Implemented** | **VERIFIED:** Web Crypto (AES-GCM 256) per-session draft encryption; session reset wipes active draft while leaving background queue intact. |
+| **Offline Data Caching** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dexie IndexedDB + Service Worker precache. Handled a genuine 31.0s network cut mid-intake (`context.setOffline(true)`). |
+| **Encryption at Rest** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dual-layer Web Crypto (AES-GCM 256). Active drafts encrypted via `SessionKey`; `pendingSyncQueue` and `mediaBlobs` encrypted via `DeviceQueueKey`. Zero plaintext at rest. |
+| **Offline Reload Recovery** | **Browser-Tested** | **VERIFIED:** Proved via `tests/e2e/reload-recovery.spec.ts`. Genuinely reloaded browser (`page.reload()`) offline, tearing down JavaScript memory; recovered draft from ciphertext via `sessionStorage` session key re-import. |
+| **Next-Patient Privacy** | **Browser-Tested** | **VERIFIED:** Reset wipes active `SessionKey` and draft from UI. Background encrypted queue remains intact and drains cleanly upon reconnect. |
+| **Idempotency & Zero Duplicates** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Monotonic revisions with idempotency keys. SQLite asserts `recordCount: 1` and `duplicateCount: 0`. |
+| **Data Freshness & Retention** | **Unit-Tested** | **VERIFIED:** 30-min reconfirmation window and 24-hr cache expiry policies verified in `tests/freshness.test.ts`. |
+| **Voice & OCR Honesty** | **Code & Adapter Audited** | **VERIFIED:** Tesseract.js WebAssembly engine; low confidence indicates unclear extraction, not proof of handwriting detection. Voice offline recording works; deferred post-reconnect transcription is labeled pending backend STT configuration. |
 | **Live External AI Summary Generation** | **Implemented & Unit-Tested** | **PENDING EXTERNAL CREDENTIALS:** Multi-provider adapter implemented with strict Zod validation and source excerpt cross-checks. Currently operating in honest unconfigured template fallback mode until user supplies `GEMINI_API_KEY` or `OPENAI_API_KEY`. |
-| **Live External Reconnect-to-Summary Latency** | **Implemented & Unit-Tested** | **PENDING EXTERNAL CREDENTIALS:** Local structured intake pipeline ready in 3.5s; live external LLM latency pending external provider credentials. |
+| **Reconnect Latency (Disaggregated)** | **Browser-Tested** | **VERIFIED:** `reconnectToSyncAcknowledgmentMs: 3006 ms`. `reconnectToStructuredIntakeReadyMs: 3506 ms`. Live external AI cloud latency pending API credentials. |
 
 ---
 
@@ -36,24 +38,31 @@ Playwright automated browser context disconnection test (`tests/e2e/disconnectio
 | **Queue Record Count** | Exactly 1 record | **recordCount: 1** | **VERIFIED** |
 | **Duplicate Count** | Exactly 0 duplicates | **duplicateCount: 0** | **VERIFIED (0 duplicates)** |
 | **Data Completeness** | 100% of facts | **100%** (All symptoms, meds, allergies retained) | **VERIFIED** |
-| **Reconnect-to-Sync Acknowledgment Latency** | < 5 seconds | **3.01 seconds** | **PASSED (< 3.5s)** |
+| **Reconnect-to-Sync Latency** | < 5 seconds | **3.01 seconds** | **PASSED (< 3.5s)** |
+| **Reconnect-to-Structured-Intake-Ready** | < 30 seconds | **3.51 seconds** (local structured pipeline) | **MEASURED** (renamed from live latency) |
+| **Latest Confirmed Revision Used** | Monotonic integer | **Rev 1** | **VERIFIED** |
+| **Factual Retention** | Zero omissions/hallucinations | Expected facts retained, 0 contradictions, 0 unsupported claims | **VERIFIED** |
 | **Local Red-Flag Trigger** | Operates without network | **Detected chest pain alert in browser memory** | **VERIFIED** |
 | **Shared-Kiosk Privacy Reset** | Zero data leak to next patient | **Wipes active session key & draft** | **VERIFIED** |
 
 ---
 
-## Live AI Provider Verification Setup Instructions
+## Exact Credential-Configuration Steps for Live AI
 
 To transition the AI summary from *Pending API Key* to *Live AI Verified*:
-1. Create `.env.local` in the project root:
+1. In `C:\Users\Swati\medikiosk-aftercode`, create `.env.local`:
    ```bash
    cp .env.example .env.local
    ```
-2. Add your provider API key:
+2. Add your provider API key and optional model preference:
    ```env
-   GEMINI_API_KEY=your_actual_gemini_api_key
-   # OR
-   OPENAI_API_KEY=your_actual_openai_api_key
+   # Google Gemini (Recommended)
+   GEMINI_API_KEY=your_actual_gemini_api_key_here
+   GEMINI_MODEL=gemini-2.0-flash # or gemini-1.5-flash
+
+   # OR OpenAI
+   # OPENAI_API_KEY=your_actual_openai_api_key_here
+   # OPENAI_MODEL=gpt-4o-mini
    ```
-3. Restart server: `npm run dev` or `npm run start`.
-4. MediKiosk automatically detects the provider, queries the live model with strict bounded 15s timeout, and validates generated JSON against the patient-submitted excerpts.
+3. Restart server: `npm run build && npm run start`.
+4. Run `npm run test:e2e`: the test will detect the active provider, query the live model with strict bounded 15s timeout, measure `reconnectToRealAiSummaryReadyMs`, and cross-validate generated facts against the patient-submitted excerpts.

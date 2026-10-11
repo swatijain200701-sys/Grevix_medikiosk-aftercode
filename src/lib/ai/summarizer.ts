@@ -4,9 +4,10 @@
  * MediKiosk Server-Side AI Clinical Intake Summarizer
  *
  * SAFETY & INTEGRITY RULES:
- * 1. Only summarizes patient-confirmed intake data. Does not infer clinical diagnoses, dosages, or unstated negatives.
+ * 1. Only summarizes patient-confirmed intake data. Does not infer unstated diagnoses, dosages, or negatives.
  * 2. Cross-validates all references against actual submitted snapshot text. Unsupported claims are flagged in unsupportedOrContradictoryFlags.
- * 3. Never fabricates live AI responses. If LLM provider is not configured or fails, sets status to 'unconfigured' or 'pending'.
+ * 3. Configurable provider & current official models (e.g. Gemini 2.0 Flash, GPT-4o-mini, Llama 3.3 70B).
+ * 4. Never fabricates live AI responses. If LLM provider is not configured, marks status as 'unconfigured'.
  */
 
 export interface SummarizerResult {
@@ -15,12 +16,14 @@ export interface SummarizerResult {
   provider: string;
   isRealAi: boolean;
   error?: string;
+  latencyMs?: number;
 }
 
 export async function generateClinicalSummary(snapshot: PatientCaseSnapshot): Promise<SummarizerResult> {
   const geminiKey = process.env.GEMINI_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
+  const providerPreference = process.env.AI_PROVIDER?.toLowerCase();
 
   const now = new Date().toISOString();
 
@@ -75,10 +78,10 @@ export async function generateClinicalSummary(snapshot: PatientCaseSnapshot): Pr
       provider: 'unconfigured',
       isRealAi: false,
       error: 'GEMINI_API_KEY or OPENAI_API_KEY not configured in environment',
+      latencyMs: 0,
     };
   }
 
-  // Construct structured clinical prompt
   const intakePromptContext = {
     patient: {
       name: snapshot.patient.preferredName,
@@ -104,7 +107,7 @@ export async function generateClinicalSummary(snapshot: PatientCaseSnapshot): Pr
   };
 
   const systemInstructions = `You are a clinical intake summarization assistant for MediKiosk.
-Organize the patient-reported intake data into a concise, structured intake summary for hospital OPD clinicians.
+Organize the patient-reported intake data into a concise, structured intake summary for hospital clinicians.
 
 CRITICAL SAFETY & TRUTH CONSTRAINTS:
 1. DO NOT diagnose diseases, prescribe medication, or recommend specific medical treatments.
@@ -112,7 +115,7 @@ CRITICAL SAFETY & TRUTH CONSTRAINTS:
 3. Every reported condition, medicine, and document observation MUST include:
    - "sourceExcerpt": exact supporting text from patient intake.
    - "sourceId": reference identifier.
-4. If medicines or handwriting are unclear or marked uncertain, reflect uncertain: true.
+4. If medicines or reports are unclear or marked uncertain, reflect uncertain: true.
 5. If information is missing or conflicting, list it explicitly in missingOrConflictingInfo.
 6. Return ONLY valid JSON matching this schema:
 {
@@ -126,13 +129,21 @@ CRITICAL SAFETY & TRUTH CONSTRAINTS:
   "sourceReferences": [{"id": string, "category": string, "field": string, "excerpt": string}]
 }`;
 
+  const startTime = Date.now();
+
   try {
     let rawResponseText = '';
     let usedProvider = '';
 
-    if (geminiKey) {
-      usedProvider = 'Google Gemini';
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`;
+    const useGemini = geminiKey && (!providerPreference || providerPreference === 'gemini');
+    const useOpenAI = openaiKey && (!providerPreference || providerPreference === 'openai');
+    const useGroq = groqKey && (!providerPreference || providerPreference === 'groq');
+
+    if (useGemini) {
+      const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+      usedProvider = `Google Gemini (${model})`;
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
+      
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -148,7 +159,7 @@ CRITICAL SAFETY & TRUTH CONSTRAINTS:
             responseMimeType: 'application/json',
           },
         }),
-        signal: AbortSignal.timeout(15000), // 15s bounded timeout
+        signal: AbortSignal.timeout(15000),
       });
 
       if (!res.ok) {
@@ -157,12 +168,12 @@ CRITICAL SAFETY & TRUTH CONSTRAINTS:
 
       const json = await res.json();
       rawResponseText = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    } else if (openaiKey || groqKey) {
-      const isGroq = !!groqKey && !openaiKey;
-      usedProvider = isGroq ? 'Groq' : 'OpenAI';
+    } else if (useOpenAI || useGroq) {
+      const isGroq = !!useGroq && !useOpenAI;
+      const model = isGroq ? (process.env.GROQ_MODEL || 'llama-3.3-70b-versatile') : (process.env.OPENAI_MODEL || 'gpt-4o-mini');
+      usedProvider = isGroq ? `Groq (${model})` : `OpenAI (${model})`;
       const url = isGroq ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions';
       const authKey = isGroq ? groqKey : openaiKey;
-      const model = isGroq ? 'llama-3.3-70b-versatile' : 'gpt-4o-mini';
 
       const res = await fetch(url, {
         method: 'POST',
@@ -190,6 +201,7 @@ CRITICAL SAFETY & TRUTH CONSTRAINTS:
       rawResponseText = json.choices?.[0]?.message?.content || '';
     }
 
+    const latencyMs = Date.now() - startTime;
     const parsedJson = JSON.parse(rawResponseText);
 
     // Cross-validate source text to ensure zero hallucinations
@@ -239,9 +251,10 @@ CRITICAL SAFETY & TRUTH CONSTRAINTS:
       success: true,
       provider: usedProvider,
       isRealAi: true,
+      latencyMs,
     };
   } catch (err: any) {
-    // Fail gracefully with structured intake labeled as pending
+    const latencyMs = Date.now() - startTime;
     const fallbackSummary: StructuredAiSummary = {
       mainConcern: snapshot.answers.mainConcern,
       historyOfPresentConcern: `Onset/Duration: ${snapshot.answers.onsetDuration}. Concern: ${snapshot.answers.mainConcern}`,
@@ -268,6 +281,7 @@ CRITICAL SAFETY & TRUTH CONSTRAINTS:
       provider: 'failed',
       isRealAi: false,
       error: err.message,
+      latencyMs,
     };
   }
 }

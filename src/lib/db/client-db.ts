@@ -1,6 +1,12 @@
 ﻿import Dexie, { Table } from 'dexie';
 import { PatientCaseSnapshot, SyncPayload } from '@/lib/types/schema';
-import { encryptLocalPayload, decryptLocalPayload, clearActiveSessionCryptoKey } from '@/lib/security/crypto';
+import { 
+  encryptLocalPayload, 
+  decryptLocalPayload, 
+  encryptQueuePayload, 
+  decryptQueuePayload, 
+  clearActiveSessionCryptoKey 
+} from '@/lib/security/crypto';
 
 export interface LocalCaseRecord {
   caseId: string;
@@ -19,7 +25,8 @@ export interface PendingQueueItem {
   idempotencyKey: string;
   caseId: string;
   revision: number;
-  payloadJson: string;
+  encryptedPayload: string; // Encrypted at rest via AES-GCM 256 DeviceQueueKey
+  iv: string;
   retryCount: number;
   lastAttemptAt: string | null;
   status: 'pending' | 'in_flight' | 'failed' | 'synced';
@@ -31,7 +38,8 @@ export interface MediaBlobRecord {
   id: string;
   caseId: string;
   blobType: 'document' | 'audio';
-  dataUrl: string;
+  encryptedDataUrl: string; // Encrypted at rest
+  iv: string;
   mimeType: string;
   createdAt: string;
 }
@@ -48,7 +56,7 @@ export class MediKioskDatabase extends Dexie {
 
   constructor() {
     super('MediKioskLocalDB');
-    this.version(1).stores({
+    this.version(2).stores({
       cases: 'caseId, revision, idempotencyKey, status, lastLocalEditAt, lastPatientConfirmedAt, createdAt',
       pendingSyncQueue: 'idempotencyKey, caseId, revision, status, createdAt',
       mediaBlobs: 'id, caseId, blobType, createdAt',
@@ -75,7 +83,7 @@ export function setActiveCaseId(caseId: string): void {
  * Safe shared-kiosk session completion:
  * - Wipes active case ID from sessionStorage so next patient cannot resume or see previous draft.
  * - Destroys active session crypto key in sessionStorage.
- * - CRITICAL: Leaves pendingSyncQueue intact so completed offline submissions can still drain to server.
+ * - Leaves pendingSyncQueue intact (encrypted at rest with DeviceQueueKey) so background sync can drain.
  */
 export async function clearActiveSession(): Promise<void> {
   if (typeof window !== 'undefined') {
@@ -85,8 +93,8 @@ export async function clearActiveSession(): Promise<void> {
 }
 
 /**
- * Saves patient case in client IndexedDB with Web Crypto encryption.
- * Enforces 30-minute reconfirmation policy if confirmed > 30 minutes ago and un-synced.
+ * Saves patient case in client IndexedDB with Web Crypto encryption (SessionKey).
+ * Enforces 30-minute reconfirmation policy.
  */
 export async function saveLocalCase(snapshot: PatientCaseSnapshot): Promise<void> {
   const now = Date.now();
@@ -139,12 +147,18 @@ export async function getLocalCase(caseId: string): Promise<PatientCaseSnapshot 
   return snapshot;
 }
 
+/**
+ * Enqueues intake payload encrypted at rest using DeviceQueueKey
+ */
 export async function enqueueSync(payload: SyncPayload): Promise<void> {
+  const { ciphertext, iv } = await encryptQueuePayload(payload);
+
   const queueItem: PendingQueueItem = {
     idempotencyKey: payload.idempotencyKey,
     caseId: payload.caseId,
     revision: payload.revision,
-    payloadJson: JSON.stringify(payload),
+    encryptedPayload: ciphertext,
+    iv,
     retryCount: 0,
     lastAttemptAt: null,
     status: 'pending',
@@ -159,6 +173,13 @@ export async function getPendingQueue(): Promise<PendingQueueItem[]> {
     .where('status')
     .anyOf(['pending', 'failed'])
     .sortBy('createdAt');
+}
+
+/**
+ * Decrypts a queued item payload for transmission
+ */
+export async function getDecryptedQueuePayload(item: PendingQueueItem): Promise<SyncPayload> {
+  return await decryptQueuePayload<SyncPayload>(item.encryptedPayload, item.iv);
 }
 
 export async function markQueueItemInFlight(idempotencyKey: string): Promise<void> {
