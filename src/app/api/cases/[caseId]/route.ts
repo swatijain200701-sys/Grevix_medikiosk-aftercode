@@ -29,7 +29,7 @@ export async function GET(
       );
     }
 
-    const record = serverRepo.getCase(caseId);
+    const record = await serverRepo.getCase(caseId);
     if (!record) {
       return NextResponse.json({ error: 'Case not found' }, { status: 404 });
     }
@@ -76,7 +76,7 @@ export async function PATCH(
       );
     }
 
-    const updated = serverRepo.saveStaffReview(caseId, {
+    const updated = await serverRepo.saveStaffReview(caseId, {
       staffNotes: body.staffNotes,
       triageCategory: body.triageCategory,
       reviewedBy: body.reviewedBy,
@@ -88,3 +88,4 @@ export async function PATCH(
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+

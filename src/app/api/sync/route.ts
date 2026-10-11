@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const payload = SyncPayloadSchema.parse(body);
 
     // Persist case into SQLite repository with idempotency check
-    const upsertResult = serverRepo.upsertCase(payload.snapshot, payload.idempotencyKey);
+    const upsertResult = await serverRepo.upsertCase(payload.snapshot, payload.idempotencyKey);
 
     if (!upsertResult.success) {
       return NextResponse.json(
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let summary = serverRepo.getSummaryForRevision(payload.caseId, payload.revision);
+    let summary = await serverRepo.getSummaryForRevision(payload.caseId, payload.revision);
     let summaryStatus: 'generated' | 'pending' | 'unconfigured' | 'failed' = 'pending';
 
     if (!summary) {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       const summaryResult = await generateClinicalSummary(upsertResult.record);
       summary = summaryResult.summary;
       (summary as any).caseId = payload.caseId;
-      serverRepo.saveSummary(summary);
+      await serverRepo.saveSummary(summary);
       summaryStatus = summary.aiStatus;
     } else {
       summaryStatus = summary.aiStatus;

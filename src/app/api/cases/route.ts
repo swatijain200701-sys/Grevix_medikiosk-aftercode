@@ -24,9 +24,10 @@ export async function GET(req: NextRequest) {
     const status = searchParams.get('status') || undefined;
     const triage = searchParams.get('triage') || undefined;
 
-    const cases = serverRepo.listCases({ status, triage });
+    const cases = await serverRepo.listCases({ status, triage });
     return NextResponse.json({ cases, count: cases.length });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+

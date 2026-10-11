@@ -1,7 +1,7 @@
-﻿import Database from 'better-sqlite3';
-import path from 'path';
+﻿import path from 'path';
 import fs from 'fs';
 import { PatientCaseSnapshot, StructuredAiSummary, StaffReview, RedFlagAlert } from '@/lib/types/schema';
+import { LibSqlCaseRepository } from './libsql-db';
 
 /**
  * MediKiosk Server Repository Implementation (SQLite)
@@ -11,26 +11,29 @@ import { PatientCaseSnapshot, StructuredAiSummary, StaffReview, RedFlagAlert } f
  * It is not suitable for ephemeral serverless lambdas without mounted persistent storage.
  */
 
-const DB_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data');
-if (!fs.existsSync(DB_DIR)) {
-  fs.mkdirSync(DB_DIR, { recursive: true });
-}
+let _db: any = null;
 
-const DB_PATH = path.join(DB_DIR, 'medikiosk.sqlite');
-
-let _db: Database.Database | null = null;
-
-export function getDatabase(): Database.Database {
+export function getDatabase(): any {
   if (!_db) {
-    _db = new Database(DB_PATH);
-    _db.pragma('journal_mode = WAL');
-    _db.pragma('foreign_keys = ON');
-    initSchema(_db);
+    try {
+      const DB_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data');
+      if (!fs.existsSync(/*turbopackIgnore: true*/ DB_DIR)) {
+        fs.mkdirSync(DB_DIR, { recursive: true });
+      }
+      const DB_PATH = path.join(DB_DIR, 'medikiosk.sqlite');
+      const DatabaseConstructor = require('better-sqlite3');
+      _db = new DatabaseConstructor(DB_PATH);
+      _db.pragma('journal_mode = WAL');
+      _db.pragma('foreign_keys = ON');
+      initSchema(_db);
+    } catch (err) {
+      console.warn('better-sqlite3 load warning (expected in serverless):', err);
+    }
   }
   return _db;
 }
 
-function initSchema(db: Database.Database): void {
+function initSchema(db: any): void {
   db.exec(`
     CREATE TABLE IF NOT EXISTS cases (
       case_id TEXT PRIMARY KEY,
@@ -125,9 +128,9 @@ export interface ICaseRepository {
 }
 
 export class SqliteCaseRepository implements ICaseRepository {
-  private db: Database.Database;
+  private db: any;
 
-  constructor(dbInstance?: Database.Database) {
+  constructor(dbInstance?: any) {
     this.db = dbInstance || getDatabase();
   }
 
@@ -364,4 +367,12 @@ export class SqliteCaseRepository implements ICaseRepository {
   }
 }
 
-export const serverRepo = new SqliteCaseRepository();
+const useLibsql = Boolean(process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || process.env.VERCEL);
+
+export const serverRepo: any = useLibsql
+  ? new LibSqlCaseRepository()
+  : new SqliteCaseRepository();
+
+
+
+

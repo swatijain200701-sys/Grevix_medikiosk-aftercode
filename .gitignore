@@ -48,3 +48,7 @@ data/
 *.sqlite-shm
 test-results/
 playwright-report/
+
+# Turso CLI auth files created at repo root
+/auth
+/auth-wal
