@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle, AlertTriangle, UserCheck } from 'lucide-react';
 import { PatientCaseSnapshot, DocumentRecord, RedFlagAlert } from '@/lib/types/schema';
 import { I18N } from '@/lib/i18n/translations';
-import { saveLocalCase, enqueueSync, clearActiveSession } from '@/lib/db/client-db';
+import { saveLocalCase, getLocalCase, getActiveCaseId, enqueueSync, clearActiveSession } from '@/lib/db/client-db';
 import { syncManager, SyncStats } from '@/lib/sync/sync-manager';
 import { evaluateRedFlags } from '@/lib/rules/red-flags';
 import { voiceAdapter } from '@/lib/voice/voice-adapter';
@@ -75,8 +75,31 @@ export default function KioskPage() {
   const [sessionCleared, setSessionCleared] = useState<boolean>(false);
 
   useEffect(() => {
-    const newId = `kiosk-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 7)}`;
-    setCaseId(newId);
+    // Check if resuming active session from an offline reload
+    const activeId = getActiveCaseId();
+    if (activeId) {
+      setCaseId(activeId);
+      getLocalCase(activeId).then((existing) => {
+        if (existing && existing.status === 'draft') {
+          setPreferredName(existing.patient.preferredName || '');
+          setAge(existing.patient.age || '');
+          setIsAssisted(existing.patient.assistedEntry.isAssisted);
+          setEnteredBy(existing.patient.assistedEntry.enteredBy);
+          setMainConcern(existing.answers.mainConcern || '');
+          setOnsetDuration(existing.answers.onsetDuration || '');
+          setSelectedSymptoms(existing.answers.reportedSymptoms || []);
+          setSelectedConditions(existing.answers.existingConditions || []);
+          setMedicines(existing.answers.currentMedicines?.join(', ') || '');
+          setAllergyType(existing.answers.allergies.status);
+          setAllergyDetails(existing.answers.allergies.details?.join(', ') || '');
+          setDocuments(existing.answers.documents || []);
+          setRevision(existing.revision);
+        }
+      }).catch(() => {});
+    } else {
+      const newId = `kiosk-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 7)}`;
+      setCaseId(newId);
+    }
 
     const unsub = syncManager.subscribe((_, stats) => {
       setSyncStats(stats);

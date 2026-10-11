@@ -1,7 +1,7 @@
 ﻿import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 import { SqliteCaseRepository } from '../src/lib/db/server-db';
-import { PatientCaseSnapshot } from '../src/lib/types/schema';
+import { PatientCaseSnapshot, StructuredAiSummary } from '../src/lib/types/schema';
 
 describe('SqliteCaseRepository & Idempotency Engine', () => {
   let repo: SqliteCaseRepository;
@@ -115,20 +115,25 @@ describe('SqliteCaseRepository & Idempotency Engine', () => {
     expect(retrieved?.revision).toBe(1);
   });
 
-  it('recognizes duplicate submission via idempotency key and avoids duplication', () => {
-    repo.upsertCase(sampleSnapshot, sampleSnapshot.idempotencyKey);
+  it('handles lost acknowledgments: retransmission of identical idempotency key returns saved case without duplication', () => {
+    // Initial transmission accepted by server, but client loses acknowledgment
+    const res1 = repo.upsertCase(sampleSnapshot, sampleSnapshot.idempotencyKey);
+    expect(res1.success).toBe(true);
 
-    // Repeated identical submission (e.g. from network retry or duplicate queue drain)
-    const secondAttempt = repo.upsertCase(sampleSnapshot, sampleSnapshot.idempotencyKey);
-    expect(secondAttempt.success).toBe(true);
-    expect(secondAttempt.duplicate).toBe(true);
+    // Retransmission after reconnect with exact same key
+    const res2 = repo.upsertCase(sampleSnapshot, sampleSnapshot.idempotencyKey);
+    expect(res2.success).toBe(true);
+    expect(res2.duplicate).toBe(true);
 
-    const list = repo.listCases();
-    expect(list.length).toBe(1); // Exactly 1 queue entry
+    const cases = repo.listCases();
+    const matchingCases = cases.filter(c => c.caseId === 'test-case-100');
+    expect(matchingCases.length).toBe(1); // recordCount = 1
+
+    const duplicateCount = cases.length - 1;
+    expect(duplicateCount).toBe(0); // duplicateCount = 0
   });
 
   it('rejects stale older revision submissions', () => {
-    // Save revision 2 first
     const rev2: PatientCaseSnapshot = {
       ...sampleSnapshot,
       revision: 2,
@@ -136,10 +141,49 @@ describe('SqliteCaseRepository & Idempotency Engine', () => {
     };
     repo.upsertCase(rev2, rev2.idempotencyKey);
 
-    // Attempt to submit older revision 1
     const staleAttempt = repo.upsertCase(sampleSnapshot, 'test-case-100-rev-1');
     expect(staleAttempt.success).toBe(false);
     expect(staleAttempt.message).toContain('Stale revision');
+  });
+
+  it('never overwrites a newer case intake revision with an older summary', () => {
+    // Rev 1 arrives
+    repo.upsertCase(sampleSnapshot, sampleSnapshot.idempotencyKey);
+
+    // Rev 2 arrives with updated concern
+    const rev2: PatientCaseSnapshot = {
+      ...sampleSnapshot,
+      revision: 2,
+      idempotencyKey: 'test-case-100-rev-2',
+      answers: { ...sampleSnapshot.answers, mainConcern: 'Cough resolved, now severe wheezing' },
+    };
+    repo.upsertCase(rev2, rev2.idempotencyKey);
+
+    // Summary arrives for Rev 1 (e.g. delayed async worker)
+    const rev1Summary: StructuredAiSummary = {
+      mainConcern: 'Persistent dry cough',
+      historyOfPresentConcern: '5 days dry cough',
+      reportedConditions: [],
+      medicines: [],
+      allergies: { status: 'none_reported', items: [], sourceId: 'a1' },
+      relevantDocumentObservations: [],
+      missingOrConflictingInfo: [],
+      sourceReferences: [],
+      unsupportedOrContradictoryFlags: [],
+      inputRevision: 1,
+      generatedAt: new Date().toISOString(),
+      provider: 'TestProvider',
+      aiStatus: 'generated',
+    };
+    (rev1Summary as any).caseId = 'test-case-100';
+    repo.saveSummary(rev1Summary);
+
+    // Verify latest case retrieval for dashboard returns Rev 2, NOT Rev 1 summary
+    const currentCase = repo.getCase('test-case-100');
+    expect(currentCase?.revision).toBe(2);
+    expect(currentCase?.snapshot.answers.mainConcern).toBe('Cough resolved, now severe wheezing');
+    // Summary for current revision (2) is undefined because Rev 1 summary does not match Rev 2
+    expect(currentCase?.summary).toBeUndefined();
   });
 
   it('preserves staff review notes across revisions', () => {
@@ -149,7 +193,6 @@ describe('SqliteCaseRepository & Idempotency Engine', () => {
       triageCategory: 'priority',
     });
 
-    // Rev 2 arrives from kiosk
     const rev2: PatientCaseSnapshot = {
       ...sampleSnapshot,
       revision: 2,

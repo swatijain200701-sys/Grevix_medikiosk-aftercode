@@ -1,35 +1,38 @@
 # Real Challenge Card 1: 30-Second Disconnection Test Report
 
-**Execution Timestamp:** 2026-10-11T04:16:32.067Z  
-**Status:** **PASSED**  
-**Test Suite:** Playwright Browser Context Offline Mode (`setOffline(true)`)
+**Execution Timestamp:** 2026-10-11T04:30:40.536Z  
+**Status:** **PASSED (Browser & Local Integration Tested)**  
+**Challenge Card 1 Status:** **Partially Verified** (Awaiting user-supplied external LLM API key for live external model latency measurement)
 
 ---
 
-## 1. Measured Performance & Latency
+## 1. Measured Performance & Latency Metrics
 
-| Metric | Target | Measured Result | Status |
+| Metric | Target | Measured Result | Audit Status |
 | :--- | :--- | :--- | :--- |
-| **Offline Duration** | >= 30 seconds | **31 seconds** | **EXCEEDED TARGET** |
-| **Data Completeness** | 100% of facts | **100%** (All answers retained) | **VERIFIED** |
-| **Duplicate Queue Count** | Exactly 1 record | **1 record** (0 duplicates) | **PASSED** |
-| **Reconnect-to-Sync Latency** | < 5 seconds | **3.19 seconds** | **PASSED (< 3.5s)** |
-| **Local Red Flag Detection** | Operates offline | Detected chest pain flag locally during disconnect | **VERIFIED** |
-| **Staff Dashboard Delivery** | Accurate upon reconnect | Rendered in hospital OPD queue | **VERIFIED** |
+| **Simulated Offline Duration** | >= 30 seconds | **31 seconds** | **EXCEEDED TARGET** |
+| **Data Completeness** | 100% of facts | **100%** (All symptoms, meds, allergies retained) | **VERIFIED** |
+| **Queue Record Count** | Exactly 1 record | **recordCount: 1** | **VERIFIED** |
+| **Duplicate Count** | Exactly 0 duplicates | **duplicateCount: 0** | **VERIFIED (0 duplicates)** |
+| **Reconnect-to-Sync Acknowledgment Latency** | < 5 seconds | **3.01 seconds** | **PASSED (< 3.5s)** |
+| **Reconnect-to-Summary-Ready Latency** | < 30 seconds | **3.51 seconds** (local template pipeline) | **MEASURED** (Live provider pending credentials) |
+| **Local Red Flag Detection** | Operates without network | Detected chest pain alert in browser memory | **VERIFIED** |
+| **Shared-Kiosk Privacy Reset** | Zero data leak to next patient | Wipes active session key & draft; preserves background queue | **VERIFIED** |
 
 ---
 
-## 2. Test Sequence Execution Trace
+## 2. Test Execution Trace
 
 1. **Online Provisioning:** Loaded `/kiosk` with active connection.
-2. **Initial Registration:** Registered patient `Ramesh Patel (Synthetic Demo 2268)`, age 54. Accepted plain-language consent.
-3. **Mid-Intake Network Cut:** Invoked Playwright `context.setOffline(true)` at `2026-10-11T04:16:34.315Z`.
-4. **Offline Resilience:**
-   - Displayed *'Offline — you can continue'* badge.
-   - Patient continued through Symptoms, Conditions, Medicines, and Allergies.
-   - Evaluated local red-flag attention triggers completely in browser memory without internet.
+2. **Initial Registration:** Registered patient `Ramesh Patel (Synthetic Demo 0750)`, age 54. Accepted plain-language consent.
+3. **Mid-Intake Network Disconnection:** Invoked Playwright `context.setOffline(true)` at `2026-10-11T04:30:42.357Z`.
+4. **Offline Resilience & Data Capture:**
+   - Displayed *'Offline — you can continue'* banner.
+   - Patient answered Symptoms, Conditions, Medicines, and Allergies.
+   - Evaluated local red-flag attention triggers in browser memory without internet.
    - Encrypted local draft with Web Crypto (AES-GCM 256) into IndexedDB.
 5. **Offline Submission:** Submitted intake while still disconnected after 31s. Marked *'Queued Offline for Sync'*.
-6. **Network Restoration:** Restored connection at `2026-10-11T04:17:05.484Z`.
-7. **Idempotent Queue Drain:** SyncManager detected reachability, sent payload with idempotency key `kiosk-mv3b9rek-pzih5-rev-1`.
-8. **Server Persistence & Verification:** SQLite accepted revision 1, prevented duplicates, generated structured clinical intake summary, and populated the staff OPD dashboard.
+6. **Network Restoration:** Restored connection at `2026-10-11T04:31:13.470Z`.
+7. **Idempotent Queue Drain:** SyncManager detected reachability, sent payload with idempotency key `kiosk-mv3bry38-nxgqn-rev-1`.
+8. **Server Persistence & Verification:** SQLite accepted revision 1, prevented duplicates (`duplicateCount: 0`), generated structured clinical intake summary, and populated the staff OPD dashboard.
+9. **Shared-Kiosk Privacy Wipe:** Invoked session finish, confirming that subsequent walk-up patients receive a clean blank form.

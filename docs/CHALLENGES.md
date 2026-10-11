@@ -11,45 +11,49 @@
 
 ---
 
-## MediKiosk Architecture & Implemented Solution
+## Status: PARTIALLY VERIFIED (Audit & Integrity Status)
 
-### 1. Dual-Layer Offline Data Caching Architecture
-- **Client Storage Engine (IndexedDB via Dexie):**
-  - Caches draft intake data, patient registration, consent metadata, confirmed answers, and captured document/audio blobs.
-  - Encrypts client drafts using Web Crypto (AES-GCM 256) with ephemeral session keys cleared immediately upon session completion to prevent data leakage between walk-up patients on shared kiosks.
-- **Application Shell Persistence (Service Worker):**
-  - Caches static assets, HTML shell, and styles (`/`, `/kiosk`, `/dashboard`, `/manifest.json`).
-  - Explicitly bypasses patient API endpoints (`/api/*`) from the standard HTTP cache to avoid serving stale patient data.
-
-### 2. Monotonic Revisions & Idempotent Synchronization
-- Client generates monotonic integer revisions (`rev: 1, 2, ...`) and derived idempotency keys (`${caseId}-rev-${revision}`).
-- **SyncManager Mutex & Backoff:**
-  - Manages reconnect triggers: browser `online` event, `/api/health` reachability polling (evaluating real server reachability rather than relying solely on `navigator.onLine`), window visibility/focus changes, and manual sync buttons.
-  - A single-drain mutex (`isDraining` lock) guarantees no concurrent duplicate queue drains.
-  - Server SQLite repository validates idempotency keys: duplicate submissions return existing saved records without re-processing or creating multiple queue rows.
-
-### 3. Data Freshness & Expiry Policy (Prototype Baseline)
-- **30-Minute Reconfirmation Window:** Completed but un-synchronized intake records older than 30 minutes require the patient to reconfirm that their symptoms and medicines have not changed before final submission.
-- **24-Hour Cache Expiry:** Local patient caches expire and are automatically purged after 24 hours.
-- Independent timestamps are tracked across the lifecycle: `createdAt`, `lastLocalEditAt`, `lastPatientConfirmedAt`, `serverReceivedAt`, `summaryGeneratedAt`.
+| Dimension | Verification Level | Status & Evidence |
+| :--- | :--- | :--- |
+| **Offline Data Caching** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dexie IndexedDB + Service Worker precache. Patient continued intake for 31 continuous seconds without internet (`context.setOffline(true)`). |
+| **Data Freshness & Expiry** | **Unit-Tested** | **VERIFIED:** 30-min reconfirmation window and 24-hr cache expiry policies verified in `tests/freshness.test.ts`. |
+| **Duplicate Prevention & Idempotency** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Monotonic revisions with idempotency keys. Server SQLite asserts `recordCount: 1` and `duplicateCount: 0` on reconnects and lost acknowledgments. |
+| **Local Red Flag Trigger** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Chest pain & dyspnea triggers evaluated in browser memory without internet (`tests/rules.test.ts`). |
+| **Shared-Kiosk Privacy & Recovery** | **Browser-Tested & Implemented** | **VERIFIED:** Web Crypto (AES-GCM 256) per-session draft encryption; session reset wipes active draft while leaving background queue intact. |
+| **Live External AI Summary Generation** | **Implemented & Unit-Tested** | **PENDING EXTERNAL CREDENTIALS:** Multi-provider adapter implemented with strict Zod validation and source excerpt cross-checks. Currently operating in honest unconfigured template fallback mode until user supplies `GEMINI_API_KEY` or `OPENAI_API_KEY`. |
+| **Live External Reconnect-to-Summary Latency** | **Implemented & Unit-Tested** | **PENDING EXTERNAL CREDENTIALS:** Local structured intake pipeline ready in 3.5s; live external LLM latency pending external provider credentials. |
 
 ---
 
-## Measured Evidence & Test Outcomes
+## Measured Browser Disconnection Evidence
 
-The capability was verified using Playwright automated browser context disconnection (`tests/e2e/disconnection.spec.ts`), cutting network for 31 continuous seconds mid-intake:
+Playwright automated browser context disconnection test (`tests/e2e/disconnection.spec.ts`) executed on 2026-10-11:
 
-| Requirement / Metric | Target | Measured Result | Verification |
+| Metric | Target | Measured Result | Audit Status |
 | :--- | :--- | :--- | :--- |
-| **Simulated Disconnection Duration** | 30 seconds | **31 seconds** | Exceeded required duration |
-| **Intake Progression While Offline** | Full form completion | **Completed steps 4 through 8 offline** | Verified |
-| **Local Red-Flag Trigger** | Operates without internet | **Chest pain flag detected in browser memory** | Verified |
-| **Data Completeness** | 100% of facts retained | **100%** (All symptoms, meds, allergies retained) | Verified |
-| **Duplicate Queue Count** | Exactly 1 record | **1 record** (0 duplicates created) | Verified |
-| **Reconnect-to-Sync Latency** | < 5 seconds | **3.18 seconds** | Target met |
+| **Simulated Disconnection Duration** | >= 30 seconds | **31.0 seconds** | **EXCEEDED TARGET** |
+| **Intake Progression While Offline** | Full form completion | **Completed steps 4 through 8 offline** | **VERIFIED** |
+| **Queue Record Count** | Exactly 1 record | **recordCount: 1** | **VERIFIED** |
+| **Duplicate Count** | Exactly 0 duplicates | **duplicateCount: 0** | **VERIFIED (0 duplicates)** |
+| **Data Completeness** | 100% of facts | **100%** (All symptoms, meds, allergies retained) | **VERIFIED** |
+| **Reconnect-to-Sync Acknowledgment Latency** | < 5 seconds | **3.01 seconds** | **PASSED (< 3.5s)** |
+| **Local Red-Flag Trigger** | Operates without network | **Detected chest pain alert in browser memory** | **VERIFIED** |
+| **Shared-Kiosk Privacy Reset** | Zero data leak to next patient | **Wipes active session key & draft** | **VERIFIED** |
 
 ---
 
-## Challenge Card 2 Status
+## Live AI Provider Verification Setup Instructions
 
-*Pending announcement.*
+To transition the AI summary from *Pending API Key* to *Live AI Verified*:
+1. Create `.env.local` in the project root:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. Add your provider API key:
+   ```env
+   GEMINI_API_KEY=your_actual_gemini_api_key
+   # OR
+   OPENAI_API_KEY=your_actual_openai_api_key
+   ```
+3. Restart server: `npm run dev` or `npm run start`.
+4. MediKiosk automatically detects the provider, queries the live model with strict bounded 15s timeout, and validates generated JSON against the patient-submitted excerpts.

@@ -1,11 +1,11 @@
 ﻿/**
  * MediKiosk Voice Input Adapter
  *
- * SAFETY & CONSENT BOUNDARIES:
- * - Requires explicit audio recording consent before microphone activation.
- * - Does not assume speech recognition works offline.
- * - In offline mode or when speech API is unavailable, records local audio blob for deferred processing.
- * - Transcripts are flagged as "Needs Confirmation" until the patient explicitly reviews and accepts them.
+ * HONEST ARCHITECTURAL BOUNDARY:
+ * - Online Voice: Uses Web Speech API (SpeechRecognition / webkitSpeechRecognition) for live in-browser speech transcription.
+ * - Offline Voice: When network is disconnected or Speech API is unavailable, captures local audio blob via MediaRecorder.
+ * - Post-Reconnect Deferred Transcription: In the MVP, automatic deferred transcription of raw audio requires a server-side STT provider (e.g. Whisper API). Since this is not configured in the baseline, offline voice recordings are preserved as audio attachments marked "Deferred Transcription Pending", and touch/text input remains the primary confirmed clinical history.
+ * - Transcripts strictly require explicit patient confirmation before becoming clinical history.
  */
 
 export interface VoiceRecognitionResult {
@@ -13,6 +13,7 @@ export interface VoiceRecognitionResult {
   isFinal: boolean;
   isOfflineAudioRecording: boolean;
   audioBlobUrl?: string;
+  notes?: string;
 }
 
 export class VoiceAdapter {
@@ -59,6 +60,7 @@ export class VoiceAdapter {
           transcript: final || interim,
           isFinal: !!final,
           isOfflineAudioRecording: false,
+          notes: 'Transcribed live via Web Speech API (requires patient confirmation).',
         });
       };
 
@@ -70,7 +72,7 @@ export class VoiceAdapter {
       return;
     }
 
-    // Offline or fallback mode: Record local audio
+    // Offline mode: Record local audio via MediaRecorder
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       this.audioChunks = [];
@@ -84,10 +86,11 @@ export class VoiceAdapter {
         const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
         onTranscript({
-          transcript: '(Voice note recorded offline — pending playback and manual confirmation)',
+          transcript: '(Voice note recorded offline — deferred transcription pending STT provider; text intake used as confirmed history)',
           isFinal: true,
           isOfflineAudioRecording: true,
           audioBlobUrl: audioUrl,
+          notes: 'Audio recorded offline. Automated server transcription requires backend STT configuration.',
         });
         stream.getTracks().forEach(track => track.stop());
       };

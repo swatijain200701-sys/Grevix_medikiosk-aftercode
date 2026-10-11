@@ -71,6 +71,12 @@ export function setActiveCaseId(caseId: string): void {
   }
 }
 
+/**
+ * Safe shared-kiosk session completion:
+ * - Wipes active case ID from sessionStorage so next patient cannot resume or see previous draft.
+ * - Destroys active session crypto key in sessionStorage.
+ * - CRITICAL: Leaves pendingSyncQueue intact so completed offline submissions can still drain to server.
+ */
 export async function clearActiveSession(): Promise<void> {
   if (typeof window !== 'undefined') {
     sessionStorage.removeItem(ACTIVE_CASE_KEY);
@@ -79,13 +85,13 @@ export async function clearActiveSession(): Promise<void> {
 }
 
 /**
- * Saves or updates patient case in client IndexedDB with Web Crypto encryption.
- * Enforces freshness policies (marks requiresReconfirmation if confirmed > 30 mins ago and un-synced).
+ * Saves patient case in client IndexedDB with Web Crypto encryption.
+ * Enforces 30-minute reconfirmation policy if confirmed > 30 minutes ago and un-synced.
  */
 export async function saveLocalCase(snapshot: PatientCaseSnapshot): Promise<void> {
-  const now = new Date();
+  const now = Date.now();
   const confirmedAt = new Date(snapshot.lastPatientConfirmedAt).getTime();
-  const isStale = snapshot.status === 'completed_locally' && (now.getTime() - confirmedAt > FRESHNESS_POLICIES.RECONFIRMATION_WINDOW_MS);
+  const isStale = snapshot.status === 'completed_locally' && (now - confirmedAt > FRESHNESS_POLICIES.RECONFIRMATION_WINDOW_MS);
 
   const snapshotToSave: PatientCaseSnapshot = {
     ...snapshot,
@@ -118,7 +124,6 @@ export async function getLocalCase(caseId: string): Promise<PatientCaseSnapshot 
   // Check 24-hour cache expiry
   const age = Date.now() - new Date(record.createdAt).getTime();
   if (age > FRESHNESS_POLICIES.CACHE_EXPIRY_MS) {
-    // Expired cache - remove from active accessibility
     await db.cases.delete(caseId);
     return null;
   }
