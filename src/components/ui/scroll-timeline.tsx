@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
@@ -116,13 +116,13 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
         
         {/* Background Track Line (#294350) */}
         <div
-          className="absolute left-4 md:left-1/2 top-3 bottom-6 w-[2px] bg-[#294350] -translate-x-1/2"
+          className="absolute left-4 md:left-1/2 top-3 bottom-6 w-[2px] bg-[var(--timeline-track,#294350)] -translate-x-1/2"
           aria-hidden="true"
         />
 
         {/* Animated Progress Line (#50D6C5 Teal Accent) */}
         <div
-          className="absolute left-4 md:left-1/2 top-3 w-[2px] bg-[#50D6C5] -translate-x-1/2 transition-[height] duration-150 ease-out z-0"
+          className="absolute left-4 md:left-1/2 top-3 w-[2px] bg-[var(--timeline-progress,#50D6C5)] -translate-x-1/2 transition-[height] duration-150 ease-out z-0"
           style={{ height: `${scrollProgress * 100}%`, maxHeight: "calc(100% - 24px)" }}
           aria-hidden="true"
         />
@@ -134,8 +134,8 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
             const isEven = index % 2 === 0;
 
             const dotClasses = isReached
-              ? "border-[#50D6C5] bg-[#18303D] text-[#50D6C5] shadow-[0_0_12px_rgba(80,214,197,0.3)] scale-110"
-              : "border-[#294350] bg-[#122330] text-[#91A8B3] scale-100";
+              ? "border-[var(--timeline-dot-active-border,#50D6C5)] bg-[var(--timeline-dot-active-bg,#18303D)] text-[var(--timeline-dot-active-text,#50D6C5)] shadow-[0_0_12px_rgba(80,214,197,0.3)] scale-110"
+              : "border-[var(--timeline-dot-border,#294350)] bg-[var(--timeline-dot-bg,#122330)] text-[var(--timeline-dot-text,#91A8B3)] scale-100";
 
             return (
               <li
@@ -169,15 +169,15 @@ export function ScrollTimeline({ milestones = [], className }: TimelineProps) {
                     isEven ? "md:pr-12 md:text-right" : "md:pl-12 md:text-left"
                   )}
                 >
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-2 rounded-md border border-[#294350] bg-[#18303D] text-3xs font-mono font-semibold tracking-wider text-[#50D6C5]">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-2 rounded-md border border-[var(--timeline-badge-border,#294350)] bg-[var(--timeline-badge-bg,#18303D)] text-3xs font-mono font-semibold tracking-wider text-[var(--timeline-badge-text,#50D6C5)]">
                     <span>STEP {milestone.stepNumber}</span>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#F1F6F8]">
+                  <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[var(--timeline-title,#F1F6F8)]">
                     {milestone.title}
                   </h3>
 
-                  <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#B6C7CF]">
+                  <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[var(--timeline-desc,#B6C7CF)]">
                     {milestone.description}
                   </p>
                 </div>

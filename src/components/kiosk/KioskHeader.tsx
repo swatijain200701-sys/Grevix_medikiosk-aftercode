@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Link from "next/link";
 import { Wifi, WifiOff, Check, Languages, Stethoscope, Clock } from "lucide-react";
 import { SyncStats } from "@/lib/sync/sync-manager";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 interface KioskHeaderProps {
   syncStats: SyncStats;
@@ -85,6 +86,9 @@ export const KioskHeader: React.FC<KioskHeaderProps> = ({
               <span>Saved on this device</span>
             </span>
           )}
+
+          {/* Theme Toggle */}
+          <ThemeToggle compact />
 
           {/* Language Toggle */}
           <button

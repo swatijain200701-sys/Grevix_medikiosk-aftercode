@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { CheckCircle2, ShieldCheck, Check, MessageSquare, ExternalLink, RefreshCw, AlertCircle } from "lucide-react";
+import { resetKioskTheme } from "@/lib/theme/ThemeProvider";
 
 export type SubmissionStatusType =
   | "saved_locally_waiting"
@@ -30,10 +31,14 @@ export const StepCompletion: React.FC<StepCompletionProps> = ({
   submissionStatus,
   aiSummaryStatus = "pending",
   sessionCleared,
-  onFinishAndReset,
+  onFinishAndReset: _onFinishAndReset,
   onRetrySend,
   t,
 }) => {
+  const onFinishAndReset = () => {
+    resetKioskTheme();
+    _onFinishAndReset();
+  };
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-6">
       <div className="w-16 h-16 rounded-2xl bg-[#D8E5DC] border border-[#B8C9BD] text-[#356B62] flex items-center justify-center shadow-md">

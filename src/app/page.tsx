@@ -1,8 +1,10 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { ScrollTimeline } from "@/components/ui/scroll-timeline";
 import { 
   Wifi, WifiOff, FileText, CheckCircle2, 
   Stethoscope, ArrowRight, ClipboardList, Camera, HardDrive,
@@ -52,7 +54,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#EAF0EB] text-[#293D36] flex flex-col font-sans selection:bg-[#356B62]/20 selection:text-[#356B62]">
+    <div className="min-h-screen text-[var(--text-body)] flex flex-col font-sans selection:bg-[#356B62]/20 selection:text-[#356B62]">
       
       {/* 1. Header: Navy #0B1B25 */}
       <header className="border-b border-[#304652] bg-[#0B1B25] text-[#FAF7F0] sticky top-0 z-40 shadow-sm">
@@ -106,6 +108,9 @@ export default function Home() {
               )}
             </div>
 
+            {/* Theme Toggle */}
+            <ThemeToggle compact />
+
             {/* Staff Sign In Primary Nav Link */}
             <Link
               href="/login"
@@ -119,7 +124,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="border-b border-[#B8C9BD] bg-[#EAF0EB] py-12 sm:py-16">
+      <section className="border-b py-12 sm:py-16" style={{ backgroundColor: 'var(--bg-main)', borderColor: 'var(--border-color)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Small readable notice near intake entry and before collection */}
@@ -420,135 +425,56 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Four-Step Explanation & Feature Lists */}
-      <section id="how-it-works" className="py-12 sm:py-16 bg-[#FAF7F0] border-t border-b border-[#B8C9BD]">
+      {/* 4. Patient Journey Timeline */}
+      <section id="how-it-works" className="py-12 sm:py-16 border-t border-b" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          
-          {/* Four-Step Process */}
           <div className="space-y-8">
             <div className="text-center max-w-2xl mx-auto space-y-2">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#356B62]">
-                PROCESS
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#293D36] tracking-tight">
-                How MediKiosk works in four steps
-              </h2>
+              <span className="text-xs font-mono font-bold uppercase tracking-wider" style={{ color: 'var(--btn-main)' }}>PATIENT JOURNEY</span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight" style={{ color: 'var(--text-heading)' }}>How MediKiosk works in five steps</h2>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>This illustrates the intake process. It does not show real patient data or server-sync status.</p>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-              {FOUR_STEPS.map((s) => (
-                <div
-                  key={s.step}
-                  className="p-6 rounded-2xl bg-[#FAF7F0] border border-[#B8C9BD] space-y-3 flex flex-col justify-between shadow-xs hover:border-[#356B62]/60 transition"
-                >
-                  <div className="space-y-2.5">
-                    <div className="w-10 h-10 rounded-xl bg-[#D8E5DC] text-[#356B62] flex items-center justify-center font-extrabold text-base border border-[#B8C9BD]">
-                      {s.step}
-                    </div>
-                    <h3 className="text-base font-bold text-[#293D36] tracking-tight">
-                      {s.title}
-                    </h3>
-                    <p className="text-xs text-[#53665D] leading-relaxed">
-                      {s.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ScrollTimeline milestones={[
+              { id: "step-1", stepNumber: "1", title: "Register and choose your language", description: "Enter your preferred name and age. Select English or Hindi guidance throughout your intake session." },
+              { id: "step-2", stepNumber: "2", title: "Share your health history", description: "Answer guided questions about your main concern, onset, symptoms, medicines, allergies, and relevant past history." },
+              { id: "step-3", stepNumber: "3", title: "Add and confirm document information", description: "Upload previous prescriptions or reports if available. Review any text extracted from your documents before proceeding." },
+              { id: "step-4", stepNumber: "4", title: "Review and submit; sync when connected", description: "Read back all your answers. Submit when ready. Your information saves locally and syncs when the connection allows." },
+              { id: "step-5", stepNumber: "5", title: "Staff review the submitted information and available summary", description: "Clinical staff access your structured intake record through the triage dashboard before your consultation begins." },
+            ]} />
           </div>
-
-          {/* Three Short Bullet Lists */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto pt-4 border-t border-[#B8C9BD]">
-            
-            {/* List 1 */}
-            <div className="p-6 rounded-2xl bg-[#D8E5DC]/50 border border-[#B8C9BD] space-y-4">
-              <h3 className="text-lg font-bold text-[#293D36] tracking-tight">
-                What problem does MediKiosk address?
-              </h3>
-              <ul className="space-y-2.5 text-xs text-[#293D36] leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Patients may forget medicines or parts of their medical history.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Previous prescriptions and reports can be difficult to organise.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Staff often need to collect the same basic information repeatedly.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Internet interruptions can disrupt digital intake.</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* List 2 */}
-            <div className="p-6 rounded-2xl bg-[#D8E5DC]/50 border border-[#B8C9BD] space-y-4">
-              <h3 className="text-lg font-bold text-[#293D36] tracking-tight">
-                What can you do with MediKiosk?
-              </h3>
-              <ul className="space-y-2.5 text-xs text-[#293D36] leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Enter symptoms, medicines, allergies, and relevant history.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Use supported voice or touch input.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Upload supported documents and confirm extracted text.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Review your answers before submitting.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Continue intake through a temporary connection interruption.</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* List 3 */}
-            <div className="p-6 rounded-2xl bg-[#D8E5DC]/50 border border-[#B8C9BD] space-y-4">
-              <h3 className="text-lg font-bold text-[#293D36] tracking-tight">
-                What makes the approach useful?
-              </h3>
-              <ul className="space-y-2.5 text-xs text-[#293D36] leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Guided English and Hindi intake, where supported.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Assisted entry for patients who need help.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Saved progress during connection interruptions.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Patient-reviewed answers and document text.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#356B62] font-bold">•</span>
-                  <span>Structured summaries with references for staff review.</span>
-                </li>
-              </ul>
-            </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto pt-4 border-t" style={{ borderColor: 'var(--border-color)' }}>
+            <div className="p-6 rounded-2xl border space-y-4" style={{ backgroundColor: 'var(--bg-panel)', borderColor: 'var(--border-color)' }}>
+              <h3 className="text-lg font-bold tracking-tight" style={{ color: 'var(--text-heading)' }}>What problem does MediKiosk address?</h3>
+              <ul className="space-y-2.5 text-xs leading-relaxed" style={{ color: 'var(--text-body)' }}>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Patients may forget medicines or parts of their medical history.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Previous prescriptions and reports can be difficult to organise.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Staff often need to collect the same basic information repeatedly.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Internet interruptions can disrupt digital intake.</span></li>
+              </ul></div>
+            <div className="p-6 rounded-2xl border space-y-4" style={{ backgroundColor: 'var(--bg-panel)', borderColor: 'var(--border-color)' }}>
+              <h3 className="text-lg font-bold tracking-tight" style={{ color: 'var(--text-heading)' }}>What can you do with MediKiosk?</h3>
+              <ul className="space-y-2.5 text-xs leading-relaxed" style={{ color: 'var(--text-body)' }}>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Enter symptoms, medicines, allergies, and relevant history.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Use supported voice or touch input.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Upload supported documents and confirm extracted text.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Review your answers before submitting.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Continue intake through a temporary connection interruption.</span></li>
+              </ul></div>
+            <div className="p-6 rounded-2xl border space-y-4" style={{ backgroundColor: 'var(--bg-panel)', borderColor: 'var(--border-color)' }}>
+              <h3 className="text-lg font-bold tracking-tight" style={{ color: 'var(--text-heading)' }}>What makes the approach useful?</h3>
+              <ul className="space-y-2.5 text-xs leading-relaxed" style={{ color: 'var(--text-body)' }}>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Guided English and Hindi intake, where supported.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Assisted entry for patients who need help.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Saved progress during connection interruptions.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Patient-reviewed answers and document text.</span></li>
+                <li className="flex items-start gap-2"><span style={{ color: 'var(--btn-main)' }}>&#8250;</span><span>Structured summaries with references for staff review.</span></li>
+              </ul></div>
           </div>
         </div>
       </section>
 
       {/* Visible Feedback Callout Strip */}
-      <section className="py-10 bg-[#EAF0EB]">
+      <section className="py-10" style={{ backgroundColor: 'var(--bg-main)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="p-6 sm:p-8 rounded-2xl bg-[#FAF7F0] border border-[#B8C9BD] flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm text-center sm:text-left">
             <div className="space-y-1">

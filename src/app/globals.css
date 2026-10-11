@@ -1,9 +1,12 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
-:root {
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHT THEME (default) — sage, cream, teal palette
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root,
+.light {
   color-scheme: light;
-  
-  /* Primary Specified Tokens */
+
   --header-bg: #0B1B25;
   --footer-bg: #0B1B25;
   --header-text: #FAF7F0;
@@ -13,19 +16,19 @@
   --turquoise-accent: #4FD1C5;
   --slate-accent: #304652;
 
-  --bg-main: #EAF0EB;            /* Sage Mist main page background */
-  --bg-card: #FAF7F0;            /* Warm Cream intake forms and content cards */
-  --bg-panel: #D8E5DC;           /* Soft Sage secondary panels */
+  --bg-main: #EAF0EB;
+  --bg-card: #FAF7F0;
+  --bg-panel: #D8E5DC;
 
-  --btn-main: #356B62;           /* Teal main buttons */
+  --btn-main: #356B62;
   --btn-main-hover: #2B574F;
-  --btn-main-text: #FFFDF7;      /* Ivory text */
+  --btn-main-text: #FFFDF7;
 
-  --text-heading: #293D36;       /* Headings on light surfaces */
-  --text-body: #293D36;          /* Body text on light surfaces */
-  --text-muted: #53665D;         /* Supporting text */
+  --text-heading: #293D36;
+  --text-body: #293D36;
+  --text-muted: #53665D;
 
-  --border-color: #B8C9BD;       /* Restrained borders */
+  --border-color: #B8C9BD;
 
   --error-bg: #FEE2E2;
   --error-border: #EF4444;
@@ -38,7 +41,6 @@
   --focus-ring: #356B62;
   --radius: 0.75rem;
 
-  /* Semantic UI mappings */
   --background: var(--bg-main);
   --foreground: var(--text-body);
   --card: var(--bg-card);
@@ -52,6 +54,91 @@
   --border: var(--border-color);
   --input: var(--border-color);
   --ring: var(--focus-ring);
+
+  /* Timeline light tokens */
+  --timeline-track: #B8C9BD;
+  --timeline-progress: #356B62;
+  --timeline-dot-active-bg: #EAF0EB;
+  --timeline-dot-active-border: #356B62;
+  --timeline-dot-active-text: #356B62;
+  --timeline-dot-bg: #FAF7F0;
+  --timeline-dot-border: #B8C9BD;
+  --timeline-dot-text: #53665D;
+  --timeline-badge-bg: #D8E5DC;
+  --timeline-badge-border: #B8C9BD;
+  --timeline-badge-text: #356B62;
+  --timeline-title: #293D36;
+  --timeline-desc: #53665D;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK THEME — original navy, slate, turquoise palette
+   ═══════════════════════════════════════════════════════════════════════════ */
+.dark {
+  color-scheme: dark;
+
+  --header-bg: #06111A;
+  --footer-bg: #06111A;
+  --header-text: #F1F6F8;
+  --header-text-muted: #91A8B3;
+
+  --logo-tile: #4FD1C5;
+  --turquoise-accent: #4FD1C5;
+  --slate-accent: #304652;
+
+  --bg-main: #08121B;
+  --bg-card: #0F2231;
+  --bg-panel: #122330;
+
+  --btn-main: #4FD1C5;
+  --btn-main-hover: #3DBDB2;
+  --btn-main-text: #06111A;
+
+  --text-heading: #F1F6F8;
+  --text-body: #B6C7CF;
+  --text-muted: #7A9EAD;
+
+  --border-color: #294350;
+
+  --error-bg: #3B1515;
+  --error-border: #EF4444;
+  --error-text: #FCA5A5;
+
+  --caution-bg: #3B2900;
+  --caution-border: #F59E0B;
+  --caution-text: #FCD34D;
+
+  --focus-ring: #4FD1C5;
+  --radius: 0.75rem;
+
+  --background: var(--bg-main);
+  --foreground: var(--text-body);
+  --card: var(--bg-card);
+  --card-foreground: var(--text-heading);
+  --primary: var(--btn-main);
+  --primary-foreground: var(--btn-main-text);
+  --secondary: var(--bg-panel);
+  --secondary-foreground: var(--text-heading);
+  --muted: var(--bg-panel);
+  --muted-foreground: var(--text-muted);
+  --border: var(--border-color);
+  --input: var(--border-color);
+  --ring: var(--focus-ring);
+
+  /* Timeline dark tokens */
+  --timeline-track: #294350;
+  --timeline-progress: #4FD1C5;
+  --timeline-dot-active-bg: #18303D;
+  --timeline-dot-active-border: #4FD1C5;
+  --timeline-dot-active-text: #4FD1C5;
+  --timeline-dot-bg: #122330;
+  --timeline-dot-border: #294350;
+  --timeline-dot-text: #91A8B3;
+  --timeline-badge-bg: #18303D;
+  --timeline-badge-border: #294350;
+  --timeline-badge-text: #4FD1C5;
+  --timeline-title: #F1F6F8;
+  --timeline-desc: #B6C7CF;
 }
 
 @theme inline {
@@ -60,69 +147,52 @@
   --color-logo-tile: var(--logo-tile);
   --color-turquoise-accent: var(--turquoise-accent);
   --color-slate-accent: var(--slate-accent);
-
   --color-bg-main: var(--bg-main);
   --color-bg-card: var(--bg-card);
   --color-bg-panel: var(--bg-panel);
-
   --color-btn-main: var(--btn-main);
   --color-btn-main-hover: var(--btn-main-hover);
   --color-btn-main-text: var(--btn-main-text);
-
   --color-text-heading: var(--text-heading);
   --color-text-body: var(--text-body);
   --color-text-muted: var(--text-muted);
-
   --color-border-color: var(--border-color);
-
   --color-error-bg: var(--error-bg);
   --color-error-border: var(--error-border);
   --color-error-text: var(--error-text);
-
   --color-caution-bg: var(--caution-bg);
   --color-caution-border: var(--caution-border);
   --color-caution-text: var(--caution-text);
 }
 
+/* ── Base Body ──────────────────────────────────────────────────────────── */
 body {
-  background-color: #EAF0EB;
-  color: #293D36;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", "Mangal", "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-body);
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans Devanagari, Mangal, Helvetica Neue, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Accessible focus ring */
+/* ── Accessible focus ring ──────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #356B62 !important;
+  outline: 2px solid var(--focus-ring) !important;
   outline-offset: 2px !important;
 }
 
-/* Custom scrollbars */
+/* ── Custom scrollbars ──────────────────────────────────────────────────── */
 * {
-  scrollbar-color: #B8C9BD #EAF0EB;
+  scrollbar-color: var(--border-color) var(--bg-panel);
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-panel); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-::-webkit-scrollbar-track {
-  background: #EAF0EB;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #B8C9BD;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #9BB0A1;
-}
-
-/* Reduced motion preference */
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
@@ -132,29 +202,25 @@ body {
   }
 }
 
-/* Print Styles */
+/* ── Print (theme-independent) ──────────────────────────────────────────── */
 @media print {
   body {
     background-color: #FFFFFF !important;
     color: #111827 !important;
     color-scheme: light !important;
   }
-  
-  header, footer, nav, button, #kiosk-back-btn, #kiosk-next-btn, #voice-dictation-btn, .no-print {
+  header, footer, nav, button, #kiosk-back-btn, #kiosk-next-btn,
+  #voice-dictation-btn, .no-print, [aria-label="Change display theme"] {
     display: none !important;
   }
-
-  #printable-intake-area,
-  .printable-report {
+  #printable-intake-area, .printable-report {
     background-color: #FFFFFF !important;
     color: #111827 !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
   }
-
-  #printable-intake-area *,
-  .printable-report * {
+  #printable-intake-area *, .printable-report * {
     background-color: transparent !important;
     color: #111827 !important;
     border-color: #D1D5DB !important;
