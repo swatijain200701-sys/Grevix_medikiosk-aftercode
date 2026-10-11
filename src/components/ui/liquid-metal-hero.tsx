@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { 
   FileText, Activity, ShieldCheck, WifiOff, CheckCircle2, 
-  ArrowRight, Languages, Mic 
+  ArrowRight, Languages, Mic, MessageSquare, ExternalLink,
+  AlertCircle
 } from "lucide-react";
 
 // Dynamically import the LiquidMetal shader for client-only, lazy rendering
@@ -17,23 +18,25 @@ const LazyLiquidMetal = dynamic(
 
 interface LiquidMetalHeroProps {
   badge?: string;
-  title: string;
-  subtitle: string;
-  primaryCtaLabel: string;
+  title?: string;
+  subtitle?: string;
+  primaryCtaLabel?: string;
   secondaryCtaLabel?: string;
   onPrimaryCtaClick: () => void;
   onSecondaryCtaClick?: () => void;
+  feedbackUrl?: string;
   features?: string[];
 }
 
 export default function LiquidMetalHero({
   badge = "Patient intake for OPDs",
-  title = "Your health story, ready for your doctor.",
-  subtitle = "Share symptoms, medicines, and previous reports through guided voice or touch intake. Continue even when the connection drops.",
-  primaryCtaLabel = "Start patient intake",
-  secondaryCtaLabel = "Staff sign in",
+  title = "Your health story, ready before your consultation.",
+  subtitle = "MediKiosk helps you share symptoms, medicines, allergies, and previous reports through guided questions. Hospital staff can review the information before your consultation. Your intake progress stays saved during temporary internet interruptions.",
+  primaryCtaLabel = "Start a sample intake",
+  secondaryCtaLabel = "Explore a sample staff view",
   onPrimaryCtaClick,
   onSecondaryCtaClick,
+  feedbackUrl = "https://forms.gle/UM6smWDSmxzCiAwh6",
   features = ["Voice and touch", "English and Hindi", "Offline intake"],
 }: LiquidMetalHeroProps) {
   const [canRenderShader, setCanRenderShader] = useState(false);
@@ -107,7 +110,7 @@ export default function LiquidMetalHero({
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#0C1924] border-b border-[#294350] py-12 sm:py-16 lg:py-20">
+    <section className="relative overflow-hidden bg-[#0C1924] border-b border-[#294350] py-10 sm:py-14 lg:py-18">
       {/* Subtle ambient gradient mesh behind hero */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(80,214,197,0.12),transparent)]"
@@ -115,6 +118,20 @@ export default function LiquidMetalHero({
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Public Prototype Disclaimer Ribbon */}
+        <div className="mb-6 p-3 rounded-xl bg-[#122330] border border-[#294350] text-xs text-[#B6C7CF] flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-[#50D6C5] shrink-0" />
+            <span>
+              <strong className="text-[#F1F6F8]">Prototype Demonstration:</strong> Please use fictional test data only. AI summaries support hospital staff review and do not provide medical diagnosis or treatment.
+            </span>
+          </div>
+          <span className="text-3xs font-mono px-2 py-0.5 rounded bg-[#18303D] text-[#50D6C5] border border-[#294350]">
+            Hackathon Build
+          </span>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* LEFT COLUMN: Clear OPD Intake Value Proposition (lg:col-span-7) */}
@@ -126,7 +143,7 @@ export default function LiquidMetalHero({
           >
             {/* Small label: Patient intake for OPDs */}
             <motion.div variants={itemVariants}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#50D6C5]/10 text-[#50D6C5] border border-[#50D6C5]/30">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#50D6C5]/10 text-[#50D6C5] border border-[#50D6C5]/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#50D6C5] animate-pulse" />
                 {badge}
               </span>
@@ -142,35 +159,52 @@ export default function LiquidMetalHero({
               </p>
             </motion.div>
 
-            {/* Actions: Start patient intake and Staff sign in */}
+            {/* Three Clear Interactive Actions */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-3.5 pt-2"
+              className="flex flex-col sm:flex-row flex-wrap gap-3.5 pt-2"
               variants={itemVariants}
             >
+              {/* Button 1: Start a sample intake */}
               <Button
                 id="start-kiosk-btn"
                 onClick={onPrimaryCtaClick}
                 size="lg"
-                className="bg-[#50D6C5] hover:bg-[#3ec4b3] text-[#062820] font-bold text-base px-7 py-3.5 rounded-xl shadow-sm transition-all duration-150 flex items-center justify-center gap-2 min-h-[48px]"
+                className="bg-[#50D6C5] hover:bg-[#3ec4b3] text-[#062820] font-bold text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-sm transition-all duration-150 flex items-center justify-center gap-2 min-h-[48px]"
               >
                 <span>{primaryCtaLabel}</span>
                 <ArrowRight className="w-4 h-4 text-[#062820]" />
               </Button>
 
+              {/* Button 2: Explore a sample staff view */}
               {secondaryCtaLabel && onSecondaryCtaClick && (
                 <Button
-                  id="staff-signin-btn"
+                  id="sample-staff-btn"
                   onClick={onSecondaryCtaClick}
                   variant="outline"
                   size="lg"
-                  className="border-[#294350] bg-[#18303D] hover:bg-[#203D4D] text-[#F1F6F8] font-semibold text-base px-6 py-3.5 rounded-xl transition-all duration-150 min-h-[48px]"
+                  className="border-[#294350] bg-[#18303D] hover:bg-[#203D4D] text-[#F1F6F8] font-semibold text-sm sm:text-base px-6 py-3.5 rounded-xl transition-all duration-150 min-h-[48px]"
                 >
                   {secondaryCtaLabel}
                 </Button>
               )}
+
+              {/* Button 3: Give feedback (Google Forms in new tab) */}
+              {feedbackUrl && (
+                <a
+                  id="hero-feedback-btn"
+                  href={feedbackUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-[#294350] bg-[#122330] hover:bg-[#18303D] text-[#50D6C5] font-semibold text-sm transition min-h-[48px]"
+                >
+                  <MessageSquare className="w-4 h-4 text-[#50D6C5]" />
+                  <span>Give Feedback</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-[#91A8B3]" />
+                </a>
+              )}
             </motion.div>
 
-            {/* Capability Badges & Operational Note */}
+            {/* Capability Badges & Technical Honesty Notes */}
             <motion.div className="pt-4 border-t border-[#294350] space-y-3" variants={itemVariants}>
               <div className="flex flex-wrap gap-2.5">
                 {features.map((feature, idx) => (
@@ -186,7 +220,7 @@ export default function LiquidMetalHero({
                 ))}
               </div>
               <p className="text-xs text-[#91A8B3] leading-normal">
-                Touch input, document scan, and local drafts work uninterrupted offline. Voice transcription confirms locally before queueing.
+                * Offline support operates reliably once the application shell has loaded. Voice transcription uses browser speech engines when connected or defers audio for server transcription. AI summary status is reported honestly per available provider.
               </p>
             </motion.div>
           </motion.div>
@@ -201,7 +235,7 @@ export default function LiquidMetalHero({
           >
             <div className="relative w-full max-w-md rounded-2xl bg-[#122330] border border-[#294350] shadow-xl p-6 overflow-hidden">
               
-              {/* Contained LiquidMetal Shader Layer: Confined strictly to illustration panel */}
+              {/* Contained LiquidMetal Shader Layer */}
               {canRenderShader && shaderProps ? (
                 <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden mix-blend-screen z-0">
                   <LazyLiquidMetal
@@ -210,14 +244,13 @@ export default function LiquidMetalHero({
                   />
                 </div>
               ) : (
-                /* Static accessible fallback for reduced motion, offline, or non-WebGL devices */
                 <div 
                   className="absolute inset-0 pointer-events-none opacity-40 z-0 bg-gradient-to-br from-[#18303D] via-[#122330] to-[#0C1924]"
                   aria-hidden="true"
                 />
               )}
 
-              {/* Dimensional Medical Record Visual Overlay (Z-index 10) */}
+              {/* Dimensional Medical Record Visual Overlay */}
               <div className="relative z-10 space-y-4 select-none">
                 {/* Clinical Header */}
                 <div className="flex items-center justify-between border-b border-[#294350] pb-3">
@@ -273,10 +306,10 @@ export default function LiquidMetalHero({
                   </div>
                 </div>
 
-                {/* Synthetic data label as requested in prompt */}
+                {/* Synthetic data label */}
                 <div className="text-center pt-2 border-t border-[#294350]/60">
                   <span className="text-3xs text-[#91A8B3] uppercase tracking-wider font-mono">
-                    Illustrative example   Synthetic patient data
+                    Illustrative example • Synthetic patient data
                   </span>
                 </div>
               </div>

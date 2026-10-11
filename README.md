@@ -1,21 +1,59 @@
-﻿# MediKiosk — Accessible Clinical Outpatient Intake
+﻿# MediKiosk - Accessible Clinical Outpatient Intake & OPD Triage Organizer
 
-> **Dark Healthcare Redesign:** Polished, visually distinctive dark healthcare interface built for outpatient department (OPD) triage, walk-up kiosk accessibility, and intermittent network resilience.
+> **Hackathon Prototype Demonstration:** An accessible, dignified digital intake terminal and clinical triage assistant built for outpatient departments (OPDs), walk-up kiosk accessibility, and intermittent network resilience.
 
 ---
 
 ## 1. Executive Summary & Clinical Context
 
-In overburdened outpatient departments (OPDs), consultation time is severely constrained. Patients frequently arrive with unstructured paper records, anxiety, and fragmented symptoms.
+In overburdened outpatient waiting halls, consultation time is severely constrained. Patients frequently arrive with unstructured paper records, anxiety, and fragmented symptoms.
 
-**MediKiosk** provides a calm, dignified digital intake terminal in the OPD waiting area:
-- **For Patients:** Guided, step-by-step touch and voice intake in **English and Hindi** with large (48px+) touch controls, clear "Unknown" vs "None reported" options, and document capture.
-- **For Clinicians:** Structured summaries with separated red-flag triage alerts, verified OCR document excerpts, and clear provenance.
-- **For Hospital Infrastructure:** Uncompromising offline continuity that tolerates severe network cuts (>30s) and browser restarts without data loss or duplicate case creation.
+### Your Health Story, Ready Before Your Consultation
+MediKiosk helps you share symptoms, medicines, allergies, and previous reports through guided questions. Hospital staff can review the information before your consultation. Your intake progress stays saved during temporary internet interruptions.
+
+### The Three Steps
+1. **Tell us about your health:** Step-by-step touch and voice intake in **English and Hindi** with large (48px+) controls, plain-language consent, and clear "Unknown" vs "None reported" options.
+2. **Review and confirm your answers:** Inspect all captured symptoms, conditions, and prescription documents before submission.
+3. **Share a structured summary with hospital staff:** Hospital clinicians review an organized clinical synopsis with deterministic red-flag alerts before consultation begins.
+
+> **Important Clinical & Prototype Notice:**  
+> All data presented in this public demonstration is synthetic and fictional. MediKiosk is an operational prototype designed to streamline intake workflows; AI-generated summaries assist clinician review and **do not** provide automated medical diagnosis or treatment plans.
 
 ---
 
-## 2. Dark Healthcare Design System
+## 2. Participant Feedback Integration (Challenge Card 2)
+
+We actively invite judges, clinical staff, and patient advocates to test MediKiosk and critique the experience:
+
+- **Official Google Feedback Form:** [https://forms.gle/UM6smWDSmxzCiAwh6](https://forms.gle/UM6smWDSmxzCiAwh6)  
+- **Access Points in Application:**
+  - Landing page top navigation (`Give feedback`)
+  - Dedicated landing page feedback strip
+  - Kiosk intake completion screen
+  - Clinical dashboard navigation bar and sample view banner
+- **Privacy & Data Security:** Links open directly in a new browser tab (`target="_blank" rel="noopener noreferrer"`). No patient demographics, medical answers, or session tokens are ever passed into the form URL.
+- **Challenge Card 2 Status:** **Pending Genuine Feedback**. In strict adherence to hackathon integrity, Challenge Card 2 is logged in [`feedback/README.md`](feedback/README.md) and will only be marked complete once authentic user responses are collected from external testers and a verified code change is committed.
+
+---
+
+## 3. Honest Optional ABHA Integration Flow
+
+MediKiosk implements an honest, transparent demographic pre-fill architecture aligned with the Ayushman Bharat Digital Mission (ABDM) standards:
+
+- **Current Status:** `ABHA connection — not configured` (displayed clearly on registration).
+- **Intended Purpose:** Reducing redundant demographic entry (name, age, gender) during registration. We make no unsubstantiated claims regarding measured queue reduction.
+- **Zero-Obstruction Fallback:** Patients can always click **"Continue without ABHA"** to proceed immediately with standard registration, which functions completely offline.
+- **Explicit Consent & Confirmation:** Imported demographic details are never automatically applied without patient review. Patients must confirm imported values before they become part of the case record.
+- **Demonstration Preview:** A synthetic ABDM sandbox preview is provided using permitted synthetic test identities (`Ramesh Kumar, 54 Y, ABHA: 14-XXXX-XXXX-0012`), demonstrating the exact confirmation UI without collecting real citizen identity numbers.
+- **Remaining Production Requirements:** Full live production integration requires:
+  1. ABDM Sandbox Client ID and Client Secret from the National Health Authority (NHA).
+  2. Health Facility Registry (HFR) and Health Professional Registry (HPR) onboarding.
+  3. M1 (Milestone 1) ABDM compliance certification for demographic verification.
+  4. Server-to-server HIP/HIU gateway integration with secure token rotation.
+
+---
+
+## 4. Dark Healthcare Design System
 
 The application strictly implements a calm, high-contrast **Dark Healthcare Design System**:
 
@@ -36,81 +74,81 @@ The application strictly implements a calm, high-contrast **Dark Healthcare Desi
 | **Attention Coral/Red**| `#F87171` on `#2B1417` | Red border `#991B1B` for clinical triage red flags & errors |
 
 ### Accessibility & Interaction Standards
-- **Touch Target Sizing:** All interactive kiosk controls, inputs, and buttons are at least **48px tall** (`min-h-[48px]`).
+- **Large Touch Targets:** All interactive controls are at least **48px tall** (`min-h-[48px]`).
 - **Devanagari / Hindi Support:** High-legibility typography rendered using `Noto Sans Devanagari` and `Mangal` fallbacks with full UTF-8 character integrity.
 - **Distinguishable States:** Selected options are differentiated by border thickness, background tint, explicit checkmark icon, and font weight—not color alone.
 - **Print Optimization:** Printable intake reports automatically render with a **pure white background and dark text** (`@media print`) so physical printing remains clear and ink-efficient.
-- **Autofill & Theme Flashes:** Input autofill overrides maintain dark palette; reduced motion preferences are respected across all animated elements.
+- **Reduced Motion:** Interactive liquid metal shader is suspended under `prefers-reduced-motion` and paused when scrolled out of view.
 
 ---
 
-## 3. Screen-by-Screen Interface Architecture
+## 5. Public Demo Protections & Tester Privacy
 
-### Landing Page Portal (`/`)
-- **Two-Column Hero:**
-  - **Left:** Small label *"Patient intake for OPDs"*, headline *"Your health story, ready for your doctor."*, concise description, and direct actions *"Start patient intake"* (`/kiosk`) and *"Staff sign in"* (`/login`).
-  - **Right:** Dimensional medical record illustration labeled *"Illustrative example"* with synthetic data, backed by a subtle, contained teal/silver liquid metal visual (`opacity-20`). The shader is lazy-loaded, suspended offscreen via `IntersectionObserver`, and bypassed under `prefers-reduced-motion`.
-- **Problem Statement:** Concise explanation of high OPD volume challenges and why structured patient history collection improves consultation efficiency.
-- **Three Capability Panels:**
-  1. *Guided intake* (bilingual, 48px controls, voice confirmation).
-  2. *Document review* (physical prescription OCR with mandatory verification).
-  3. *Offline continuity* (AES-GCM encryption, monotonic revisions, zero duplicates).
-- **Patient Journey Timeline:** Restyled in dark teal with interactive progress indicator.
-- **Final Action:** Prominent intake trigger card.
-
-### Patient Intake Kiosk (`/kiosk`)
-- **One Question Per Step:** Focused step flow with visible progress bar.
-- **Live Status Header:** Shows real operational state:
-  - *"Saved on this device"*
-  - *"Offline — you can continue"*
-  - *"Waiting to synchronise"*
-  - *"Received by the server"*
-  - *"AI summary pending"*
-  - *"Ready for staff review"*
-- **Language Switcher:** Instant English / Hindi toggle preserving active answers.
-- **Steps:**
-  1. Registration (self vs assisted entry).
-  2. Plain-language patient consent.
-  3. Chief concern (touch or voice dictation with local verification box).
-  4. Symptoms checklist (large 52px buttons with icons and Hindi labels).
-  5. Past conditions & current medicines (explicit "None reported" and "Unknown").
-  6. Allergies (explicit "None reported", "Unknown", or "Reported" details).
-  7. Document capture & OCR verification (prescriptions, discharge slips).
-  8. Final review & submission.
-- **Completion & Reset:** Displays reference ID, sync state, and a *"Finish & Prepare for Next Patient"* action that securely purges in-memory keys for patient privacy.
-
-### Staff Portal & Authentication (`/login`)
-- Clean, dark opaque form surfaces with clear labels.
-- Password visibility toggle (`Eye` / `EyeOff`).
-- Connected directly to `/api/auth` with genuine error reporting and loading spinners.
-- Removed all astronaut, space, and simulated-success content.
-
-### Clinical Dashboard & Triage Workspace (`/dashboard`)
-- Compact navigation rail with real-time network and freshness indicators.
-- **Genuine Metric Cards:** Calculated strictly from loaded database records (Total cases, Attention flagged, Pending review, Reviewed). Zero fabricated vital signs.
-- **Searchable Case Queue:** Search by patient name or reference ID; filter by Flagged, Ready, Awaiting Summary, and Reviewed.
-- **Case Detail Modal:** Complete structured intake breakdown, OCR document source verification, AI clinical synthesis, and staff triage sign-off notes.
+To protect visitor privacy while enabling public testing:
+1. **Sample Staff View (`/dashboard?sample=true`):** Public testers explore the clinical review dashboard using fixed synthetic fixtures (`Ramesh Kumar`, `Sunita Devi`, `Ananya Sharma`). Visitors can test triage categories, add notes, and inspect modal summaries without seeing other testers' submissions.
+2. **Server-Side API Authorization:** Live database endpoints (`/api/cases` and `/api/cases/[caseId]`) are protected server-side with cookie authentication (`medikiosk_staff_session`). Unauthenticated requests are rejected with HTTP 401 Unauthorized.
+3. **Session Isolation:** Interactive demo submissions made in `/kiosk` are encrypted and session-isolated.
+4. **Credential Boundary:** Registered staff credentials (`opd_staff` / `clinical2026`) allow authorized clinicians to access the live OPD queue.
 
 ---
 
-## 4. Operational Status Indicators
+## 6. Architecture & Deployment Setup
 
-All operational states reflect genuine underlying system state:
-
-- **"Saved on this device"** — Active draft written to local encrypted IndexedDB.
-- **"Offline — you can continue"** — Terminal is operating offline; intake continues without obstruction.
-- **"Waiting to synchronise"** — Queued records waiting for server acknowledgment.
-- **"Received by the server"** — Server has confirmed intake receipt with monotonic revision verification.
-- **"AI summary pending"** — Case synced; AI synthesis pending external provider response or credentials.
-- **"Ready for staff review"** — Structured synthesis ready for physician consultation.
+### Data Persistence Architecture
+- **Adapter:** SQLite via `better-sqlite3` with Write-Ahead Logging (`WAL` mode) and transactional idempotency.
+- **Persistent Storage:** Mounted persistent disk on `/var/data` configured via `render.yaml` with `DATA_DIR=/var/data`.
+- **Durability Guarantee:** SQLite is never stored on ephemeral lambda filesystems or `/tmp`.
+- **Render Service Blueprint:** Defined in [`render.yaml`](render.yaml) using Node.js web service on persistent starter plan ($7/mo + $0.25/GB disk). Note: In accordance with hackathon instructions, paid resources are not activated without explicit approval.
 
 ---
 
-## 5. Visual Proof & Screenshots
+## 7. Challenge Card 1: Offline Disconnection & Resilience
+
+### Verification Matrix
+
+| Requirement | Verification Level | Measured Outcome |
+| :--- | :--- | :--- |
+| **Offline Data Caching** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dexie IndexedDB + Service Worker precache. Handled a genuine 31.0s network cut mid-intake (`context.setOffline(true)`). |
+| **Encryption at Rest** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dual-layer Web Crypto (AES-GCM 256). Active drafts encrypted via `SessionKey`; `pendingSyncQueue` and `mediaBlobs` encrypted via `DeviceQueueKey`. Zero plaintext at rest. |
+| **Offline Reload Recovery** | **Browser-Tested** | **VERIFIED:** Proved via `tests/e2e/reload-recovery.spec.ts`. Genuinely reloaded browser (`page.reload()`) offline, tearing down JavaScript memory; recovered draft from ciphertext via `sessionStorage` session key re-import. |
+| **Next-Patient Privacy** | **Browser-Tested** | **VERIFIED:** Reset wipes active `SessionKey` and draft from UI. Background encrypted queue remains intact and drains cleanly upon reconnect. |
+| **Idempotency & Zero Duplicates** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Monotonic revisions with idempotency keys. SQLite asserts `recordCount: 1` and `duplicateCount: 0`. |
+| **Data Freshness & Retention** | **Unit-Tested** | **VERIFIED:** 30-min reconfirmation window and 24-hr cache expiry policies verified in `tests/freshness.test.ts`. |
+| **Reconnect Latency** | **Browser-Tested** | **VERIFIED:** `reconnectToSyncAcknowledgmentMs: 3.01s` (target < 5s). `reconnectToStructuredIntakeReadyMs: 3.51s`. |
+
+---
+
+## 8. Verification & Test Suite Execution
+
+### Unit & Integration Tests (13/13 Passed)
+```bash
+npm test
+```
+- `tests/rules.test.ts` (4 tests) - Deterministic red-flag triggers
+- `tests/repository.test.ts` (5 tests) - SQLite repository & monotonic revision deduplication
+- `tests/freshness.test.ts` (3 tests) - 30-minute staleness reconfirmation policies
+- `tests/summarizer.test.ts` (1 test) - AI adapter schema validation
+
+### End-to-End Tests (2/2 Passed)
+```bash
+npm run test:e2e
+```
+- `tests/e2e/disconnection.spec.ts` - 30+ second offline disconnection tolerance mid-intake
+- `tests/e2e/reload-recovery.spec.ts` - Genuine offline browser reload recovery & next-patient privacy wipe
+
+### Type Check & Production Build
+```bash
+npx tsc --noEmit     # 0 errors
+npm run build        # Production build successful with Turbopack
+```
+
+---
+
+## 9. Visual Proof & Screenshots
 
 All screenshots captured from the running local application with synthetic data:
 
-### Landing Page Portal (Hero & Journey)
+### Landing Page Portal (Hero & Workflow)
 ![MediKiosk Landing Portal](docs/screenshots/landing.png)
 
 ### Professional Staff Login
@@ -125,71 +163,8 @@ All screenshots captured from the running local application with synthetic data:
 
 ---
 
-## 6. Challenge Card 1: Offline Disconnection & Resilience
+## 10. AI Verification Status & Known Limitations
 
-### Verification Matrix
-
-| Requirement | Verification Level | Measured Outcome |
-| :--- | :--- | :--- |
-| **Offline Data Caching** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dexie IndexedDB + Service Worker precache. Handled a genuine 31.0s network cut mid-intake (`context.setOffline(true)`). |
-| **Encryption at Rest** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Dual-layer Web Crypto (AES-GCM 256). Active drafts encrypted via `SessionKey`; `pendingSyncQueue` and `mediaBlobs` encrypted via `DeviceQueueKey`. Zero plaintext at rest. |
-| **Offline Reload Recovery** | **Browser-Tested** | **VERIFIED:** Proved via `tests/e2e/reload-recovery.spec.ts`. Genuinely reloaded browser (`page.reload()`) offline, tearing down JavaScript memory; recovered draft from ciphertext via `sessionStorage` session key re-import. |
-| **Next-Patient Privacy** | **Browser-Tested** | **VERIFIED:** Reset wipes active `SessionKey` and draft from UI. Background encrypted queue remains intact and drains cleanly upon reconnect. |
-| **Idempotency & Zero Duplicates** | **Browser-Tested & Unit-Tested** | **VERIFIED:** Monotonic revisions with idempotency keys. SQLite asserts `recordCount: 1` and `duplicateCount: 0`. |
-| **Data Freshness & Retention** | **Unit-Tested** | **VERIFIED:** 30-min reconfirmation window and 24-hr cache expiry policies verified in `tests/freshness.test.ts`. |
-| **Reconnect Latency** | **Browser-Tested** | **VERIFIED:** `reconnectToSyncAcknowledgmentMs: 3.03s` (target < 5s). `reconnectToStructuredIntakeReadyMs: 3.53s`. |
-
----
-
-## 7. Verification & Test Suite Execution
-
-### Unit & Integration Tests (13/13 Passed)
-```bash
-npm test
-```
-- `tests/rules.test.ts` (4 tests) — Deterministic red-flag triggers
-- `tests/repository.test.ts` (5 tests) — SQLite repository & monotonic revision deduplication
-- `tests/freshness.test.ts` (3 tests) — 30-minute staleness reconfirmation policies
-- `tests/summarizer.test.ts` (1 test) — AI adapter schema validation
-
-### End-to-End Tests (2/2 Passed)
-```bash
-npx playwright test
-```
-- `tests/e2e/disconnection.spec.ts` — 30+ second offline disconnection tolerance mid-intake
-- `tests/e2e/reload-recovery.spec.ts` — Genuine offline browser reload recovery & next-patient privacy wipe
-
-### Type Check & Production Build
-```bash
-npx tsc --noEmit     # 0 errors
-npm run build        # Production build successful with Turbopack
-```
-
----
-
-## 8. Local Setup & Execution
-
-### Prerequisites
-- Node.js 18+ (tested on Node v22)
-- npm
-
-### Installation & Run
-```bash
-cd medikiosk-aftercode
-npm install --legacy-peer-deps
-npm run build
-npm run start
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-**Staff Login Demo Credentials:**
-- Staff: `opd_staff` / Password: `clinical2026`
-- Doctor: `dr_sharma` / Password: `opd@medikiosk`
-
----
-
-## 9. AI Verification Status & Known Limitations
-
-- **AI Verification Status:** AI provider integration supports real external LLM keys via `AI_PROVIDER` and `AI_API_KEY` environment variables. When unconfigured, the system honestly labels the summary as *"Local Heuristic Pipeline (Fallback)"* or *"AI summary pending"*. Real AI live provider verification remains pending until external API keys are provisioned in the deployment environment.
-- **Live Deployment:** Marked as **Pending**. All local development, tests, production build, and GitHub repository publication are completed.
-- **Voice Dictation:** Uses the browser Web Speech API when online/supported. When offline, voice can be recorded and queued for deferred server transcription.
+- **AI Verification Status:** AI provider integration supports real external LLM keys via `AI_PROVIDER` and `AI_API_KEY` environment variables. When unconfigured, the system honestly labels the summary as *"Local Heuristic Pipeline (Fallback)"* or *"AI summary pending"*. Report status: **Live AI verification not run — configuration missing**.
+- **Voice Transcription:** Voice dictation requires an active internet connection for web speech transcription; offline audio recordings are preserved locally and queued for deferred server transcription.
+- **ABHA Identity Verification:** Operational in synthetic preview mode; sandbox/production integration requires official NHA credentials.

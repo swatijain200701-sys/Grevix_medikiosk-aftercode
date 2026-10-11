@@ -11,7 +11,7 @@ import { PatientCaseSnapshot, StructuredAiSummary, StaffReview, RedFlagAlert } f
  * It is not suitable for ephemeral serverless lambdas without mounted persistent storage.
  */
 
-const DB_DIR = path.join(process.cwd(), 'data');
+const DB_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data');
 if (!fs.existsSync(DB_DIR)) {
   fs.mkdirSync(DB_DIR, { recursive: true });
 }

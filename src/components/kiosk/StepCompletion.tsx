@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import React from "react";
-import { CheckCircle2, ShieldCheck, Check } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Check, MessageSquare, ExternalLink } from "lucide-react";
 
 interface StepCompletionProps {
   caseId: string;
@@ -11,6 +11,8 @@ interface StepCompletionProps {
   onFinishAndReset: () => void;
   t: any;
 }
+
+const FEEDBACK_FORM_URL = "https://forms.gle/UM6smWDSmxzCiAwh6";
 
 export const StepCompletion: React.FC<StepCompletionProps> = ({
   caseId,
@@ -71,8 +73,32 @@ export const StepCompletion: React.FC<StepCompletionProps> = ({
         </div>
       </div>
 
+      {/* Visible Feedback Link Strip */}
+      <div className="p-4 rounded-2xl bg-[#0C1924] border border-[#50D6C5]/30 max-w-md w-full space-y-2 text-left">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold text-[#F1F6F8] flex items-center gap-1.5">
+            <MessageSquare className="w-4 h-4 text-[#50D6C5]" />
+            <span>Help shape MediKiosk</span>
+          </span>
+          <span className="text-3xs text-[#91A8B3]">Google Forms</span>
+        </div>
+        <p className="text-xs text-[#B6C7CF]">
+          Tell us what confused you during intake or what would make it more useful.
+        </p>
+        <a
+          href={FEEDBACK_FORM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          id="completion-feedback-btn"
+          className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-[#294350] bg-[#122330] hover:bg-[#18303D] text-[#50D6C5] font-semibold text-xs transition"
+        >
+          <span>Open feedback form</span>
+          <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
+
       {/* Privacy and Reset Action */}
-      <div className="pt-2 space-y-3 w-full max-w-md">
+      <div className="pt-1 space-y-3 w-full max-w-md">
         <button
           type="button"
           id="finish-session-btn"

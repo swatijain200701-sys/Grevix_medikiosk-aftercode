@@ -76,6 +76,12 @@ test.describe('Shared-Kiosk Privacy, Encryption & Offline Reload Recovery', () =
     await context.setOffline(false);
     await page.waitForTimeout(3500);
 
+    const currentOrigin = new URL(page.url()).origin;
+    await context.addCookies([{
+      name: 'medikiosk_staff_session',
+      value: 'auth_e2e_staff_verified',
+      url: currentOrigin,
+    }]);
     await page.goto('/dashboard');
     await page.waitForSelector(`text=${patientName}`, { timeout: 15000 });
     const matchingCases = await page.locator(`text=${patientName}`).count();

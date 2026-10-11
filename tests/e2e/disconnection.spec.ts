@@ -100,7 +100,13 @@ test.describe('Real Challenge Card 1: 30-Second Network Disconnection Test', () 
     const reconnectToSyncLatencyMs = Date.now() - reconnectStartMs;
     testLog.reconnectToSyncAcknowledgmentMs = reconnectToSyncLatencyMs;
 
-    // 8. VERIFY SERVER DATA INTEGRITY & ZERO DUPLICATES
+    // 8. VERIFY SERVER DATA INTEGRITY & ZERO DUPLICATES (AS AUTHORIZED CLINICIAN)
+    const currentOrigin = new URL(page.url()).origin;
+    await context.addCookies([{
+      name: 'medikiosk_staff_session',
+      value: 'auth_e2e_staff_verified',
+      url: currentOrigin,
+    }]);
     await page.goto('/dashboard');
     await page.waitForSelector(`text=${patientName}`, { timeout: 15000 });
 

@@ -1,0 +1,18 @@
+﻿services:
+  - type: web
+    name: medikiosk-service
+    env: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    disk:
+      name: medikiosk-disk
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATA_DIR
+        value: /var/data

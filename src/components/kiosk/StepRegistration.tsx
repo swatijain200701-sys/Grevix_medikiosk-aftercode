@@ -1,6 +1,7 @@
 ﻿"use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { Shield, Check, Info, ArrowRight, UserCheck } from "lucide-react";
 
 interface StepRegistrationProps {
   preferredName: string;
@@ -29,6 +30,16 @@ export const StepRegistration: React.FC<StepRegistrationProps> = ({
   setCaregiverName,
   t,
 }) => {
+  const [showAbhaPreview, setShowAbhaPreview] = useState(false);
+  const [abhaApplied, setAbhaApplied] = useState(false);
+
+  const handleApplySyntheticAbha = () => {
+    setPreferredName("Ramesh Kumar");
+    setAge("54");
+    setAbhaApplied(true);
+    setShowAbhaPreview(false);
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -36,6 +47,94 @@ export const StepRegistration: React.FC<StepRegistrationProps> = ({
         <p className="text-[#91A8B3] text-sm mt-1">{t.kioskSubtitle}</p>
       </div>
 
+      {/* OPTIONAL ABHA FLOW CARD */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#18303D] border border-[#294350] space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Shield className="w-4 h-4 text-[#50D6C5]" />
+            <h3 className="font-bold text-sm text-[#F1F6F8]">
+              ABHA / Ayushman Bharat Health Account (Optional)
+            </h3>
+          </div>
+          <span className="text-3xs font-mono px-2.5 py-0.5 rounded-full bg-[#122330] text-[#91A8B3] border border-[#294350]">
+            ABHA connection — not configured
+          </span>
+        </div>
+
+        <p className="text-xs text-[#B6C7CF] leading-relaxed">
+          The intended benefit of ABHA is reducing repeated demographic entry (name, age, gender) at OPD counters. It does not grant permission to view or retrieve medical records without explicit, separate consent. Patients can continue registration normally.
+        </p>
+
+        {abhaApplied ? (
+          <div className="p-3 rounded-xl bg-[#50D6C5]/10 border border-[#50D6C5]/30 text-xs text-[#50D6C5] flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4" />
+              <span>Synthetic demo demographics confirmed (Ramesh Kumar, 54 Y). You may adjust fields below.</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setAbhaApplied(false)}
+              className="text-3xs underline text-[#91A8B3] hover:text-[#F1F6F8]"
+            >
+              Reset
+            </button>
+          </div>
+        ) : !showAbhaPreview ? (
+          <div className="flex flex-wrap items-center gap-2.5 pt-1">
+            <button
+              type="button"
+              id="preview-synthetic-abha-btn"
+              onClick={() => setShowAbhaPreview(true)}
+              className="px-3.5 py-2 rounded-xl border border-[#294350] bg-[#122330] hover:bg-[#203D4D] text-xs font-semibold text-[#50D6C5] transition min-h-[40px]"
+            >
+              Preview Synthetic ABHA Import
+            </button>
+            <span className="text-3xs text-[#91A8B3]">
+              • Or continue typing details manually below (works offline)
+            </span>
+          </div>
+        ) : (
+          <div className="p-3.5 rounded-xl bg-[#122330] border border-[#294350] space-y-2.5 text-xs">
+            <div className="flex items-center justify-between border-b border-[#294350] pb-2">
+              <span className="font-bold text-[#F1F6F8]">
+                Synthetic Demonstration Preview (Permitted test identity only)
+              </span>
+              <span className="text-3xs font-mono text-[#50D6C5]">ABDM M1 Prototype</span>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2 text-3xs text-[#B6C7CF]">
+              <div><strong>Name:</strong> Ramesh Kumar</div>
+              <div><strong>Age / Gender:</strong> 54 Y / Male</div>
+              <div><strong>ABHA Address:</strong> ramesh.kumar@abdm</div>
+              <div><strong>Synthetic Token:</strong> SBX-DEMO-9182</div>
+            </div>
+
+            <p className="text-3xs text-[#91A8B3] italic">
+              * Real ABHA numbers and OTP verification are not collected or simulated. Please confirm before applying these details to your intake form.
+            </p>
+
+            <div className="flex gap-2 pt-1">
+              <button
+                type="button"
+                id="confirm-synthetic-abha-btn"
+                onClick={handleApplySyntheticAbha}
+                className="px-4 py-2 rounded-lg bg-[#50D6C5] hover:bg-[#3ec4b3] text-[#062820] font-bold text-xs transition"
+              >
+                Confirm & Apply Details
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAbhaPreview(false)}
+                className="px-3 py-2 rounded-lg border border-[#294350] bg-[#18303D] hover:bg-[#203D4D] text-xs text-[#B6C7CF] transition"
+              >
+                Continue Without ABHA
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* MANUAL DEMOGRAPHIC INPUTS */}
       <div className="space-y-4">
         <div>
           <label htmlFor="patient-name-input" className="block text-sm font-semibold text-[#F1F6F8] mb-1.5">
