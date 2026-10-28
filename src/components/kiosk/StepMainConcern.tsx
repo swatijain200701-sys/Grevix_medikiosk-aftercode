@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { Mic, MicOff, Clock, Info } from "lucide-react";
@@ -82,7 +82,7 @@ export const StepMainConcern: React.FC<StepMainConcernProps> = ({
                 </>
               )}
             </button>
-            <span className="text-xs text-[var(--text-muted)]">
+            <span aria-live="polite" className="text-xs text-[var(--text-muted)]">
               {isListening ? "Listening... Speak clearly." : "Speech is transcribed locally and requires your review before saving."}
             </span>
           </div>

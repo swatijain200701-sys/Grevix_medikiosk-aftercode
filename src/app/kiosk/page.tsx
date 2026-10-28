@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle, AlertTriangle, UserCheck } from "lucide-react";
@@ -381,7 +381,14 @@ export default function KioskPage() {
       />
 
       {!isSubmitted && (
-        <div className="w-full bg-[var(--bg-panel)] h-1.5">
+        <div
+          role="progressbar"
+          aria-valuenow={currentStep}
+          aria-valuemin={1}
+          aria-valuemax={TOTAL_STEPS}
+          aria-label="Intake progress"
+          className="w-full bg-[var(--bg-panel)] h-1.5"
+        >
           <div
             className="bg-[var(--btn-main)] h-1.5 transition-all duration-300"
             style={{ width: `${(currentStep / TOTAL_STEPS) * 100}%` }}
@@ -393,7 +400,7 @@ export default function KioskPage() {
         {!isSubmitted ? (
           <div className="flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-4 text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              <span className="font-mono text-[var(--btn-main)]">
+              <span className="font-mono text-[var(--btn-main)]" aria-current="step">
                 {t.step} {currentStep} {t.of} {TOTAL_STEPS}
               </span>
               {isAssisted && (

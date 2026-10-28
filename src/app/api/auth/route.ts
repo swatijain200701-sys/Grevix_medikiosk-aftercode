@@ -1,4 +1,5 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 
 // Registered staff credentials for OPD triage & review
 const AUTHORIZED_STAFF: Record<string, string> = {
@@ -21,9 +22,29 @@ export async function POST(req: NextRequest) {
     }
 
     const cleanUsername = String(username).trim().toLowerCase();
-    const expectedPassword = AUTHORIZED_STAFF[cleanUsername];
+    
+    // Environment-provided credential override if configured
+    let staffCredentials = AUTHORIZED_STAFF;
+    if (process.env.STAFF_CREDENTIALS_JSON) {
+      try {
+        staffCredentials = { ...staffCredentials, ...JSON.parse(process.env.STAFF_CREDENTIALS_JSON) };
+      } catch {
+        // Fall back to default registered staff credentials
+      }
+    }
 
-    if (!expectedPassword || expectedPassword !== password) {
+    const expectedPassword = staffCredentials[cleanUsername];
+
+    // Constant-time timing-safe comparison to prevent timing side-channel attacks
+    const providedBuffer = Buffer.from(String(password));
+    const expectedBuffer = Buffer.from(expectedPassword || "");
+
+    const isMatch =
+      Boolean(expectedPassword) &&
+      providedBuffer.length === expectedBuffer.length &&
+      crypto.timingSafeEqual(providedBuffer, expectedBuffer);
+
+    if (!isMatch) {
       return NextResponse.json(
         { success: false, error: "Invalid staff username or password. Check credentials with clinical admin." },
         { status: 401 }

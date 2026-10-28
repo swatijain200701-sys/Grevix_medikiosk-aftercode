@@ -1,4 +1,4 @@
-﻿# MediKiosk: Third-Party Dependencies & Attribution
+# MediKiosk: Third-Party Dependencies & Attribution
 
 All dependencies used in MediKiosk are standard open-source libraries compliant with hackathon submission guidelines.
 
@@ -10,9 +10,18 @@ All dependencies used in MediKiosk are standard open-source libraries compliant 
 | **zod** | `^3.24.2` | Runtime schema validation for requests and LLM outputs | MIT |
 | **better-sqlite3** | `^12.8.0` | Durable server-side SQLite repository storage | MIT |
 | **lucide-react** | `^1.16.0` | Accessible icons | ISC |
+| **gsap** | `^3.14.0` | Performant canvas and DOM animation (landing only) | GSAP Standard License (Free Commercial) |
 | **vitest** | `^5.0.3` | Unit and integration test runner | MIT |
 | **@playwright/test** | `^1.58.0` | End-to-end browser automation & offline network tests | Apache 2.0 |
 | **tailwindcss** | `^4.0.0` | Utility CSS framework | MIT |
+
+---
+
+## Creative & Visual Attributions
+- **Open Peeps Illustration Library:** Hand-drawn vector characters created by Pablo Stanley ([openpeeps.com](https://www.openpeeps.com/)). Licensed under [CC0 1.0 Universal (Public Domain)](https://creativecommons.org/publicdomain/zero/1.0/).
+- **Skiper UI (Skiper 39 Canvas_Landing_004):** React + Canvas micro-interaction component authored by @gurvinder-singh02 ([gxuri.me](https://gxuri.me)). Free version attribution acknowledged.
+- **Crowd Simulator Concept:** Original HTML5 Canvas simulation conceived and coded by Szenia Zadvornykh ([CodePen xxwbBQV](https://codepen.io/zadvorsky/pen/xxwbBQV)).
+- **GSAP Standard License:** GreenSock standard license permits free commercial use without fee for applications that do not charge end-users directly for access. Verified at [gsap.com/standard-license](https://gsap.com/standard-license).
 
 ---
 

@@ -36,6 +36,7 @@
   --logo-tile: #4FD1C5;
   --turquoise-accent: #4FD1C5;
   --accent: #4FD1C5;
+  --champagne-gold: #C7A66A;      /* Non-text decorative accents only (never for text/urgency) */
   --slate-accent: #304652;
   --focus-ring: #356B62;
 
@@ -119,6 +120,7 @@
   --logo-tile: #77D8C8;          /* Accent: #77D8C8 */
   --turquoise-accent: #77D8C8;
   --accent: #77D8C8;
+  --champagne-gold: #D4B37F;      /* Non-text decorative accents only (never for text/urgency) */
   --slate-accent: #36505A;
   --focus-ring: #8AC7FF;         /* Focus outline: #8AC7FF */
 

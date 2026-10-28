@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -266,17 +267,23 @@ export function StaffLogin({
                 </AnimatePresence>
               </button>
 
-              {/* Demo credentials hint */}
-              <div className="p-3.5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-color)] text-3xs text-[var(--text-heading)] space-y-1.5">
-                <span className="font-bold text-[var(--text-heading)] block">Authorized Demo Credentials:</span>
-                <div className="flex justify-between items-center">
-                  <span>Staff: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">opd_staff</code></span>
-                  <span>Pass: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">clinical2026</code></span>
+              {/* Evaluator synthetic sandbox notice */}
+              <div className="p-3.5 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-color)] text-xs text-[var(--text-heading)] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-[var(--text-heading)] text-xs">Hackathon Evaluator / Judge?</span>
+                  <span className="text-3xs uppercase font-mono px-2 py-0.5 rounded bg-[var(--bg-card)] text-[var(--btn-main)] border border-[var(--border-color)] font-semibold">Synthetic Sandbox</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span>Doctor: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">dr_sharma</code></span>
-                  <span>Pass: <code className="bg-[var(--bg-card)] px-1.5 py-0.5 rounded border border-[var(--border-color)] text-[var(--btn-main)] font-bold">opd@medikiosk</code></span>
-                </div>
+                <p className="text-3xs text-[var(--text-muted)] leading-relaxed">
+                  Genuine staff credentials are confidential and managed via secure environment secrets. Evaluators can explore the complete, realistic staff review interface with verified synthetic cases:
+                </p>
+                <Link
+                  href="/dashboard?sample=true"
+                  id="login-sample-dashboard-btn"
+                  className="w-full py-2.5 px-3 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--btn-main)] text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-2xs"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Launch Sample Staff Dashboard</span>
+                </Link>
               </div>
 
             </form>

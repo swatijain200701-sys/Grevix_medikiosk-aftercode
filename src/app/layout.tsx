@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme/ThemeProvider";
 import { ThemeInitScript } from "@/lib/theme/ThemeInitScript";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: true,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const notoDevanagari = Noto_Sans_Devanagari({
+  variable: "--font-devanagari",
+  subsets: ["devanagari"],
+  display: "swap",
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
@@ -28,7 +32,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${notoDevanagari.variable} h-full antialiased font-sans`}
     >
       <head>
         <ThemeInitScript />
