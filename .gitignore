@@ -56,3 +56,7 @@ playwright-report/
 # Turso CLI auth files created at repo root
 /auth
 /auth-wal
+
+# Extracted source bundles
+/medikiosk-aftercode-extracted.zip
+/medikiosk-extracted-files/
