@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
@@ -290,19 +290,26 @@ function DashboardContent() {
         
         {/* Sample Mode Banner */}
         {isSampleMode && (
-          <div className="p-4 rounded-2xl bg-[var(--bg-panel)] border border-[var(--border-color)] text-[var(--text-heading)] flex flex-wrap items-center justify-between gap-3 shadow-sm">
+          <div className="p-4 rounded-2xl bg-[var(--bg-panel)] border-2 border-[var(--border-color)] text-[var(--text-heading)] flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-2.5 text-xs">
-              <Eye className="w-4 h-4 text-[var(--btn-main)] shrink-0" />
+              <span className="px-2.5 py-1 rounded-full bg-[var(--btn-main)] text-[var(--btn-main-text)] font-bold text-3xs tracking-wider uppercase">
+                Demo using synthetic information
+              </span>
               <span>
-                <strong>Synthetic Demonstration Mode:</strong> This view presents fixed synthetic examples and never exposes real visitor or patient submissions. Real hospital records require staff sign in.
+                This guided view presents fixed synthetic examples for evaluation. It runs entirely in-memory and <strong>never accesses or exposes real patient records</strong>.
               </span>
             </div>
-            <Link
-              href="/login"
-              className="px-3.5 py-1.5 rounded-xl bg-[var(--btn-main)] text-[var(--btn-main-text)] text-xs font-bold hover:bg-[var(--btn-main-hover)] transition shadow-sm"
-            >
-              Staff Sign In
-            </Link>
+            <div className="flex items-center gap-2">
+              <span className="text-3xs font-mono font-semibold px-2 py-0.5 rounded bg-[var(--bg-card)] text-[var(--btn-main)] border border-[var(--border-color)]">
+                Calls: Simulated Local In-Memory
+              </span>
+              <Link
+                href="/login"
+                className="px-3.5 py-1.5 rounded-xl bg-[var(--btn-main)] text-[var(--btn-main-text)] text-xs font-bold hover:bg-[var(--btn-main-hover)] transition shadow-sm"
+              >
+                Staff Sign In
+              </Link>
+            </div>
           </div>
         )}
 

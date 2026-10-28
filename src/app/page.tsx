@@ -8,6 +8,7 @@ import { HeroFlowVisual } from "@/components/landing/HeroFlowVisual";
 import { EightStepJourney } from "@/components/landing/EightStepJourney";
 import { OfflineSimulator } from "@/components/landing/OfflineSimulator";
 import { ClinicalPreparationPreview } from "@/components/landing/ClinicalPreparationPreview";
+import { MagneticText } from "@/components/ui/morphing-cursor";
 import { 
   Wifi, WifiOff, FileText, CheckCircle2, 
   Stethoscope, ArrowRight, ClipboardList, Camera, HardDrive,
@@ -117,9 +118,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ═════════════════════════════════════════════════════════════════════════
-          SECTION A: HERO (P0)
-          ═════════════════════════════════════════════════════════════════════════ */}
+      <main id="main-content" className="flex-1">
+        {/* ═════════════════════════════════════════════════════════════════════════
+            SECTION A: HERO (P0)
+            ═════════════════════════════════════════════════════════════════════════ */}
       <section className="border-b py-12 sm:py-20" style={{ backgroundColor: 'var(--bg-main)', borderColor: 'var(--border-color)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
@@ -273,6 +275,26 @@ export default function Home() {
             </div>
           </div>
 
+        </div>
+      </section>
+
+      {/* ═════════════════════════════════════════════════════════════════════════
+          EDITORIAL TRANSITION: Dignified Clinical Intake (MagneticText)
+          ═════════════════════════════════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 border-b text-center" style={{ backgroundColor: 'var(--bg-panel)', borderColor: 'var(--border-color)' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-3">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--btn-main)]">
+            Dignified Clinical Intake
+          </span>
+          <div className="flex justify-center py-2">
+            <MagneticText
+              text="Every patient has a story."
+              hoverText="Every detail matters."
+            />
+          </div>
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-xl mx-auto leading-relaxed">
+            Move your cursor or focus over the words to reveal how structured preparation respects patient time and clinician focus.
+          </p>
         </div>
       </section>
 
@@ -495,6 +517,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* FOOTER */}
       <footer className="border-t border-[var(--border-color)] bg-[var(--header-bg)] py-12 px-4 sm:px-6 text-xs text-[var(--header-text-muted)] space-y-6">
