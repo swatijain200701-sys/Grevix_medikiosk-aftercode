@@ -8,39 +8,45 @@
   color-scheme: light;
 
   /* Shell / Layout */
-  --bg-main: #EAF0EB;            /* Sage Mist page background */
-  --header-bg: #0B1B25;          /* Navy header/footer */
-  --footer-bg: #0B1B25;
-  --header-text: #FAF7F0;
+  --bg-main: #DCEBE7;            /* Sage Mist page background */
+  --header-bg: #101F35;          /* Midnight Navy header/footer */
+  --footer-bg: #101F35;
+  --header-text: #F7F5EF;        /* Warm Ivory */
   --header-text-muted: #91A8B3;
 
+  /* M1 Core Verified Palette Tokens */
+  --midnight-navy: #101F35;
+  --royal-teal: #176C72;
+  --champagne-gold: #C7A66A;      /* Non-text decorative accents only (never for clinical warnings) */
+  --warm-ivory: #F7F5EF;
+  --sage-mist: #DCEBE7;
+
   /* Surfaces */
-  --bg-card: #FAF7F0;            /* Warm Cream card surface */
+  --bg-card: #F7F5EF;            /* Warm Ivory card surface */
   --bg-panel: #D8E5DC;           /* Soft Sage secondary panel */
   --bg-elevated: #D8E5DC;
 
   /* Typography */
-  --text-heading: #293D36;       /* Deep Charcoal headings */
-  --text-body: #293D36;          /* Body text */
+  --text-heading: #101F35;       /* Midnight Navy headings */
+  --text-body: #293D36;          /* Deep Charcoal body text */
   --text-muted: #53665D;         /* Supporting text */
 
   /* Borders & Dividers */
   --border-color: #B8C9BD;
 
   /* Buttons & Interactive */
-  --btn-main: #356B62;           /* Teal primary button */
-  --btn-main-hover: #2B574F;
-  --btn-main-text: #FFFDF7;      /* Ivory text */
+  --btn-main: #176C72;           /* Royal Teal primary button */
+  --btn-main-hover: #12555A;
+  --btn-main-text: #F7F5EF;      /* Warm Ivory text */
 
   /* Accents & Brand */
   --logo-tile: #4FD1C5;
   --turquoise-accent: #4FD1C5;
-  --accent: #4FD1C5;
-  --champagne-gold: #C7A66A;      /* Non-text decorative accents only (never for text/urgency) */
+  --accent: #176C72;
   --slate-accent: #304652;
-  --focus-ring: #356B62;
+  --focus-ring: #176C72;
 
-  /* Distinct Semantic Status Surfaces */
+  /* Distinct Semantic Status Surfaces (WCAG AA compliant) */
   --surface-success: #D1FAE5;
   --surface-success-border: #10B981;
   --surface-success-text: #065F46;
@@ -52,6 +58,10 @@
   --surface-error: #FEE2E2;
   --surface-error-border: #EF4444;
   --surface-error-text: #B91C1C;
+
+  --surface-info: #DBEAFE;
+  --surface-info-border: #3B82F6;
+  --surface-info-text: #1E40AF;
 
   /* Semantic UI mappings for Tailwind */
   --background: var(--bg-main);
@@ -136,6 +146,10 @@
   --surface-error: #450A0A;
   --surface-error-border: #EF4444;
   --surface-error-text: #FECACA;
+
+  --surface-info: #1E3A8A;
+  --surface-info-border: #3B82F6;
+  --surface-info-text: #BFDBFE;
 
   /* Semantic UI mappings for Tailwind */
   --background: var(--bg-main);
