@@ -1,4 +1,4 @@
-﻿import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test.describe('Shared-Kiosk Privacy, Encryption & Offline Reload Recovery', () => {
   test('genuinely reloads page offline, recovers encrypted draft via Web Crypto, and wipes on session finish', async ({ page, context }) => {
@@ -53,13 +53,14 @@ test.describe('Shared-Kiosk Privacy, Encryption & Offline Reload Recovery', () =
     expect(restoredConcern).toBe('Severe throbbing headache with nausea');
 
     // 6. COMPLETE AND SUBMIT INTAKE WHILE STILL OFFLINE
-    await page.click('#kiosk-next-btn'); // Step 4
-    await page.click('#kiosk-next-btn'); // Step 5
+    await page.click('#kiosk-next-btn'); // Advance to Step 4: Symptoms
+    await page.click('#kiosk-next-btn'); // Advance to Step 5: Conditions
+    await page.click('#kiosk-next-btn'); // Advance to Step 6: Allergies
+    await expect(page.locator('#allergy-opt-none_reported')).toBeVisible();
     await page.click('#allergy-opt-none_reported');
-    await page.click('#kiosk-next-btn'); // Step 6
-    await page.click('#kiosk-next-btn'); // Step 7
-    await page.click('#kiosk-next-btn'); // Step 8 Review
-    await page.click('#kiosk-submit-btn'); // Submit
+    await page.click('#kiosk-next-btn'); // Advance to Step 7: Documents
+    await page.click('#kiosk-next-btn'); // Advance to Step 8: Review
+    await page.click('#kiosk-submit-btn'); // Submit intake
 
     await expect(page.locator('#submission-sync-status')).toBeVisible();
     const statusText = await page.locator('#submission-sync-status').textContent();
